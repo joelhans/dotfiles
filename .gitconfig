@@ -1,0 +1,13 @@
+[user]
+  name = Joel Hans
+  email = joel.g.hans@gmail.com
+
+[github]
+  user = joelhans
+
+[core]
+  excludesfile = ~/.gitignore_global
+  editor = nano
+  filemode = false
+  trustctime = false
+	autocrlf = input
