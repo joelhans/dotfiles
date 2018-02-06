@@ -10,4 +10,4 @@
   editor = nano
   filemode = false
   trustctime = false
-	autocrlf = input
+  autocrlf = input
