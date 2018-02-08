@@ -81,7 +81,7 @@ fi
 ln -sfv "$DOTFILES_DIR/.zshrc" ~
 
 # Reload zsh settings
-source ~/.zshrc
+# source $HOME/.zshrc
 
 
 #
@@ -96,4 +96,10 @@ ln -sfv "$DOTFILES_DIR/atom/styles.less" ~/.atom/
 
 # Install packages based on packages.txt
 
-# apm install --packages-file $DOTFILES_DIR/atom/packages.txt
+if [ -x "$(command -v apm)" ]; then
+	apm install --packages-file $DOTFILES_DIR/atom/packages.txt
+elif [ -x "$(command -v apm-beta)" ]; then
+	apm-beta install --packages-file $DOTFILES_DIR/atom/packages.txt
+else
+	echo "Atom not installed, skipping installation of packages for now."
+fi
