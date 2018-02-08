@@ -2,13 +2,13 @@
 # Oh My ZSH settings
 #######################################
 
-export ZSH=/home/joel/.oh-my-zsh
+export ZSH=$HOME/.oh-my-zsh
 ZSH_THEME="spaceship"
 CASE_SENSITIVE="true"
 ENABLE_CORRECTION="true"
 HIST_STAMPS="mm/dd/yyyy"
 plugins=(git docker cp zsh-syntax-highlighting)
-source $ZSH/oh-my-zsh.sh
+source $HOME/.oh-my-zsh/oh-my-zsh.sh
 
 #######################################
 # User configuration
