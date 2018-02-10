@@ -83,7 +83,6 @@ ln -sfv "$DOTFILES_DIR/.zsh_aliases" ~
 # Can't source zsh commands from a bash script?
 # source $HOME/.zshrc
 
-
 ####################
 # Atom
 ####################
