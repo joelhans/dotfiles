@@ -1,28 +1,24 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # Get current dir
-
 DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-
-#
+####################
 # .gitconfig and .gitignore_global
-#
+####################
 
 ln -sfv "$DOTFILES_DIR/.gitconfig" ~
 ln -sfv "$DOTFILES_DIR/.gitignore_global" ~
 
-
-#
+####################
 # Hyper.js
-#
+####################
 
 ln -sfv "$DOTFILES_DIR/.hyper.js" ~
 
-
-#
+####################
 # ZSH
-#
+####################
 
 # install_zsh () {
 #   # Test to see if zshell is installed.  If it is:
@@ -60,9 +56,10 @@ ln -sfv "$DOTFILES_DIR/.hyper.js" ~
 # }
 
 # Run the zsh_install function
-
+# Disabled until I have time to get it right.
 # install_zsh
 
+# Specify ZSH custom directory
 ZSH_CUSTOM=$HOME/.oh-my-zsh/custom
 
 # Install the ZSH spaceship theme if not already installed
@@ -77,29 +74,37 @@ if [[ ! -d ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]]; then
 fi
 
 # Symlink .zshrc
-
 ln -sfv "$DOTFILES_DIR/.zshrc" ~
+ln -sfv "$DOTFILES_DIR/.zsh_exports" ~
+ln -sfv "$DOTFILES_DIR/.zsh_aliases" ~
 
-# Reload zsh settings
+# Source ZSH settings
+# This currently causes an issue with oh-my-zsh
+# Can't source zsh commands from a bash script?
 # source $HOME/.zshrc
 
 
-#
+####################
 # Atom
-#
-
+####################
 # To create a list of current packages, use the following command:
 # apm list --bare --installed --dev false > packages.txt
 
+# Set up symlinks for config files
 ln -sfv "$DOTFILES_DIR/atom/config.cson" ~/.atom/
 ln -sfv "$DOTFILES_DIR/atom/styles.less" ~/.atom/
 
 # Install packages based on packages.txt
-
-if [ -x "$(command -v apm)" ]; then
-	apm install --packages-file $DOTFILES_DIR/atom/packages.txt
-elif [ -x "$(command -v apm-beta)" ]; then
-	apm-beta install --packages-file $DOTFILES_DIR/atom/packages.txt
+# Workaround to skip installation if first package exists
+# See https://github.com/atom/apm/issues/170
+if [[ ! -d "$HOME/.atom/packages/Zen" ]]; then
+	if [ -x "$(command -v apm)" ]; then
+		apm install --packages-file $DOTFILES_DIR/atom/packages.txt
+	elif [ -x "$(command -v apm-beta)" ]; then
+		apm-beta install --packages-file $DOTFILES_DIR/atom/packages.txt
+	else
+		echo "Atom not installed, skipping installation of packages for now."
+	fi
 else
-	echo "Atom not installed, skipping installation of packages for now."
+	echo "Atom packages already installed, skipping."
 fi
