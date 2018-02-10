@@ -1,0 +1,9 @@
+# ls
+alias lsa="ls -la"
+
+# sudoness
+alias _="sudo -E"
+alias dnf="sudo dnf"
+
+# Prevent ZSH from throwing autocorrect for weird-looking Sass commands
+alias sass='nocorrect sass'
