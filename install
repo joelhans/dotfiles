@@ -20,18 +20,21 @@ ln -sfv "$DOTFILES_DIR/.hyper.js" ~
 # ZSH
 ####################
 
-# install_zsh () {
-#   # Test to see if zshell is installed.  If it is:
-#   if [ -f /bin/zsh -o -f /usr/bin/zsh ]; then
-#   	echo "ZSH is installed"
-#     # Install Oh My Zsh if it isn't already present
-#     if [[ ! -d ~/.oh-my-zsh/ ]]; then
-#       sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-#     fi
-#     # Set the default shell to zsh if it isn't currently set to zsh
-#     if [[ ! $(echo $SHELL) == $(which zsh) ]]; then
-#       chsh -s $(which zsh)
-#     fi
+install_zsh () {
+  # Test to see if Zsh is installed
+  if [ -f /bin/zsh -o -f /usr/bin/zsh ]; then
+    # Install Oh My Zsh if it isn't already present
+    if [[ ! -d ~/.oh-my-zsh/ ]]; then
+      sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+    fi
+    # Set the default shell to Zsh if it isn't currently set
+    if [[ ! $(echo $SHELL) == $(which zsh) ]]; then
+      sudo chsh -s $(which zsh)
+    fi
+  else
+  	echo "Zsh not installed, skipping."
+  fi
+# I'm leaving the remainder of this function for another time.
 #   else
 #     # If zsh isn't installed, get the platform of the current machine
 #     platform=$(uname);
@@ -53,11 +56,16 @@ ln -sfv "$DOTFILES_DIR/.hyper.js" ~
 #     #   exit
 #     # fi
 #   fi
-# }
+}
 
 # Run the zsh_install function
 # Disabled until I have time to get it right.
-# install_zsh
+install_zsh
+
+# Install Oh My Zsh if it isn't already present
+# if [[ ! -d ~/.oh-my-zsh/ ]]; then
+#   sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+# fi
 
 # Specify ZSH custom directory
 ZSH_CUSTOM=$HOME/.oh-my-zsh/custom
@@ -78,11 +86,6 @@ ln -sfv "$DOTFILES_DIR/.zshrc" ~
 ln -sfv "$DOTFILES_DIR/.zsh_exports" ~
 ln -sfv "$DOTFILES_DIR/.zsh_aliases" ~
 
-# Source ZSH settings
-# This currently causes an issue with oh-my-zsh
-# Can't source zsh commands from a bash script?
-# source $HOME/.zshrc
-
 ####################
 # Atom
 ####################
@@ -90,6 +93,7 @@ ln -sfv "$DOTFILES_DIR/.zsh_aliases" ~
 # apm list --bare --installed --dev false > packages.txt
 
 # Set up symlinks for config files
+if [[ ! -d ~/.atom ]]; then mkdir ~/.atom/; fi
 ln -sfv "$DOTFILES_DIR/atom/config.cson" ~/.atom/
 ln -sfv "$DOTFILES_DIR/atom/styles.less" ~/.atom/
 
@@ -99,10 +103,10 @@ ln -sfv "$DOTFILES_DIR/atom/styles.less" ~/.atom/
 if [[ ! -d "$HOME/.atom/packages/Zen" ]]; then
 	if [ -x "$(command -v apm)" ]; then
 		apm install --packages-file $DOTFILES_DIR/atom/packages.txt
-	elif [ -x "$(command -v apm-beta)" ]; then
+	elif [ -x "$(command -v apm-beta)" ]; then		# Workaround for `apm` vs `apm-beta` binary
 		apm-beta install --packages-file $DOTFILES_DIR/atom/packages.txt
 	else
-		echo "Atom not installed, skipping installation of packages for now."
+		echo "Atom not installed, skipping."
 	fi
 else
 	echo "Atom packages already installed, skipping."
