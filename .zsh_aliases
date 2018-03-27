@@ -3,6 +3,7 @@ alias reload="source ~/.zshrc"
 alias _="sudo -E"
 alias dnf="sudo dnf"
 alias rr="rm -rf"
+alias aliases="$EDITOR ~/.zshrc_aliases"
 
 # Directory traversal
 alias ..="cd .."
@@ -10,6 +11,9 @@ alias ...="cd ../.."
 alias ....="cd ../../.."
 alias ~="cd ~"
 alias -- -="cd -"
+
+alias dl="cd ~/Downloads"
+alias db="cd ~/Dropbox"
 
 # Directory listing
 # Colors courtesy https://github.com/mathiasbynens/dotfiles/blob/master/.aliases

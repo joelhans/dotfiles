@@ -62,11 +62,6 @@ install_zsh () {
 # Disabled until I have time to get it right.
 install_zsh
 
-# Install Oh My Zsh if it isn't already present
-# if [[ ! -d ~/.oh-my-zsh/ ]]; then
-#   sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-# fi
-
 # Specify ZSH custom directory
 ZSH_CUSTOM=$HOME/.oh-my-zsh/custom
 
@@ -87,9 +82,17 @@ ln -sfv "$DOTFILES_DIR/.zsh_exports" ~
 ln -sfv "$DOTFILES_DIR/.zsh_aliases" ~
 
 ####################
+# VS Code
+####################
+
+if [[ ! -d ~/.config/Code/User ]]; then mkdir ~/.config/Code/User; fi
+ln -sfv "$DOTFILES_DIR/vscode/settings.json" ~/.config/Code/User/
+
+####################
 # Atom
 ####################
-# To create a list of current packages, use the following command:
+
+# To create a list of your current packages, use the following command:
 # apm list --bare --installed --dev false > packages.txt
 
 # Set up symlinks for config files
