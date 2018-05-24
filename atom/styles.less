@@ -8,22 +8,47 @@
  * http://www.lesscss.org
  */
 
-.tree-view {
+.syntax--less,
+.syntax--coffee,
+.syntax--text {
+    font-family: "Inconsolata";
+    font-size: 16px;
+    line-height: 100%;
 
+    .line {
+        line-height: 1.1 !important;
+    }
 }
 
-.editor {
-
-  .syntax--source.syntax--gfm .syntax--markup.syntax--heading {
-    color: #ff6347;
-  }
-
-  div.line {
-    //color: #ededed;
-  }
-  
+[data-grammar~="less"] .line,
+[data-grammar~="less"] .line-number,
+[data-grammar~="coffee"] .line,
+[data-grammar~="coffee"] .line-number,
+[data-grammar~="text"] .line,
+[data-grammar~="text"] .line-number {
+    line-height: 110%;
 }
 
-.editor .cursor {
 
-}
+// .syntax--gfm {
+//     font-family: "Alegreya";
+//     font-size: 23px;
+//     text-align: justify;
+//     // line-height: 140%;
+//
+//     .syntax--markup.syntax--heading {
+//         color: #ff6347;
+//     }
+// }
+//
+
+//
+//
+// atom-text-editor.is-focused .line.cursor-line,
+// atom-text-editor .gutter .line-number.cursor-line {
+//     background: none;
+// }
+//
+// atom-text-editor .cursor {
+//     height: 30px !important;
+// }

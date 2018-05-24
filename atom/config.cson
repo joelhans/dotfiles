@@ -19,16 +19,15 @@
     lightProfile: "one-light-ui atom-material-syntax-light"
   editor:
     fontFamily: "Alegreya"
-    fontSize: 24
-    invisibles: {}
+    fontSize: 23
     lineHeight: 1.6
+    invisibles: {}
     showIndentGuide: true
     showInvisibles: false
     showLineNumbers: false
     softWrap: true
     softWrapAtPreferredLineLength: true
     tabLength: 4
-    textAlign: "justified"
   "exception-reporting":
     userId: "372c52ec-d8ad-9588-e76b-f0194550b1fa"
   metrics:
