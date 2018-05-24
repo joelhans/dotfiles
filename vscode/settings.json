@@ -1,0 +1,16 @@
+{
+	"files.autoSave": "off",
+	"editor.fontSize": 14,
+	"editor.fontFamily": "'Roboto Mono for Powerline','Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+	"editor.tabSize": 2,
+	"workbench.colorTheme": "One Dark Pro",
+	"keyboard.dispatch": "keyCode",
+
+	"[markdown]": {
+		"editor.formatOnSave": true,
+		"editor.wordWrapColumn": 80,
+		"editor.wordWrap": "bounded",
+		"editor.renderWhitespace": "all",
+		"editor.acceptSuggestionOnEnter": "off"
+	}
+}
