@@ -1,5 +1,5 @@
 # Setting $PATH
-export PATH=$HOME/bin:/usr/local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:~/.npm-global/bin:$PATH
 
 # Path to the oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
