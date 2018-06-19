@@ -19,9 +19,9 @@
     lightProfile: "one-light-ui atom-material-syntax-light"
   editor:
     fontFamily: "Alegreya"
-    fontSize: 23
-    lineHeight: 1.6
+    fontSize: 25
     invisibles: {}
+    lineHeight: 1.6
     showIndentGuide: true
     showInvisibles: false
     showLineNumbers: false
