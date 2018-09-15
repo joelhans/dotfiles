@@ -1,50 +1,61 @@
-"*":
-  Zen:
-    fontSize: 30
-    gutter: true
-    showWordCount: "Left"
-    tabs: "multiple"
-  core:
-    disabledPackages: [
-      "snippets"
-      "language-markdown"
-    ]
-    telemetryConsent: "no"
-    themes: [
-      "one-light-ui"
-      "atom-material-syntax-light"
-    ]
-  "dark-mode":
-    darkProfile: "one-dark-ui atom-material-syntax"
-    lightProfile: "one-light-ui atom-material-syntax-light"
-  editor:
-    fontFamily: "Alegreya"
-    fontSize: 25
-    invisibles: {}
-    lineHeight: 1.6
-    showIndentGuide: true
-    showInvisibles: false
-    showLineNumbers: false
-    softWrap: true
-    softWrapAtPreferredLineLength: true
-    tabLength: 4
-  "exception-reporting":
-    userId: "372c52ec-d8ad-9588-e76b-f0194550b1fa"
-  metrics:
-    userId: "52750bce3804aa7271631884b3dc40bb07bde34e"
-  "spell-check":
-    grammars: [
-      "source.asciidoc"
-      "source.gfm"
-      "text.git-commit"
-      "text.plain"
-      "text.plain.null-grammar"
-      "text.md"
-    ]
-    locales: [
-      "en-US"
-    ]
-  "tree-view":
-    showOnRightSide: true
-  welcome:
-    showOnStartup: false
+{
+  "*": {
+    "Zen": {
+      "gutter": true,
+      "showWordCount": "Left",
+      "tabs": "multiple"
+    },
+    "core": {
+      "disabledPackages": [
+        "snippets",
+        "language-markdown"
+      ],
+      "telemetryConsent": "no",
+      "themes": [
+        "seti-ui",
+        "city-lights-syntax"
+      ]
+    },
+    "dark-mode": {
+      "darkProfile": "seti-ui city-lights-syntax",
+      "lightProfile": "one-light-ui atom-material-syntax-light"
+    },
+    "editor": {
+      "fontFamily": "Inconsolata",
+      "fontSize": 20,
+      "invisibles": {},
+      "lineHeight": 1.4,
+      "showIndentGuide": true,
+      "showInvisibles": false,
+      "showLineNumbers": false,
+      "softWrap": true,
+      "softWrapAtPreferredLineLength": true,
+      "tabLength": 4
+    },
+    "exception-reporting": {
+      "userId": "372c52ec-d8ad-9588-e76b-f0194550b1fa"
+    },
+    "metrics": {
+      "userId": "52750bce3804aa7271631884b3dc40bb07bde34e"
+    },
+    "spell-check": {
+      "grammars": [
+        "source.asciidoc",
+        "source.gfm",
+        "text.git-commit",
+        "text.plain",
+        "text.plain.null-grammar",
+        "text.md"
+      ],
+      "locales": [
+        "en-US"
+      ]
+    },
+    "tree-view": {
+      "showOnRightSide": true
+    },
+    "welcome": {
+      "showOnStartup": false
+    }
+  }
+}

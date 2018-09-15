@@ -1,54 +1,25 @@
-/*
- * Your Stylesheet
- *
- * This stylesheet is loaded when Atom starts up and is reloaded automatically
- * when it is changed.
- *
- * If you are unfamiliar with LESS, you can read more about it here:
- * http://www.lesscss.org
- */
-
-.syntax--less,
-.syntax--coffee,
-.syntax--text {
-    font-family: "Inconsolata";
-    font-size: 16px;
-    line-height: 100%;
-
-    .line {
-        line-height: 1.1 !important;
-    }
-}
-
-[data-grammar~="less"] .line,
-[data-grammar~="less"] .line-number,
-[data-grammar~="coffee"] .line,
-[data-grammar~="coffee"] .line-number,
-[data-grammar~="text"] .line,
-[data-grammar~="text"] .line-number {
-    line-height: 110%;
-}
-
-
-// .syntax--gfm {
-//     font-family: "Alegreya";
-//     font-size: 23px;
-//     text-align: justify;
-//     // line-height: 140%;
+//  Editor overrides for non-.md syntaxes
+// 
+// .syntax--less,
+// .syntax--coffee,
+// .syntax--text {
+//     font-family: "Inconsolata";
+//     font-size: 16px;
+//     line-height: 100%;
 //
-//     .syntax--markup.syntax--heading {
-//         color: #ff6347;
+//     .line {
+//         line-height: 1.1 !important;
 //     }
 // }
-//
 
+
+// Line overrides for non-.md syntaxes
 //
-//
-// atom-text-editor.is-focused .line.cursor-line,
-// atom-text-editor .gutter .line-number.cursor-line {
-//     background: none;
-// }
-//
-// atom-text-editor .cursor {
-//     height: 30px !important;
+// [data-grammar~="less"] .line,
+// [data-grammar~="less"] .line-number,
+// [data-grammar~="coffee"] .line,
+// [data-grammar~="coffee"] .line-number,
+// [data-grammar~="text"] .line,
+// [data-grammar~="text"] .line-number {
+//     line-height: 110%;
 // }
