@@ -5,6 +5,7 @@
 	"editor.tabSize": 2,
 	"workbench.colorTheme": "One Dark Pro",
 	"keyboard.dispatch": "keyCode",
+	"editor.autoIndent": false,
 
 	"[markdown]": {
 		"editor.formatOnSave": true,
@@ -30,7 +31,13 @@
 			"bottom", 
 			"left",
 			"display",
+			"flex",
+			"flex-flow",
+			"align-content",
+			"align-items",
 			"overflow",
+			"overflow-x",
+			"overflow-y",
 			"box-sizing",
 			"width",
 			"height",
@@ -53,13 +60,16 @@
 			"border-left",
 			"background",
 			"background-color",
+			"background-image",
 			"color",
 			"font-family",
 			"font-size",
+			"font-style",
 			"font-weight",
 			"line-height",
 			"text-align",
 			"text-decoration",
+			"text-transform",
 			"text-shadow",
 			"border",
 			"border-radius",
@@ -68,5 +78,7 @@
 			"content",
 		]
 	},
-	"explorer.confirmDelete": false
+	"explorer.confirmDelete": false,
+	"breadcrumbs.enabled": true,
+	"editor.minimap.enabled": false
 }
