@@ -1,17 +1,17 @@
 {
-	"files.autoSave": "off",
+	"files.autoSave": "afterDelay",
 	"editor.fontSize": 14,
-	"editor.fontFamily": "'Roboto Mono for Powerline','Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+	"editor.fontFamily": "'Fira Code','Roboto Mono for Powerline','Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
 	"editor.tabSize": 2,
-	"workbench.colorTheme": "One Dark Pro",
 	"keyboard.dispatch": "keyCode",
 	"editor.autoIndent": false,
 
 	"[markdown]": {
+        "editor.fontSize": 16,
 		"editor.formatOnSave": true,
 		"editor.wordWrapColumn": 80,
 		"editor.wordWrap": "bounded",
-		"editor.renderWhitespace": "all",
+		"editor.renderWhitespace": "off",
 		"editor.acceptSuggestionOnEnter": "off"
 	},
 
@@ -80,5 +80,6 @@
 	},
 	"explorer.confirmDelete": false,
 	"breadcrumbs.enabled": true,
-	"editor.minimap.enabled": false
+	"editor.minimap.enabled": false,
+	"workbench.colorTheme": "One Dark Pro"
 }

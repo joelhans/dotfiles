@@ -12,7 +12,7 @@ module.exports = {
     fontSize: 14,
 
     // font family with optional fallbacks
-    fontFamily: '"Cousine for Powerline", "Inconsolata-dz for Powerline", monospace',
+    fontFamily: '"Fira Code", "Cousine for Powerline", "Inconsolata-dz for Powerline", monospace',
 
     // terminal cursor background color and opacity (hex, rgb, hsl, hsv, hwb or cmyk)
     // cursorColor: 'rgba(248,28,229,0.8)',
