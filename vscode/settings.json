@@ -1,5 +1,4 @@
 {
-	"files.autoSave": "afterDelay",
 	"editor.fontSize": 14,
 	"editor.fontFamily": "'Fira Code','Roboto Mono for Powerline','Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
 	"editor.tabSize": 2,
@@ -24,6 +23,7 @@
       "rules"
     ],
     "properties-order": [
+			"@apply",
 			"position",
 			"z-index",
 			"top", 
@@ -81,5 +81,11 @@
 	"explorer.confirmDelete": false,
 	"breadcrumbs.enabled": true,
 	"editor.minimap.enabled": false,
-	"workbench.colorTheme": "One Dark Pro"
+	"workbench.colorTheme": "Material Theme Ocean",
+	"workbench.iconTheme": "eq-material-theme-icons-ocean",
+	"files.exclude": {
+		"node_modules": true,
+		"yarn.lock": true
+	},
+	"explorer.confirmDragAndDrop": false
 }

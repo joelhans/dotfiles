@@ -36,3 +36,10 @@ alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[
 
 # Prevent ZSH from throwing autocorrect for weird-looking Sass commands
 alias sass='nocorrect sass'
+
+# Common directories
+alias s='cd $HOME/ssdnodes/web' 
+alias sw='cd $HOME/ssdnodes/web/ssdnodes.com/www-data'
+alias sblog='cd $HOME/ssdnodes/blog'
+alias s2='cd $HOME/ssdnodes/2019'
+alias n='cd $HOME/nurse-media'

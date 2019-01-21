@@ -9,7 +9,7 @@ module.exports = {
     updateChannel: 'canary',
 
     // default font size in pixels for all tabs
-    fontSize: 14,
+    fontSize: 12,
 
     // font family with optional fallbacks
     fontFamily: '"Fira Code", "Cousine for Powerline", "Inconsolata-dz for Powerline", monospace',
