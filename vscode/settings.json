@@ -1,5 +1,4 @@
 {
-	"editor.fontSize": 14,
 	"editor.fontFamily": "'Fira Code','Roboto Mono for Powerline','Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
 	"editor.tabSize": 2,
 	"keyboard.dispatch": "keyCode",
@@ -81,11 +80,12 @@
 	"explorer.confirmDelete": false,
 	"breadcrumbs.enabled": true,
 	"editor.minimap.enabled": false,
-	"workbench.colorTheme": "Material Theme Ocean",
+	"workbench.colorTheme": "Dracula",
 	"workbench.iconTheme": "eq-material-theme-icons-ocean",
 	"files.exclude": {
 		"node_modules": true,
 		"yarn.lock": true
 	},
-	"explorer.confirmDragAndDrop": false
+	"explorer.confirmDragAndDrop": false,
+	"window.zoomLevel": 0
 }

@@ -39,7 +39,7 @@
     autoMode: false
   editor:
     fontFamily: "Space Mono NL"
-    fontSize: 18
+    fontSize: 19
     invisibles: {}
     lineHeight: 1.6
     showIndentGuide: true
