@@ -1,0 +1,40 @@
+{
+	"folders": [
+		{
+			"path": "/home/joel/writing/The Commission of Dark"
+		},
+		{
+			"path": "/home/joel/writing/"
+		},
+		{
+			"path": "/Users/joelhans/nextcloud/writing"
+		},
+		{
+			"path": "/Users/joelhans/nextcloud/writing/The Commission of Dark"
+		}
+	],
+	"settings": {
+		"editor.fontFamily": "'Space Mono NL', Menlo, Monaco, 'Courier New', monospace",
+		"editor.tabSize": 2,
+		"workbench.colorTheme": "Material Theme Lighter High Contrast",
+		"editor.fontSize": 20,
+		"editor.tokenColorCustomizations": {
+			"textMateRules": [
+				{
+					"scope": "text.html.markdown",
+					"settings": {
+						"foreground": "#403960"
+					}
+				},
+				{
+					"scope": [
+						"constant.other.reference.link.markdown"
+					],
+					"settings": {
+						"foreground": "#b54190"
+					}
+				},
+			]
+		},
+	}
+}
