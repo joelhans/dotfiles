@@ -5,7 +5,7 @@
 	"editor.autoIndent": false,
 
 	"[markdown]": {
-        "editor.fontSize": 16,
+    "editor.fontSize": 14,
 		"editor.formatOnSave": true,
 		"editor.wordWrapColumn": 80,
 		"editor.wordWrap": "bounded",
@@ -81,11 +81,11 @@
 	"breadcrumbs.enabled": true,
 	"editor.minimap.enabled": false,
 	"workbench.colorTheme": "Dracula",
-	"workbench.iconTheme": "eq-material-theme-icons-ocean",
 	"files.exclude": {
 		"node_modules": true,
 		"yarn.lock": true
 	},
 	"explorer.confirmDragAndDrop": false,
-	"window.zoomLevel": 0
+	"window.zoomLevel": 0,
+	"workbench.iconTheme": "vscode-icons",
 }
