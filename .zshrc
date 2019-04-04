@@ -55,3 +55,5 @@ SPACESHIP_GIT_BRANCH_COLOR=004
 source $ZSH/oh-my-zsh.sh
 source $HOME/.zsh_exports
 source $HOME/.zsh_aliases
+
+. /home/joel/src/z.sh
