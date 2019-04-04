@@ -1,18 +1,32 @@
 {
+	// Base settings	
 	"editor.fontFamily": "'Fira Code','Roboto Mono for Powerline','Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
 	"editor.tabSize": 2,
 	"keyboard.dispatch": "keyCode",
 	"editor.autoIndent": false,
+	"explorer.confirmDelete": false,
+	"breadcrumbs.enabled": true,
+	"editor.minimap.enabled": false,
+	"workbench.colorTheme": "Dracula",
+	"files.exclude": {
+		"node_modules": true,
+		"yarn.lock": true
+	},
+	"explorer.confirmDragAndDrop": false,
+	"window.zoomLevel": 0,
+	"workbench.iconTheme": "vscode-icons",
 
+	// Markdown specific settings
 	"[markdown]": {
-    "editor.fontSize": 14,
+    // "editor.fontSize": 14,
 		"editor.formatOnSave": true,
 		"editor.wordWrapColumn": 80,
 		"editor.wordWrap": "bounded",
-		"editor.renderWhitespace": "off",
+		"editor.renderWhitespace": "none",
 		"editor.acceptSuggestionOnEnter": "off"
 	},
 
+	// PostCSS Sorting
 	"postcssSorting.config": {
     "order": [
       "custom-properties",
@@ -77,15 +91,12 @@
 			"content",
 		]
 	},
-	"explorer.confirmDelete": false,
-	"breadcrumbs.enabled": true,
-	"editor.minimap.enabled": false,
-	"workbench.colorTheme": "Dracula",
-	"files.exclude": {
-		"node_modules": true,
-		"yarn.lock": true
+
+	// Markdownlint config
+	"markdownlint.config": {
+		"MD002": false,
+		"MD026": { "punctuation" : ".,;:" },
 	},
-	"explorer.confirmDragAndDrop": false,
-	"window.zoomLevel": 0,
-	"workbench.iconTheme": "vscode-icons",
+
+	"spellright.addToSystemDictionary": true,
 }
