@@ -11,7 +11,8 @@
 	"workbench.colorTheme": "Dracula",
 	"files.exclude": {
 		"node_modules": true,
-		"yarn.lock": true
+		"yarn.lock": true,
+		".vscode/": true,
 	},
 	"explorer.confirmDragAndDrop": false,
 	"window.zoomLevel": 0,
@@ -24,7 +25,8 @@
 		"editor.wordWrapColumn": 80,
 		"editor.wordWrap": "bounded",
 		"editor.renderWhitespace": "none",
-		"editor.acceptSuggestionOnEnter": "off"
+		"editor.acceptSuggestionOnEnter": "off",
+		"editor.lineNumbers": "off",
 	},
 
 	// PostCSS Sorting
