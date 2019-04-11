@@ -1,5 +1,6 @@
 {
 	// Base settings	
+	"files.autoSave": "onWindowChange",
 	"editor.fontFamily": "'Fira Code','Roboto Mono for Powerline','Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
 	"editor.tabSize": 2,
 	"keyboard.dispatch": "keyCode",
@@ -96,7 +97,9 @@
 	"markdownlint.config": {
 		"MD002": false,
 		"MD026": { "punctuation" : ".,;:" },
+		"MD033": { "allowed_elements" : "<iframe>" },
 	},
 
+	// SpellRight config
 	"spellright.addToSystemDictionary": true,
 }

@@ -9,9 +9,10 @@
 	],
 	"settings": {
 		"editor.fontFamily": "'Space Mono NL', Menlo, Monaco, 'Courier New', monospace",
+		"editor.fontSize": 20,
+		"editor.lineHeight": 30,
 		"editor.tabSize": 2,
 		"workbench.colorTheme": "Material Theme Lighter High Contrast",
-		"editor.fontSize": 20,
 		"editor.tokenColorCustomizations": {
 			"textMateRules": [
 				{
@@ -29,6 +30,9 @@
 					}
 				},
 			]
+		},
+		"files.exclude": {
+			"**/.vscode": true
 		},
 	}
 }
