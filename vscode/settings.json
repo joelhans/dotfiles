@@ -2,6 +2,7 @@
 	// Base settings	
 	"files.autoSave": "onWindowChange",
 	"editor.fontFamily": "'Fira Code','Roboto Mono for Powerline','Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
+	"editor.fontSize": 14,
 	"editor.tabSize": 2,
 	"keyboard.dispatch": "keyCode",
 	"editor.autoIndent": false,
