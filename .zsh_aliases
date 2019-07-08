@@ -3,7 +3,7 @@ alias reload="source ~/.zshrc"
 alias _="sudo -E"
 alias dnf="sudo dnf"
 alias rr="rm -rf"
-alias aliases="$EDITOR ~/.zshrc_aliases"
+alias aliases="$EDITOR $HOME/.zsh_aliases && reload"
 
 # Directory traversal
 alias ..="cd .."
@@ -34,14 +34,12 @@ alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias ipl="hostname -I"
 alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
 
-# Prevent ZSH from throwing autocorrect for weird-looking Sass commands
-alias sass='nocorrect sass'
-
 # Common directories
-alias s='cd $HOME/ssdnodes/web' 
-alias sw='cd $HOME/ssdnodes/web/ssdnodes.com/www-data'
-alias sblog='cd $HOME/ssdnodes/blog'
-alias sbin='cd $HOME/ssdnodes/bin'
-alias s2='cd $HOME/ssdnodes/2019'
-alias n='cd $HOME/nurse/nurse-media'
+alias nb='cd $HOME/netdata-blog'
+alias nd='cd $HOME/netdata-repo'
+alias nl='cd $HOME/netdata-learn'
+alias n='cd $HOME/netdata'
 alias dot='cd $HOME/src/dotfiles'
+
+# Shortcuts for commands
+alias hugos='hugo server -F'

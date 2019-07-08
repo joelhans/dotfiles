@@ -17,7 +17,6 @@
 	},
 	"explorer.confirmDragAndDrop": false,
 	"window.zoomLevel": 0,
-	"workbench.iconTheme": "vscode-icons",
 
 	// Markdown specific settings
 	"[markdown]": {
@@ -105,4 +104,5 @@
 
 	// SpellRight config
 	"spellright.addToSystemDictionary": true,
+	"workbench.iconTheme": "material-icon-theme",
 }
