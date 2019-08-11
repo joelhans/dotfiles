@@ -1,10 +1,6 @@
 {
 	"folders": [
 		{
-			"name": "netdata-blog",
-			"path": "/home/joel/netdata-blog"
-		},
-		{
 			"name": "netdata-repo",
 			"path": "/home/joel/netdata-repo"
 		},
@@ -13,11 +9,12 @@
 			"path": "/home/joel/netdata-repo/docs"
 		},
 		{
-			"name": "netdata",
-			"path": "/home/joel/netdata"
+			"name": "netdata-blog",
+			"path": "/home/joel/netdata-blog"
 		},
 		{
-			"path": "/home/joel/netdata-learn"
+			"name": "netdata",
+			"path": "/home/joel/netdata"
 		}
 	],
 	"settings": {}
