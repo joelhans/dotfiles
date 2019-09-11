@@ -17,12 +17,23 @@
 	},
 	"explorer.confirmDragAndDrop": false,
 	"window.zoomLevel": 0,
+	"css.validate": false,
+	"less.validate": false,
+	"scss.validate": false,
 
 	// Markdown specific settings
 	"[markdown]": {
     // "editor.fontSize": 14,
-		"editor.formatOnSave": true,
-		"editor.wordWrapColumn": 80,
+		// "editor.formatOnSave": true,
+		"editor.wordWrapColumn": 120,
+		"editor.wordWrap": "bounded",
+		"editor.renderWhitespace": "none",
+		"editor.acceptSuggestionOnEnter": "off",
+		"editor.lineNumbers": "off",
+	},
+	"[mdx]": {
+		// "editor.formatOnSave": true,
+		"editor.wordWrapColumn": 120,
 		"editor.wordWrap": "bounded",
 		"editor.renderWhitespace": "none",
 		"editor.acceptSuggestionOnEnter": "off",
@@ -95,16 +106,10 @@
 		]
 	},
 
-	// Markdownlint config
-	"markdownlint.config": {
-		"MD002": false,
-		"MD026": { "punctuation" : ".,;:" },
-		"MD033": { "allowed_elements" : "<iframe>" },
+	// Prettier config
+	"[javascript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
-
-	// SpellRight config
-	"spellright.addToSystemDictionary": true,
-	"workbench.iconTheme": "material-icon-theme",
-
-	"markdown.extension.toc.updateOnSave": false,
+	"prettier.singleQuote": true,
+	"prettier.jsxSingleQuote": true,
 }

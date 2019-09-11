@@ -35,9 +35,10 @@ alias ipl="hostname -I"
 alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
 
 # Common directories
-alias nb='cd $HOME/netdata-blog'
-alias nd='cd $HOME/netdata-repo'
-alias nl='cd $HOME/netdata-learn'
+alias nb='cd $HOME/netdata/blog'
+alias nc='cd $HOME/netdata/core'
+alias nl='cd $HOME/netdata/learn'
+alias nt='cd $HOME/netdata/tutorial'
 alias n='cd $HOME/netdata'
 alias dot='cd $HOME/src/dotfiles'
 

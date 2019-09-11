@@ -1,20 +1,23 @@
 {
 	"folders": [
 		{
-			"name": "netdata-repo",
-			"path": "/home/joel/netdata-repo"
+			"name": "core",
+			"path": "/home/joel/netdata/core"
 		},
 		{
-			"name": "docs",
-			"path": "/home/joel/netdata-repo/docs"
+			"name": "learn",
+			"path": "/home/joel/netdata/learn"
 		},
 		{
-			"name": "netdata-blog",
-			"path": "/home/joel/netdata-blog"
+			"name": "tutorial",
+			"path": "/home/joel/netdata/tutorial"
 		},
 		{
-			"name": "netdata",
-			"path": "/home/joel/netdata"
+			"name": "etc",
+			"path": "/home/joel/netdata/etc"
+		},
+		{
+			"path": "/home/joel/netdata/blog"
 		}
 	],
 	"settings": {}
