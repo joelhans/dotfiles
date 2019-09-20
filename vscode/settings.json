@@ -1,3 +1,8 @@
+// Packages installed
+// Dracula Official
+// Rewrap
+// shell-format
+
 {
 	// Base settings	
 	"files.autoSave": "onWindowChange",
@@ -23,21 +28,22 @@
 
 	// Markdown specific settings
 	"[markdown]": {
-    // "editor.fontSize": 14,
-		// "editor.formatOnSave": true,
+    "editor.fontSize": 14,
+		"editor.formatOnSave": false,
 		"editor.wordWrapColumn": 120,
 		"editor.wordWrap": "bounded",
 		"editor.renderWhitespace": "none",
 		"editor.acceptSuggestionOnEnter": "off",
-		"editor.lineNumbers": "off",
+		"editor.lineNumbers": "on"
 	},
 	"[mdx]": {
-		// "editor.formatOnSave": true,
+		"editor.fontSize": 14,
+		"editor.formatOnSave": false,
 		"editor.wordWrapColumn": 120,
 		"editor.wordWrap": "bounded",
 		"editor.renderWhitespace": "none",
 		"editor.acceptSuggestionOnEnter": "off",
-		"editor.lineNumbers": "off",
+		"editor.lineNumbers": "on"
 	},
 
 	// PostCSS Sorting
@@ -112,6 +118,8 @@
 	},
 	"prettier.singleQuote": true,
 	"prettier.jsxSingleQuote": true,
+
+	// File associations
 	"files.associations": {
 		".zsh_aliases": "shellscript"
 	},
