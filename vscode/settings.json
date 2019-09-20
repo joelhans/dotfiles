@@ -112,4 +112,7 @@
 	},
 	"prettier.singleQuote": true,
 	"prettier.jsxSingleQuote": true,
+	"files.associations": {
+		".zsh_aliases": "shellscript"
+	},
 }

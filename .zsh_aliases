@@ -12,6 +12,7 @@ alias ....="cd ../../.."
 alias ~="cd ~"
 alias -- -="cd -"
 
+alias dot='cd ~/src/dotfiles'
 alias dl="cd ~/Downloads"
 alias db="cd ~/Dropbox"
 
@@ -26,13 +27,23 @@ else # macOS `ls`
 fi
 alias l="ls -lF ${colorflag}"
 alias la="ls -laF ${colorflag}"
-alias lsd="ls -lF ${co#lorflag} | grep --color=never '^d'"
+alias lsd="ls -lF ${colorflag} | grep --color=never '^d'"
 alias ls="command ls ${colorflag}"
 
 # IP addresses
 alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
 alias ipl="hostname -I"
 alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
+
+# Git
+alias gcm='git checkout master'
+alias gst='git status'
+alias gsync='git pull upstream master && git push origin master'
+alias gpo='git push origin $(current_branch)'
+alias gca='git commit -a'
+alias ga='git add'
+alias gca!='git commit -a --amend'
+alias glr='git pull --rebase'
 
 # Common directories
 alias nb='cd $HOME/netdata/blog'

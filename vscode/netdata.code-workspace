@@ -18,6 +18,9 @@
 		},
 		{
 			"path": "/home/joel/netdata/blog"
+		},
+		{
+			"path": "/Users/joelhans/src/dotfiles"
 		}
 	],
 	"settings": {}
