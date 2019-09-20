@@ -1,23 +1,15 @@
 {
 	"folders": [
 		{
-			"name": "netdata-blog",
-			"path": "/home/joel/netdata-blog"
+			"name": "core",
+			"path": "/Users/joelhans/netdata/core"
 		},
 		{
-			"name": "netdata-repo",
-			"path": "/home/joel/netdata-repo"
+			"name": "learn",
+			"path": "/Users/joelhans/netdata/learn"
 		},
 		{
-			"name": "docs",
-			"path": "/home/joel/netdata-repo/docs"
-		},
-		{
-			"name": "netdata",
-			"path": "/home/joel/netdata"
-		},
-		{
-			"path": "/home/joel/netdata-learn"
+			"path": "/Users/joelhans/netdata/blog"
 		}
 	],
 	"settings": {}

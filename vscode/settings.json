@@ -7,7 +7,7 @@
 	"keyboard.dispatch": "keyCode",
 	"editor.autoIndent": false,
 	"explorer.confirmDelete": false,
-	"breadcrumbs.enabled": true,
+	"breadcrumbs.enabled": false,
 	"editor.minimap.enabled": false,
 	"workbench.colorTheme": "Dracula",
 	"files.exclude": {
@@ -22,7 +22,7 @@
 	"[markdown]": {
     // "editor.fontSize": 14,
 		"editor.formatOnSave": true,
-		"editor.wordWrapColumn": 80,
+		"editor.wordWrapColumn": 120,
 		"editor.wordWrap": "bounded",
 		"editor.renderWhitespace": "none",
 		"editor.acceptSuggestionOnEnter": "off",
