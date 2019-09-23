@@ -1,3 +1,8 @@
+// Packages installed
+// Dracula Official
+// Rewrap
+// shell-format
+
 {
 	// Base settings	
 	"files.autoSave": "onWindowChange",
@@ -7,7 +12,7 @@
 	"keyboard.dispatch": "keyCode",
 	"editor.autoIndent": false,
 	"explorer.confirmDelete": false,
-	"breadcrumbs.enabled": true,
+	"breadcrumbs.enabled": false,
 	"editor.minimap.enabled": false,
 	"workbench.colorTheme": "Dracula",
 	"files.exclude": {
@@ -17,27 +22,26 @@
 	},
 	"explorer.confirmDragAndDrop": false,
 	"window.zoomLevel": 0,
-	"css.validate": false,
-	"less.validate": false,
-	"scss.validate": false,
+	"git.autofetch": true,
 
 	// Markdown specific settings
 	"[markdown]": {
-    // "editor.fontSize": 14,
-		// "editor.formatOnSave": true,
+    "editor.fontSize": 14,
+		"editor.formatOnSave": false,
 		"editor.wordWrapColumn": 120,
 		"editor.wordWrap": "bounded",
 		"editor.renderWhitespace": "none",
 		"editor.acceptSuggestionOnEnter": "off",
-		"editor.lineNumbers": "on",
+		"editor.lineNumbers": "on"
 	},
 	"[mdx]": {
-		// "editor.formatOnSave": true,
+		"editor.fontSize": 14,
+		"editor.formatOnSave": false,
 		"editor.wordWrapColumn": 120,
 		"editor.wordWrap": "bounded",
 		"editor.renderWhitespace": "none",
 		"editor.acceptSuggestionOnEnter": "off",
-		"editor.lineNumbers": "on",
+		"editor.lineNumbers": "on"
 	},
 
 	// PostCSS Sorting
@@ -112,7 +116,13 @@
 	},
 	"prettier.singleQuote": true,
 	"prettier.jsxSingleQuote": true,
+	"prettier.disableLanguages": [
+		"vue",
+		"md",
+		"mdx"
+	],
 
+	// ESLint config
 	"eslint.autoFixOnSave": true,
 	"eslint.options": {
 		"extensions": [".js", ".jsx", ".md", ".mdx", ".ts", ".tsx"]
@@ -143,10 +153,9 @@
 			"autoFix": true
 		}
 	],
-	"git.autofetch": true,
-	"prettier.disableLanguages": [
-		"vue",
-		"md",
-		"mdx"
-	]
+
+	// File associations
+	"files.associations": {
+		".zsh_aliases": "shellscript"
+	}
 }

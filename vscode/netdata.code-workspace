@@ -2,7 +2,7 @@
 	"folders": [
 		{
 			"name": "core",
-			"path": "/home/joel/netdata/core"
+			"path": "/home/Joel/netdata/core"
 		},
 		{
 			"name": "learn",
@@ -18,6 +18,9 @@
 		},
 		{
 			"path": "/home/joel/netdata/blog"
+		},
+		{
+			"path": "/Users/joelhans/src/dotfiles"
 		}
 	],
 	"settings": {}
