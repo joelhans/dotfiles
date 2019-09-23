@@ -29,7 +29,7 @@
 		"editor.wordWrap": "bounded",
 		"editor.renderWhitespace": "none",
 		"editor.acceptSuggestionOnEnter": "off",
-		"editor.lineNumbers": "off",
+		"editor.lineNumbers": "on",
 	},
 	"[mdx]": {
 		// "editor.formatOnSave": true,
@@ -37,7 +37,7 @@
 		"editor.wordWrap": "bounded",
 		"editor.renderWhitespace": "none",
 		"editor.acceptSuggestionOnEnter": "off",
-		"editor.lineNumbers": "off",
+		"editor.lineNumbers": "on",
 	},
 
 	// PostCSS Sorting
@@ -112,4 +112,41 @@
 	},
 	"prettier.singleQuote": true,
 	"prettier.jsxSingleQuote": true,
+
+	"eslint.autoFixOnSave": true,
+	"eslint.options": {
+		"extensions": [".js", ".jsx", ".md", ".mdx", ".ts", ".tsx"]
+	},
+	"eslint.validate": [
+		{
+			"language": "javascript",
+			"autoFix": true
+		},
+		{
+			"language": "javascriptreact",
+			"autoFix": true
+		},
+		{
+			"language": "markdown",
+			"autoFix": true
+		},
+		{
+			"language": "mdx",
+			"autoFix": true
+		},
+		{
+			"language": "typescript",
+			"autoFix": true
+		},
+		{
+			"language": "typescriptreact",
+			"autoFix": true
+		}
+	],
+	"git.autofetch": true,
+	"prettier.disableLanguages": [
+		"vue",
+		"md",
+		"mdx"
+	]
 }
