@@ -1,5 +1,6 @@
 // Packages installed
 // Dracula Official
+// MDX
 // Rewrap
 // shell-format
 
@@ -24,7 +25,14 @@
 	"window.zoomLevel": 0,
 	"git.autofetch": true,
 
-	// Markdown specific settings
+	// File associations
+	"files.associations": {
+		".zsh_aliases": "shellscript",
+		".zshrc": "shellscript",
+		".zsh_exports": "shellscript",
+	},
+
+	// Filetype specific settings
 	"[markdown]": {
     "editor.fontSize": 14,
 		"editor.formatOnSave": false,
@@ -41,6 +49,13 @@
 		"editor.wordWrap": "bounded",
 		"editor.renderWhitespace": "none",
 		"editor.acceptSuggestionOnEnter": "off",
+		"editor.lineNumbers": "on"
+	},
+	"[plaintext]": {
+		"editor.fontSize": 16,
+		"editor.formatOnSave": false,
+		"editor.wordWrapColumn": 80,
+		"editor.wordWrap": "bounded",
 		"editor.lineNumbers": "on"
 	},
 
