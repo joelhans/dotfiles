@@ -6,7 +6,7 @@
 
 {
 	// Base settings	
-	"files.autoSave": "onWindowChange",
+	"files.autoSave": "off",
 	"editor.fontFamily": "'Fira Code','Roboto Mono for Powerline','Droid Sans Mono', 'monospace', monospace, 'Droid Sans Fallback'",
 	"editor.fontSize": 14,
 	"editor.tabSize": 2,
@@ -27,9 +27,10 @@
 
 	// File associations
 	"files.associations": {
-		".zsh_aliases": "shellscript",
 		".zshrc": "shellscript",
+		".zsh_aliases": "shellscript",
 		".zsh_exports": "shellscript",
+		"*.mdx": "mdx"
 	},
 
 	// Filetype specific settings
@@ -140,7 +141,7 @@
 	// ESLint config
 	"eslint.autoFixOnSave": true,
 	"eslint.options": {
-		"extensions": [".js", ".jsx", ".md", ".mdx", ".ts", ".tsx"]
+		"extensions": [".js", ".jsx", ".ts", ".tsx"]
 	},
 	"eslint.validate": [
 		{
@@ -152,14 +153,6 @@
 			"autoFix": true
 		},
 		{
-			"language": "markdown",
-			"autoFix": true
-		},
-		{
-			"language": "mdx",
-			"autoFix": true
-		},
-		{
 			"language": "typescript",
 			"autoFix": true
 		},
@@ -168,9 +161,6 @@
 			"autoFix": true
 		}
 	],
-
-	// File associations
-	"files.associations": {
-		".zsh_aliases": "shellscript"
-	}
+	"javascript.updateImportsOnFileMove.enabled": "always",
+	"editor.multiCursorModifier": "ctrlCmd",
 }
