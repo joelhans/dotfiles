@@ -9,10 +9,6 @@
 			"path": "/home/joel/netdata/learn"
 		},
 		{
-			"name": "tutorial",
-			"path": "/home/joel/netdata/tutorial"
-		},
-		{
 			"name": "etc",
 			"path": "/home/joel/netdata/etc"
 		},
@@ -21,6 +17,12 @@
 		},
 		{
 			"path": "/home/joel/src/dotfiles"
+		},
+		{
+			"path": "/home/joel/netdata/go.d.plugin"
+		},
+		{
+			"path": "/home/joel/netdata/localization"
 		}
 	],
 	"settings": {}

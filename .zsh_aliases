@@ -39,13 +39,14 @@ alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[
 alias gcm='git checkout master'
 alias gst='git status'
 alias gsync='git pull upstream master && git push origin master'
-alias gnew='git checkout -b $(1)'
 alias gpo='git push origin $(current_branch)'
 alias gnew='git checkout -b $1'
 alias gca='git commit -a'
 alias ga='git add'
 alias gca!='git commit -a --amend'
 alias glr='git pull --rebase'
+alias gam='git add . && git commit -m $1'
+alias gampo='git add . && git commit -m $1 && git push origin $(current_branch)'
 
 # Common directories
 alias nb='cd $HOME/netdata/blog'
@@ -53,6 +54,7 @@ alias nc='cd $HOME/netdata/core'
 alias nl='cd $HOME/netdata/learn'
 alias nt='cd $HOME/netdata/tutorial'
 alias n='cd $HOME/netdata'
+alias nconf='cd /etc/netdata'
 alias dot='cd $HOME/src/dotfiles'
 
 # Shortcuts for commands
@@ -60,7 +62,8 @@ alias hugos='hugo server -F'
 
 # Netdata
 nedit() {
-  sudo /etc/netdata/edit-config $1
+  cd /etc/netdata
+  sudo ./edit-config $1
 }
 giffy() {
   if [ $2 ]
