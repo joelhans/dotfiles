@@ -50,10 +50,7 @@ SPACESHIP_DIR_SHOW=true
 SPACESHIP_DIR_COLOR=000
 SPACESHIP_GIT_BRANCH_COLOR=004
 
-
 # Sourcing oh-my-zsh
 source $ZSH/oh-my-zsh.sh
 source $HOME/.zsh_exports
 source $HOME/.zsh_aliases
-
-. /home/joel/src/z.sh

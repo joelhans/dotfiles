@@ -1,9 +1,0 @@
-Zen@0.18.0
-atom-material-syntax@1.0.8
-atom-material-syntax-light@0.4.6
-atom-material-ui@2.1.3
-dark-mode@4.0.2
-language-markdown@0.29.0
-smart-quotes-plus@3.0.1
-wordcount@3.0.0
-
