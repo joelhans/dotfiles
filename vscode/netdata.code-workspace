@@ -23,6 +23,9 @@
 		},
 		{
 			"path": "/home/joel/netdata/localization"
+		},
+		{
+			"path": "/Users/joelhans/Dropbox/netdata/docs-testing"
 		}
 	],
 	"settings": {}
