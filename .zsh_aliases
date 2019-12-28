@@ -15,6 +15,7 @@ alias -- -="cd -"
 alias dot='cd ~/src/dotfiles'
 alias dl="cd ~/Downloads"
 alias db="cd ~/Dropbox"
+alias know="cd ~/know"
 
 # Directory listing
 # Colors courtesy https://github.com/mathiasbynens/dotfiles/blob/master/.aliases
