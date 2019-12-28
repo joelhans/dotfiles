@@ -23,6 +23,9 @@
 		},
 		{
 			"path": "/home/joel/netdata/localization"
+		},
+		{
+			"path": "/home/joel/netdata/etc/docs-testing"
 		}
 	],
 	"settings": {}

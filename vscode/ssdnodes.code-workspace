@@ -2,6 +2,15 @@
 	"folders": [
 		{
 			"path": "/home/joel/ssdnodes-website/www-data/"
+		},
+		{
+			"path": "/home/joel/ssdnodes-website/www-data/manage/templates/orderforms/temp-ssdnodes-711-standard-cart"
+		},
+		{
+			"path": "/home/joel/ssdnodes-website/www-data/manage/templates/ssdnodes-711"
+		},
+		{
+			"path": "/home/joel/ssdnodes-website/www-data/manage/modules/servers/virtuozzoVPS/templates"
 		}
 	]
 }
