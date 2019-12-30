@@ -14,6 +14,12 @@ ln -sfv "$DOTFILES_DIR/.gitignore_global" ~
 # ZSH
 ####################
 
+# Coming up with a new way to test this crap.
+install_zsh_new () {
+
+
+}
+
 install_zsh () {
   # Test to see if Zsh is installed
   if [ -f /bin/zsh -o -f /usr/bin/zsh ]; then
@@ -31,7 +37,7 @@ install_zsh () {
 }
 
 # Run the zsh_install function
-install_zsh
+#install_zsh
 
 # Specify ZSH custom directory
 ZSH_CUSTOM=$HOME/.oh-my-zsh/custom
@@ -58,3 +64,15 @@ ln -sfv "$DOTFILES_DIR/.zsh_aliases" ~
 
 if [[ ! -d ~/.config/Code/User ]]; then mkdir ~/.config/Code/User; fi
 ln -sfv "$DOTFILES_DIR/vscode/settings.json" ~/.config/Code/User/settings.json
+
+####################
+# LibreOffice user dictionary
+####################
+
+ln -sfv "$DOTFILES_DIR/dictionary.dic" ~/.config/libreoffice/4/user/wordbook/standard.dic
+
+####################
+# Firefox user dictionary
+####################
+
+ln -sfv "$DOTFILES_DIR/dictionary.dic" ~/.mozilla/firefox/f1nkx2qa.default-release/persdict.dat
