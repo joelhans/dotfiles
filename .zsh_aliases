@@ -3,6 +3,7 @@ alias reload="source ~/.zshrc"
 alias _="sudo -E"
 alias dnf="sudo dnf"
 alias rr="rm -rf"
+alias zshrc="$EDITOR $HOME/.zshrc && reload"
 alias aliases="$EDITOR $HOME/.zsh_aliases && reload"
 
 # Directory traversal
@@ -50,18 +51,21 @@ alias gam='git add . && git commit -m $1'
 alias gampo='git add . && git commit -m $1 && git push origin $(current_branch)'
 
 # Common directories
-alias nb='cd $HOME/netdata/blog'
-alias nc='cd $HOME/netdata/core'
+alias na='cd $HOME/netdata/agent'
 alias nl='cd $HOME/netdata/learn'
-alias nt='cd $HOME/netdata/tutorial'
 alias n='cd $HOME/netdata'
 alias nconf='cd /etc/netdata'
 alias dot='cd $HOME/src/dotfiles'
 
+# k8s
+alias kpa='kubectl get pod --all-namespaces -o wide'
+
 # Shortcuts for commands
 alias hugos='hugo server -F'
+alias dcu='docker-compose up'
 
 # Netdata
+alias ingest='docker-compose run --user $(id -u):$(id -g) --rm docusaurus node ingest.js'
 nedit() {
   cd /etc/netdata
   sudo ./edit-config $1
@@ -69,8 +73,8 @@ nedit() {
 giffy() {
   if [ $2 ]
     then 
-      ffmpeg -i $1 -filter_complex "[0:v] fps=24,scale=$2:-1,split [a][b];[a] palettegen [p];[b][p] paletteuse" output-$1.gif
+      ffmpeg -i $1 -filter_complex "[0:v] fps=24,scale=$2:-1,split [a][b];[a] palettegen [p];[b][p] paletteuse" $1.gif
     else
-      ffmpeg -i $1 -filter_complex "[0:v] fps=24,split [a][b];[a] palettegen [p];[b][p] paletteuse" output-$1.gif
+      ffmpeg -i $1 -filter_complex "[0:v] fps=24,split [a][b];[a] palettegen [p];[b][p] paletteuse" $1.gif
   fi
 }

@@ -15,15 +15,15 @@
 	"explorer.confirmDelete": false,
 	"breadcrumbs.enabled": false,
 	"editor.minimap.enabled": false,
-	"workbench.colorTheme": "Dracula",
-	"files.exclude": {
-		"node_modules": true,
-		"yarn.lock": true,
-		".vscode/": true,
-	},
 	"explorer.confirmDragAndDrop": false,
 	"window.zoomLevel": 0,
 	"git.autofetch": true,
+
+	"files.exclude": {
+		"node_modules": true,
+		"yarn.lock": true,
+		".travis/": true,
+	},
 
 	// File associations
 	"files.associations": {
@@ -71,8 +71,8 @@
     ],
     "properties-order": [
 			"@apply",
-			"position",
 			"z-index",
+			"position",
 			"top", 
 			"right", 
 			"bottom", 
@@ -88,7 +88,9 @@
 			"box-sizing",
 			"width",
 			"height",
+			"min-width",
 			"max-width",
+			"min-height",
 			"max-height",
 			"margin",
 			"margin-top",
@@ -163,4 +165,5 @@
 	],
 	"javascript.updateImportsOnFileMove.enabled": "always",
 	"editor.multiCursorModifier": "ctrlCmd",
+	"workbench.colorTheme": "Dracula",
 }

@@ -1,31 +1,24 @@
 {
 	"folders": [
 		{
-			"name": "core",
-			"path": "/home/joel/netdata/core"
-		},
-		{
 			"name": "learn",
-			"path": "/home/joel/netdata/learn"
+			"path": "../../../netdata/learn"
 		},
 		{
-			"name": "etc",
-			"path": "/home/joel/netdata/etc"
+			"name": "agent",
+			"path": "../../../netdata/agent"
 		},
 		{
-			"path": "/home/joel/netdata/blog"
+			"name": "bench",
+			"path": "../../../netdata/bench"
 		},
 		{
-			"path": "/home/joel/src/dotfiles"
+			"name": "helmchart",
+			"path": "../../../netdata/helmchart"
 		},
 		{
-			"path": "/home/joel/netdata/go.d.plugin"
-		},
-		{
-			"path": "/home/joel/netdata/localization"
-		},
-		{
-			"path": "/home/joel/netdata/etc/docs-testing"
+			"name": "agent-service-discovery",
+			"path": "../../../netdata/agent-service-discovery"
 		}
 	],
 	"settings": {}

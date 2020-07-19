@@ -1,5 +1,6 @@
 # Setting $PATH
-export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin:$HOME/.npm-global/bin:$HOME/.npm-global/lib/node_modules:/var/lib/snapd/snap/bin:$PATH
+export GOPATH=$HOME/src/go
+export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin:$HOME/.npm-global/bin:$HOME/.npm-global/lib/node_modules:$GOPATH/bin:$PATH
 
 # Path to the oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
@@ -54,3 +55,4 @@ SPACESHIP_GIT_BRANCH_COLOR=004
 source $ZSH/oh-my-zsh.sh
 source $HOME/.zsh_exports
 source $HOME/.zsh_aliases
+[[ /usr/local/bin/kubectl ]] && source <(kubectl completion zsh)
