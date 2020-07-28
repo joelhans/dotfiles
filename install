@@ -71,10 +71,10 @@ gsettings set org.gnome.shell.app-switcher current-workspace-only true
 # LibreOffice user dictionary
 ####################
 
-ln -sfv "$DOTFILES_DIR/dictionary.dic" ~/.config/libreoffice/4/user/wordbook/standard.dic
+# ln -sfv "$DOTFILES_DIR/dictionary.dic" ~/.config/libreoffice/4/user/wordbook/standard.dic
 
 ####################
 # Firefox user dictionary
 ####################
 
-ln -sfv "$DOTFILES_DIR/dictionary.dic" ~/.mozilla/firefox/f1nkx2qa.default-release/persdict.dat
+# ln -sfv "$DOTFILES_DIR/dictionary.dic" ~/.mozilla/firefox/f1nkx2qa.default-release/persdict.dat
