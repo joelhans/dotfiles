@@ -56,3 +56,5 @@ source $ZSH/oh-my-zsh.sh
 source $HOME/.zsh_exports
 source $HOME/.zsh_aliases
 [[ /usr/local/bin/kubectl ]] && source <(kubectl completion zsh)
+
+autoload -Uz compinit && compinit

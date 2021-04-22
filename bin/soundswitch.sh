@@ -5,15 +5,15 @@
 #   /usr/bin/pactl load-module module-device-manager "do_routing=1" > /dev/null
 # fi
 
-headphones="alsa_output.usb-SteelSeries_SteelSeries_Arctis_7-00.analog-stereo"
+headphones="alsa_output.usb-SteelSeries_SteelSeries_Arctis_7-00.stereo-game"
 speakers="alsa_output.pci-0000_2a_00.3.analog-stereo"
 
 state=`pacmd list-sinks | grep "state:"`
 
 stateHeadphones=$(pacmd list-sinks | grep "state:" | awk '{ print $2}' | awk 'NR==3')
-stateSpeakers=$(pacmd list-sinks | grep "state:" | awk '{ print $2}' | awk 'NR==5')
+stateSpeakers=$(pacmd list-sinks | grep "state:" | awk '{ print $2}' | awk 'NR==1')
 
-if [ $stateSpeakers = "SUSPENDED" ] || [ $stateSpeakers = "IDLE" ]; then
+if [[ $stateSpeakers = "SUSPENDED" ]] || [[ $stateSpeakers = "IDLE" ]]; then
     echo "Switching to speakers by default."
     
     pacmd set-default-sink "$speakers"
@@ -23,7 +23,7 @@ if [ $stateSpeakers = "SUSPENDED" ] || [ $stateSpeakers = "IDLE" ]; then
         pactl move-sink-input "$streamId" "$speakers" &> /dev/null
     done
 
-elif [ $stateSpeakers = "RUNNING" ] && [ $stateHeadphones = "SUSPENDED" ] || [ $stateHeadphones = "IDLE" ]; then
+elif [[ $stateSpeakers = "RUNNING" ]] && [[ $stateHeadphones = "SUSPENDED" ]] || [[ $stateHeadphones = "IDLE" ]]; then
     echo "Switching to headphones."
     
     pacmd set-default-sink "$headphones"
@@ -32,7 +32,7 @@ elif [ $stateSpeakers = "RUNNING" ] && [ $stateHeadphones = "SUSPENDED" ] || [ $
         streamId=$(echo $stream|cut '-d ' -f1)
         pactl move-sink-input "$streamId" "$headphones" &> /dev/null
     done
-
+    
 fi
     
 

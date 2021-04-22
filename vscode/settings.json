@@ -30,12 +30,12 @@
 		".zshrc": "shellscript",
 		".zsh_aliases": "shellscript",
 		".zsh_exports": "shellscript",
-		"*.mdx": "mdx"
+		"*.mdx": "markdown"
 	},
 
 	// Filetype specific settings
 	"[markdown]": {
-    "editor.fontSize": 14,
+    "editor.fontSize": 16,
 		"editor.formatOnSave": false,
 		"editor.wordWrapColumn": 120,
 		"editor.wordWrap": "bounded",
@@ -44,7 +44,7 @@
 		"editor.lineNumbers": "on"
 	},
 	"[mdx]": {
-		"editor.fontSize": 14,
+		"editor.fontSize": 16,
 		"editor.formatOnSave": false,
 		"editor.wordWrapColumn": 120,
 		"editor.wordWrap": "bounded",
@@ -55,7 +55,7 @@
 	"[plaintext]": {
 		"editor.fontSize": 16,
 		"editor.formatOnSave": false,
-		"editor.wordWrapColumn": 80,
+		"editor.wordWrapColumn": 120,
 		"editor.wordWrap": "bounded",
 		"editor.lineNumbers": "on"
 	},
@@ -166,4 +166,11 @@
 	"javascript.updateImportsOnFileMove.enabled": "always",
 	"editor.multiCursorModifier": "ctrlCmd",
 	"workbench.colorTheme": "Dracula",
+	"cSpell.userWords": [
+		"ebpf",
+		"netdata",
+		"preconfigured",
+		"symlink",
+		"twilio"
+	],
 }

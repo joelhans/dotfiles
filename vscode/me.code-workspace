@@ -5,6 +5,9 @@
 		},
 		{
 			"path": "../bin"
+		},
+		{
+			"path": "../../joelhans.com-nextjs"
 		}
 	]
 }

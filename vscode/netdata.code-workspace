@@ -1,12 +1,24 @@
 {
 	"folders": [
 		{
+			"name": "website",
+			"path": "../../../netdata/website"
+		},
+		{
+			"name": "docs",
+			"path": "../../../netdata/docs"
+		},
+		{
 			"name": "learn",
 			"path": "../../../netdata/learn"
 		},
 		{
 			"name": "agent",
 			"path": "../../../netdata/agent"
+		},
+		{
+			"name": "community",
+			"path": "../../../netdata/community"
 		},
 		{
 			"name": "bench",
@@ -19,6 +31,18 @@
 		{
 			"name": "agent-service-discovery",
 			"path": "../../../netdata/agent-service-discovery"
+		},
+		{
+			"name": "go.d.plugin",
+			"path": "../../../netdata/go.d.plugin"
+		},
+		{
+			"name": "deployments",
+			"path": "../../../netdata/deployments"
+		},
+		{
+			"name": "bin",
+			"path": "../../../netdata/bin"
 		}
 	],
 	"settings": {}

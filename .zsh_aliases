@@ -40,6 +40,7 @@ alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[
 # Git
 alias gcm='git checkout master'
 alias gst='git status'
+alias gs='git switch $1'
 alias gsync='git pull upstream master && git push origin master'
 alias gpo='git push origin $(current_branch)'
 alias gnew='git checkout -b $1'
