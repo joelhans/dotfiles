@@ -38,7 +38,7 @@ alias ipl="hostname -I"
 alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
 
 # Git
-alias gcm='git checkout master'
+alias gcm='git checkout main'
 alias gst='git status'
 alias gs='git switch $1'
 alias gsync='git pull upstream master && git push origin master'
