@@ -1,0 +1,25 @@
+{
+	"folders": [
+		{
+			"name": "dotfiles",
+			"path": ".."
+		},
+		{
+			"name": "bin",
+			"path": "../bin"
+		},
+		{
+			"name": "joelhans.com",
+			"path": "../../../web/joelhans.com"
+		},
+		{
+			"path": "../../../web/commitcopy.com"
+		},
+		{
+			"path": "../../../web/nurse.media"
+		},
+		{
+			"path": "../../../code/nextjs-mdx-bidirectional-links"
+		}
+	]
+}

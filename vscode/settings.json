@@ -16,8 +16,8 @@
 	"breadcrumbs.enabled": false,
 	"editor.minimap.enabled": false,
 	"explorer.confirmDragAndDrop": false,
-	"window.zoomLevel": 0,
 	"git.autofetch": true,
+	"editor.quickSuggestions": false,
 
 	"files.exclude": {
 		"node_modules": true,
@@ -169,7 +169,9 @@
 	"cSpell.userWords": [
 		"ebpf",
 		"netdata",
+		"netdata's",
 		"preconfigured",
+		"quickstart",
 		"symlink",
 		"twilio"
 	],
