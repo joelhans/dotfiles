@@ -1,0 +1,13 @@
+#! /bin/bash
+
+loudreader=play
+loudreader_pid=$(pidof ${loudreader})
+speed="1.2"   # tune this according to your preferences
+
+if [ -z "$loudreader_pid" ]
+then
+    xclip -out -selection primary | xclip -in -selection clipboard
+    xsel --clipboard | tr "\n" " " | gtts-cli - | ${loudreader} -t mp3 -   tempo ${speed}
+else 
+    kill $loudreader_pid
+fi

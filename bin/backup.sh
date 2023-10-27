@@ -5,7 +5,6 @@
 PI_USER="pi"
 PI_URL="192.168.1.10"
 EXTDIR="/media/ROADRUNNER/joel"
-# GITDIRS=( "$HOME/netdata/agent" "$HOME/netdata/learn" )
 
 # Photographs
 echo "Backing up photographs."
@@ -26,14 +25,3 @@ rsync -azh --no-i-r --info=progress2 \
     --exclude "bak-of-bak" \
     /home/$USER/ $PI_USER@$PI_URL:$EXTDIR/home
 echo "Done backing up home directory to external drive."
-
-# Git
-# echo "Backing up git directories to both drives."
-# for i in "${GITDIRS[@]}"; do :
-#     cd $i
-#     mkdir tmp
-#     git bundle create tmp/${PWD##*/} --all
-#     rsync tmp/${PWD##*/} $PI_USER@$PI_URL:$EXTDIR/git
-#     rm -rf tmp
-# done
-# echo "Done backing up git directories to external drive." 

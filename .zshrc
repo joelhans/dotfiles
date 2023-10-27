@@ -1,6 +1,5 @@
 # Setting $PATH
-export GOPATH=$HOME/src/go
-export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin:$HOME/.npm-global/bin:$HOME/.npm-global/lib/node_modules:$GOPATH/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin:$PATH
 
 # Path to the oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
@@ -21,7 +20,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 HIST_STAMPS="yyyy-mm-dd"
 
 # Oh-my-zsh plugins
-plugins=( git docker cp zsh-syntax-highlighting )
+plugins=( git cp docker kubectl zsh-syntax-highlighting )
 
 # Spaceship settings
 SPACESHIP_PROMPT_ORDER=(
@@ -55,6 +54,9 @@ SPACESHIP_GIT_BRANCH_COLOR=004
 source $ZSH/oh-my-zsh.sh
 source $HOME/.zsh_exports
 source $HOME/.zsh_aliases
-[[ /usr/local/bin/kubectl ]] && source <(kubectl completion zsh)
 
 autoload -Uz compinit && compinit
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion

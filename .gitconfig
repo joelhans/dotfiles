@@ -1,6 +1,7 @@
 [user]
 	name = Joel Hans
-	email = joel.g.hans@gmail.com
+	email = j@joelhans.com
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKcQXUtQ77vym/RAApVHswSqvjPZDjvU63TpBokSTUwd
 
 [github]
   user = joelhans
@@ -20,5 +21,15 @@
 
 [difftool "meld"]
   cmd = meld "$LOCAL" "$REMOTE"
+
 [init]
 	defaultBranch = main
+
+[gpg]
+  format = ssh
+
+[gpg "ssh"]
+  program = "/opt/1Password/op-ssh-sign"
+
+[commit]
+  gpgsign = true

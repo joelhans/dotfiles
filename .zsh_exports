@@ -8,8 +8,11 @@ else
   export EDITOR='nano'
 fi
 
-# SSH key
-export SSH_KEY_PATH="~/.ssh/rsa_id"
+# 1Password
+export SSH_AUTH_SOCK=~/.1password/agent.sock
+
+# Node.js
+export NODE_OPTIONS=--openssl-legacy-provider 
 
 # Prefer US English and use UTF-8
 export LC_ALL="en_US.UTF-8"

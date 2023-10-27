@@ -11,17 +11,22 @@
 	"editor.fontSize": 16,
 	"editor.tabSize": 2,
 	"keyboard.dispatch": "keyCode",
-	"editor.autoIndent": false,
+	"editor.autoIndent": "advanced",
 	"explorer.confirmDelete": false,
 	"breadcrumbs.enabled": false,
 	"editor.minimap.enabled": false,
 	"explorer.confirmDragAndDrop": false,
 	"git.autofetch": true,
-	"editor.quickSuggestions": false,
+	"editor.quickSuggestions": {
+		"comments": "off",
+		"strings": "off",
+		"other": "off"
+	},
+	"files.insertFinalNewline": true,
 
 	"files.exclude": {
 		"node_modules": true,
-		"yarn.lock": true,
+		// "yarn.lock": true,
 		".travis/": true,
 	},
 
@@ -175,4 +180,5 @@
 		"symlink",
 		"twilio"
 	],
+	"application.shellEnvironmentResolutionTimeout": 60,
 }

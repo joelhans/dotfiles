@@ -66,15 +66,3 @@ ln -sfv "$DOTFILES_DIR/vscode/settings.json" ~/.config/Code/User/settings.json
 gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-5 '["<Alt>5"]'
 gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-5 '["<Shift><Alt>5"]'
 gsettings set org.gnome.shell.app-switcher current-workspace-only true
-
-####################
-# LibreOffice user dictionary
-####################
-
-# ln -sfv "$DOTFILES_DIR/dictionary.dic" ~/.config/libreoffice/4/user/wordbook/standard.dic
-
-####################
-# Firefox user dictionary
-####################
-
-# ln -sfv "$DOTFILES_DIR/dictionary.dic" ~/.mozilla/firefox/f1nkx2qa.default-release/persdict.dat
