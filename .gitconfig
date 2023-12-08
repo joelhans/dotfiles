@@ -1,3 +1,9 @@
+[includeIf "gitdir:/Users"]
+  path = .gitconfig-macos
+  
+[includeIf "gitdir:/home"]
+  path = .gitconfig-linux
+
 [user]
 	name = Joel Hans
 	email = j@joelhans.com
@@ -27,9 +33,6 @@
 
 [gpg]
   format = ssh
-
-[gpg "ssh"]
-  program = "/opt/1Password/op-ssh-sign"
 
 [commit]
   gpgsign = true
