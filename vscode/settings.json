@@ -180,5 +180,5 @@
 		"symlink",
 		"twilio"
 	],
-	"application.shellEnvironmentResolutionTimeout": 60,
+	"application.shellEnvironmentResolutionTimeout": 120,
 }
