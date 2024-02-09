@@ -1,7 +1,7 @@
 [includeIf "gitdir:/Users"]
   path = .gitconfig-macos
   
-[includeIf "gitdir:/home"]
+[includeIf "gitdir:/var/home/joel"]
   path = .gitconfig-linux
 
 [user]

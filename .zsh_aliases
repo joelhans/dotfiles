@@ -50,3 +50,14 @@ alias gca!='git commit -a --amend'
 alias glr='git pull --rebase'
 alias gam='git add . && git commit -m $1'
 alias gampo='git add . && git commit -m $1 && git push origin $(current_branch)'
+
+# Distrobox
+function dbxc {
+  distrobox create \
+    -n $1 \
+		-H $HOME/.distrobox/$1 \
+		--init-hooks $HOME/src/dotfiles/dev-init.sh
+}
+alias dbxe='distrobox enter $1'
+alias dbxl='distrobox list'
+alias dbxclean='distrobox stop -a && distrobox rm -a && sudo rm -rf $HOME/.distrobox/{*,.*}'

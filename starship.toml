@@ -1,0 +1,8 @@
+[container]
+disabled = true
+
+[custom.devcontainer]
+# command = " echo \"$CONTAINER_ID $(grep 'image=' /run/.containerenv 2> /dev/null)\" "
+command = " echo $CONTAINER_ID "
+when = """ test -n "$CONTAINER_ID" """
+format = 'in 📦 [$output]($style) '

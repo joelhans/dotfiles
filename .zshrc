@@ -1,5 +1,5 @@
 # Setting $PATH
-export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin:$PATH
+export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin:$HOME/.npm-global/bin/:$PATH
 
 # Path to the oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
@@ -17,7 +17,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 HIST_STAMPS="yyyy-mm-dd"
 
 # Oh-my-zsh plugins
-plugins=( 1password copybuffer cp docker git kubectl minikube zsh-syntax-highlighting )
+plugins=( 1password copybuffer cp docker git kubectl minikube toolbox zsh-syntax-highlighting )
 
 # Sourcing oh-my-zsh
 source $ZSH/oh-my-zsh.sh

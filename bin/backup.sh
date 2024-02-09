@@ -21,7 +21,5 @@ rsync -azh --no-i-r --info=progress2 \
     --exclude ".*" \
     --exclude "Downloads/" \
     --exclude "photography/" \
-    --exclude "node_modules/" \
-    --exclude "bak-of-bak" \
-    /home/$USER/ $PI_USER@$PI_URL:$EXTDIR/home
+    /home/$USER/ $PI_USER@$PI_URL:$EXTDIR/home-current
 echo "Done backing up home directory to external drive."
