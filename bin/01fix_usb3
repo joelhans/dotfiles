@@ -5,22 +5,32 @@
 #   https://forum.artixlinux.org/index.php/topic,1591.15.html
 #   https://bbs.archlinux.org/viewtopic.php?id=217775
 # Install at /etc/pm/sleep.d/01fix_usb3
-#   sudo ln -s ~/src/dotfiles/bin/01fix_usb3 /etc/pm/sleep.d/01fix_usb3
-#   sudo chmod 755 01fix_usb3 
+#   sudo cp ~/src/dotfiles/bin/01fix_usb3 /etc/pm/sleep.d/01fix_usb3
+#   sudo chown root:root /etc/pm/sleep.d/01fix_usb3
+#   sudo chmod 755 /etc/pm/sleep.d/01fix_usb3
 
 case $1 in
-hibernate)
-modprobe -r xhci_hcd
-;;
-suspend)
-modprobe -r xhci_hcd
-;;
-thaw)
-modprobe xhci_hcd
-;;
-resume)
-modprobe xhci_hcd
-;;
-*) echo "USB3 fix script: wrong argument!"
-;;
+  hibernate)
+    echo "Hibernating... removing xhci_hcd module." | systemd-cat
+    modprobe -r xhci_hcd
+    ;;
+
+  suspend)
+    echo "Suspending... removing xhci_hcd module." | systemd-cat
+    modprobe -r xhci_hcd
+    ;;
+
+  thaw)
+    echo "Thawing... adding xhci_hcd module." | systemd-cat
+    modprobe xhci_hcd
+    ;;
+
+  resume)
+    echo "Resuming... removing xhci_hcd module." | systemd-cat
+    modprobe xhci_hcd
+    ;;
+
+  *)
+    echo "USB3 fix script: wrong argument!" | systemd-cat
+    ;;
 esac

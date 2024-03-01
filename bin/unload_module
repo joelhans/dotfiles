@@ -1,0 +1,4 @@
+# Found at: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/522998
+# Add to /etc/pm/config.d/unload_module
+
+SUSPEND_MODULES="xhci_hcd"

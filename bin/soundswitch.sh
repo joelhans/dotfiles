@@ -1,24 +1,26 @@
 #!/bin/bash
 
-# Unfortunately, the sink numbers are randomly hardcoded, but seem stable after
-# many reboots.
-sink_headphones="47"
-sink_speakers="51"
-state_headphones=$(wpctl status | grep "$sink_headphones\.")
-state_speakers=$(wpctl status | grep "$sink_speakers\.")
+# First, figure out what devices are on what sink # based on their static names.
+headphones="SteelSeries Arctis 7 Game"
+speakers="Family 17h/19h HD Audio Controller Analog Stereo"
+headphones_sink=$(wpctl status | grep "$headphones" | sed 's@^[^0-9]*\([0-9]\+\).*@\1@')
+speakers_sink=$(wpctl status | grep "$speakers" | head -1 | sed 's@^[^0-9]*\([0-9]\+\).*@\1@')
 
-# Get the sink number currently active.
-# aka, which line has a `*` in it?
-state=$(echo -e "$state_speakers\n$state_headphones" | grep '*' | awk '{ print $3}' | tr -d '.')
+# Then use those numbers to get the line that shows their state.
+headphones_state=$(wpctl status | grep "$headphones_sink\.")
+speakers_state=$(wpctl status | grep "$speakers_sink\.")
+
+# Get the sink number currently active, aka, which line has a `*` in it?
+state=$(echo -e "$headphones_state\n$speakers_state=" | grep '*' | awk '{ print $3}' | tr -d '.')
 
 # Switch sink based on which is currently the default.
 case $state in
-  47)
-    wpctl set-default $sink_speakers
+  $headphones_sink)
+    wpctl set-default $speakers_sink
     ;;
   
-  51)
-    wpctl set-default $sink_headphones
+  $speakers_sink)
+    wpctl set-default $headphones_sink
     ;;
 
   *)
