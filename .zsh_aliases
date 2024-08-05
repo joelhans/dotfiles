@@ -56,8 +56,25 @@ function dbxc {
   distrobox create \
     -n $1 \
 		-H $HOME/.distrobox/$1 \
+		--init \
+		--additional-packages "systemd" \
 		--init-hooks $HOME/src/dotfiles/dev-init.sh
 }
 alias dbxe='distrobox enter $1'
 alias dbxl='distrobox list'
+alias dbxs='distrobox stop $1'
+alias dbxd='distrobox rm $1'
 alias dbxclean='distrobox stop -a && distrobox rm -a && sudo rm -rf $HOME/.distrobox/{*,.*}'
+
+function drun {
+  docker run \
+    --read-only \
+    --security-opt=no-new-privileges \
+    --network your-isolated-network \
+    --cap-drop ALL --cap-add CHOWN \
+    --pids-limit 99 \
+    --memory="1g" --cpus="2" \
+    --user=your-user \
+    $1 \
+    $2
+}
