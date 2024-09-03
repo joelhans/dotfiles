@@ -2,7 +2,7 @@
   path = .gitconfig-macos
   
 [includeIf "gitdir:/var/home/joel"]
-  path = .gitconfig-linux
+  path = /var/home/joel/.gitconfig-linux
 
 [user]
 	name = Joel Hans

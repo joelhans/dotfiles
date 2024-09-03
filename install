@@ -1,56 +1,39 @@
 #!/bin/bash
 
-# Get current dir
+# Determine if Linux or macOS
+case "$(uname -s)" in
+  Linux*)     MACHINE=Linux;;
+  Darwin*)    MACHINE=MacOS;;
+esac
+
+# Get dotfiles directory
 DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 ####################
-# .gitconfig and .gitignore_global
+# Git
 ####################
 
-ln -sfv "$DOTFILES_DIR/.gitconfig" ~
-ln -sfv "$DOTFILES_DIR/.gitignore_global" ~
+ln -sfv $DOTFILES_DIR/.gitconfig $HOME/.gitconfig
+ln -sfv $DOTFILES_DIR/.gitignore_global $HOME/.gitignore_global
+[ -f $MACHINE = "Linux" ] && ln -sfc $DOTFILES_DIR/.gitconfig-linux $HOME/.gitconfig-linux
+[ -f $MACHINE = "MacOS" ] && ln -sfc $DOTFILES_DIR/.gitconfig-macos $HOME/.gitconfig-macos
 
 ####################
 # ZSH
 ####################
 
-# install_zsh () {
-#   # Test to see if Zsh is installed
-#   if [ -f /bin/zsh -o -f /usr/bin/zsh ]; then
-#     # Install Oh My Zsh if it isn't already present
-#     if [[ ! -d ~/.oh-my-zsh/ ]]; then
-#       sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-#     fi
-#     # Set the default shell to Zsh if it isn't currently set
-#     if [[ ! $(echo $SHELL) == $(which zsh) ]]; then
-#       sudo chsh -s $(which zsh)
-#     fi
-#   else
-#   	echo "Zsh not installed, skipping."
-#   fi
-# }
+ln -sfv "$DOTFILES_DIR/.zshrc" $HOME/.zshrc
+ln -sfv "$DOTFILES_DIR/.zsh_exports" $HOME/.zsh_exports
+ln -sfv "$DOTFILES_DIR/.zsh_aliases" $HOME/.zsh_aliases
+ln -sfv "$DOTFILES_DIR/.dircolors" $HOME/.dircolors
+ln -sfv "$DOTFILES_DIR/starship.toml" $HOME/.config/starship.toml
+curl -fsSL https://starship.rs/install.sh | sh -s -- -y
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 
-# # Run the zsh_install function
-# install_zsh
+# nvim
 
-# # Specify ZSH custom directory
-# ZSH_CUSTOM=$HOME/.oh-my-zsh/custom
-
-# # Install the ZSH spaceship theme if not already installed
-# if [[ ! -d $HOME/.oh-my-zsh/custom/themes/spaceship-prompt ]]; then
-# 	git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt"
-# 	ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme"
-# fi
-
-# # Install the ZSH syntax highlighting plugin if it's not already installed
-# if [[ ! -d ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting ]]; then
-# 	git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-# fi
-
-# Symlink .zshrc
-ln -sfv "$DOTFILES_DIR/.zshrc" ~
-ln -sfv "$DOTFILES_DIR/.zsh_exports" ~
-ln -sfv "$DOTFILES_DIR/.zsh_aliases" ~
+ln -sfv "$DOTFILES_DIR/kitty.conf" $HOME/.config/kitty/kitty.conf
+ln -sfv "$DOTFILES_DIR/init.lua" $HOME/.config/nvim/init.lua
 
 ####################
 # VS Code
@@ -63,6 +46,16 @@ ln -sfv "$DOTFILES_DIR/.zsh_aliases" ~
 # Gnome
 ####################
 
-gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-5 '["<Alt>5"]'
-gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-5 '["<Shift><Alt>5"]'
-gsettings set org.gnome.shell.app-switcher current-workspace-only true
+if [ -f $MACHINE = "Linux" ]
+then
+
+  gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-5 '["<Alt>5"]'
+  gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-5 '["<Shift><Alt>5"]'
+  gsettings set org.gnome.shell.app-switcher current-workspace-only true
+
+  # Install Nordzy icon theme
+  git clone https://github.com/alvatip/Nordzy-icon $HOME/src/
+  cd $HOME/src/Nordzy-icon/
+  ./install.sh
+
+fi

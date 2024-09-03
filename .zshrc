@@ -17,7 +17,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 HIST_STAMPS="yyyy-mm-dd"
 
 # Oh-my-zsh plugins
-plugins=( 1password copybuffer cp docker git kubectl minikube toolbox zsh-syntax-highlighting )
+plugins=( 1password copybuffer cp direnv docker git kubectl minikube toolbox zsh-syntax-highlighting )
 
 # Sourcing oh-my-zsh
 source $ZSH/oh-my-zsh.sh
@@ -26,4 +26,6 @@ source $HOME/.zsh_aliases
 
 autoload -Uz compinit && compinit
 
+eval "$(direnv hook zsh)"
+eval "$(dircolors ~/.dircolors)"
 eval "$(starship init zsh)"

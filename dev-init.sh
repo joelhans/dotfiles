@@ -30,6 +30,7 @@ mkdir ~/.config
 ln -sf /var/home/joel/.config/starship.toml ~/.config/starship.toml
 # chmod 755 ~/.config
 chown joel:joel ~/.config
+ln -sf /var/home/joel/src/dotfiles/.dircolors ~/.dircolors
 
 # Git setup
 ln -sf /var/home/joel/src/dotfiles/.gitconfig ~/.gitconfig
