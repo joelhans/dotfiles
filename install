@@ -15,8 +15,8 @@ DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 ln -sfv $DOTFILES_DIR/.gitconfig $HOME/.gitconfig
 ln -sfv $DOTFILES_DIR/.gitignore_global $HOME/.gitignore_global
-[ -f $MACHINE = "Linux" ] && ln -sfc $DOTFILES_DIR/.gitconfig-linux $HOME/.gitconfig-linux
-[ -f $MACHINE = "MacOS" ] && ln -sfc $DOTFILES_DIR/.gitconfig-macos $HOME/.gitconfig-macos
+[ -f $MACHINE = "Linux" ] && ln -sfv $DOTFILES_DIR/.gitconfig-linux $HOME/.gitconfig-linux
+[ -f $MACHINE = "MacOS" ] && ln -sfv $DOTFILES_DIR/.gitconfig-macos $HOME/.gitconfig-macos
 
 ####################
 # ZSH

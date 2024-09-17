@@ -27,5 +27,5 @@ source $HOME/.zsh_aliases
 autoload -Uz compinit && compinit
 
 eval "$(direnv hook zsh)"
-eval "$(dircolors ~/.dircolors)"
+# eval "$(dircolors ~/.dircolors)"
 eval "$(starship init zsh)"
