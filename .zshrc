@@ -29,5 +29,5 @@ zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=
 autoload -Uz compinit && compinit
 
 eval "$(direnv hook zsh)"
-eval "$(dircolors ~/.dircolors)"
+# eval "$(dircolors ~/.dircolors)"
 eval "$(starship init zsh)"

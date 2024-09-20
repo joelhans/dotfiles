@@ -1,13 +1,13 @@
-[includeIf "gitdir:/Users"]
-  path = .gitconfig-macos
-  
+[includeIf "gitdir:/Users/"]
+  path = ~/.gitconfig-macos
+
 [includeIf "gitdir:/var/home/joel"]
-  path = /var/home/joel/.gitconfig-linux
+  path = ~/.gitconfig-linux
 
 [user]
-	name = Joel Hans
-	email = j@joelhans.com
-	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKcQXUtQ77vym/RAApVHswSqvjPZDjvU63TpBokSTUwd
+  name = Joel Hans
+  email = j@joelhans.com
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKcQXUtQ77vym/RAApVHswSqvjPZDjvU63TpBokSTUwd
 
 [github]
   user = joelhans
