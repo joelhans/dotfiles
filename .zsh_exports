@@ -2,9 +2,11 @@
 export SHELL=/bin/zsh
 
 # Default editor
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='nano'
-else
+if [[ -x "$(command -v nvim)" ]]; then
+  export EDITOR='nvim'
+elif [[ -x "$(command -v vim)" ]]; then
+  export EDITOR='vim'
+else;
   export EDITOR='nano'
 fi
 
