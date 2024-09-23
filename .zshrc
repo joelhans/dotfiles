@@ -1,5 +1,5 @@
 # Setting $PATH
-export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin:$HOME/.npm-global/bin/:$PATH
+export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin:$PATH
 
 # Path to the oh-my-zsh installation.
 export ZSH=$HOME/.oh-my-zsh
@@ -17,13 +17,15 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 HIST_STAMPS="yyyy-mm-dd"
 
 # Oh-my-zsh plugins
-plugins=( 1password copybuffer cp direnv docker git kubectl minikube toolbox zsh-syntax-highlighting )
+#plugins=( 1password copybuffer cp direnv docker git kubectl minikube toolbox zsh-syntax-highlighting )
 
 # Sourcing oh-my-zsh
-source $ZSH/oh-my-zsh.sh
+#source $ZSH/oh-my-zsh.sh
 source $HOME/.zsh_exports
 source $HOME/.zsh_aliases
+source <(fzf --zsh)
 
+zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
 autoload -Uz compinit && compinit
 
 eval "$(direnv hook zsh)"
