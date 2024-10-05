@@ -32,6 +32,8 @@ vim.g.maplocalleader = "\\"
 
 -- Source init.lua
 vim.keymap.set('n', '<Leader>sv', ':source $MYVIMRC<CR>')
+-- Unmap space in visual mode
+vim.keymap.set('v', ' ', '')
 -- Copy to system clipboard
 vim.keymap.set('n', '<Leader>cc', '"*y')
 -- vnoremap <C-c> "*y
