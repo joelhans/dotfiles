@@ -1,9 +1,6 @@
 # Setting $PATH
 export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin:$PATH
 
-# Path to the oh-my-zsh installation.
-export ZSH=$HOME/.oh-my-zsh
-
 # Enable command auto-correction.
 ENABLE_CORRECTION="true"
 
@@ -16,17 +13,19 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # History time stamps
 HIST_STAMPS="yyyy-mm-dd"
 
-# Oh-my-zsh plugins
-#plugins=( 1password copybuffer cp direnv docker git kubectl minikube toolbox zsh-syntax-highlighting )
-
-# Sourcing oh-my-zsh
-#source $ZSH/oh-my-zsh.sh
 source $HOME/.zsh_exports
 source $HOME/.zsh_aliases
 source <(fzf --zsh)
 
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
 autoload -Uz compinit && compinit
+
+# Source zplug, then some plugins, then plugin configuration
+source ~/.zplug/init.zsh
+zplug "zsh-users/zsh-history-substring-search"
+zplug load --verbose
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
 
 eval "$(direnv hook zsh)"
 # eval "$(dircolors ~/.dircolors)"
