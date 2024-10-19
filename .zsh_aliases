@@ -18,6 +18,9 @@ alias dl="cd ~/Downloads"
 alias db="cd ~/Dropbox"
 alias dot='cd $HOME/src/dotfiles'
 
+alias as='cd $HOME/web/astrolabe'
+alias asl='cd $HOME/web/astrolabe-live'
+
 # Directory listing
 if ls --color > /dev/null 2>&1; then # GNU `ls`
   colorflag="--color"
