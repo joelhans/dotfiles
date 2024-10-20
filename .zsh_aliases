@@ -13,10 +13,9 @@ alias ....="cd ../../.."
 alias ~="cd ~"
 alias -- -="cd -"
 
-alias dot='cd ~/src/dotfiles'
+alias dot='cd ~/dotfiles'
 alias dl="cd ~/Downloads"
 alias db="cd ~/Dropbox"
-alias dot='cd $HOME/src/dotfiles'
 
 alias as='cd $HOME/web/astrolabe'
 alias asl='cd $HOME/web/astrolabe-live'

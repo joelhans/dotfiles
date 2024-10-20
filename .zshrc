@@ -21,11 +21,17 @@ zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=
 autoload -Uz compinit && compinit
 
 # Source zplug, then some plugins, then plugin configuration
-source ~/.zplug/init.zsh
-zplug "zsh-users/zsh-history-substring-search"
-zplug load --verbose
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
+#source ~/.zplug/init.zsh
+#zplug "zsh-users/zsh-history-substring-search", as:plugin
+#zplug load --verbose
+#bindkey '^[[A' history-substring-search-up
+#bindkey '^[[B' history-substring-search-down
+
+# source antidote
+source $HOME/.antidote/antidote.zsh
+
+# initialize plugins statically with ${ZDOTDIR:-~}/.zsh_plugins.txt
+antidote load
 
 eval "$(direnv hook zsh)"
 # eval "$(dircolors ~/.dircolors)"

@@ -28,7 +28,7 @@ ln -sfv "$DOTFILES_DIR/.zsh_aliases" $HOME/.zsh_aliases
 ln -sfv "$DOTFILES_DIR/.dircolors" $HOME/.dircolors
 ln -sfv "$DOTFILES_DIR/starship.toml" $HOME/.config/starship.toml
 curl -fsSL https://starship.rs/install.sh | sh -s -- -y
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+# git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
 
 # nvim
 
