@@ -33,6 +33,11 @@ source $HOME/.antidote/antidote.zsh
 # initialize plugins statically with ${ZDOTDIR:-~}/.zsh_plugins.txt
 antidote load
 
+# ngrok completions
+if command -v ngrok &>/dev/null; then
+  eval "$(ngrok completion)"
+fi
+
 eval "$(direnv hook zsh)"
 # eval "$(dircolors ~/.dircolors)"
 eval "$(starship init zsh)"
