@@ -38,6 +38,9 @@ if command -v ngrok &>/dev/null; then
   eval "$(ngrok completion)"
 fi
 
+# kubectl completions
+source <(kubectl completion zsh)
+
 eval "$(direnv hook zsh)"
 # eval "$(dircolors ~/.dircolors)"
 eval "$(starship init zsh)"
