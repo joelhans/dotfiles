@@ -35,8 +35,8 @@ vim.keymap.set('n', '<Leader>sv', ':source $MYVIMRC<CR>')
 -- Unmap space in visual mode
 vim.keymap.set('v', ' ', '')
 -- Copy to system clipboard
-vim.keymap.set('n', '<Leader>cc', '"*y')
--- vnoremap <C-c> "*y
+vim.keymap.set({ "n", "v" }, "<leader>c", [["+y]])
+vim.keymap.set("n", "<leader>C", [["+Y]])
 
 local plugins = {
   { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
