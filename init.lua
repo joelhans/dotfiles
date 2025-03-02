@@ -74,7 +74,13 @@ local config = require("nvim-treesitter.configs")
 config.setup({
   ensure_installed = { "vim", "javascript", "html", "lua" },
   highlight = { enable = true },
-  indent = { enable = true },
+  -- indent = { enable = true },
+  indent = {
+		enable = true,
+		disable = {
+			"markdown",-- indentation at bullet points is worse
+		},
+	},
 })
 
 require("catppuccin").setup()
