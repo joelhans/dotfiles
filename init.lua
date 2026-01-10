@@ -1,8 +1,17 @@
+-- Suppress treesitter highlighter errors (Neovim bug with rapid edits)
+local original_set_extmark = vim.api.nvim_buf_set_extmark
+vim.api.nvim_buf_set_extmark = function(...)
+  local ok, result = pcall(original_set_extmark, ...)
+  if ok then return result end
+  return 0
+end
+
 vim.cmd("set expandtab")
 vim.cmd("set tabstop=2")
-vim.cmd("set softtabstop=2")
+vim.cmd("set softtabstop=0")
 vim.cmd("set shiftwidth=2")
 vim.cmd("set textwidth=80")
+vim.cmd("set linebreak")
 vim.cmd("set formatoptions-=t")
 vim.cmd("set number")
 vim.cmd("set clipboard+=unnamedplus")
@@ -43,10 +52,28 @@ local plugins = {
     'nvim-telescope/telescope.nvim', tag = '0.1.8',
     dependencies = { 'nvim-lua/plenary.nvim' }
   },
-  {"nvim-treesitter/nvim-treesitter", build = ":TSUpdate"},
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    config = function()
+      local configs = require("nvim-treesitter.configs")
+
+      configs.setup({
+        ensure_installed = { "vim", "javascript", "html", "lua", "vimdoc", "query", "markdown", "markdown_inline" },
+        sync_install = false,
+        auto_install = true,
+        highlight = { enable = true },
+        indent = {
+          enable = true,
+          disable = {
+            "markdown", -- indentation at bullet points is worse
+          },
+        },
+      })
+    end,
+  },
   {
     "davidmh/mdx.nvim",
-    config = true,
     dependencies = {"nvim-treesitter/nvim-treesitter"}
   },
   {
@@ -57,7 +84,11 @@ local plugins = {
       "nvim-tree/nvim-web-devicons",
     },
     config = function()
-      require("nvim-tree").setup {}
+      require("nvim-tree").setup {
+        view = {
+          width = 40,
+        },
+      }
     end,
   }
 }
@@ -70,18 +101,7 @@ local builtin = require("telescope.builtin")
 vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
 
-local config = require("nvim-treesitter.configs")
-config.setup({
-  ensure_installed = { "vim", "javascript", "html", "lua" },
-  highlight = { enable = true },
-  -- indent = { enable = true },
-  indent = {
-		enable = true,
-		disable = {
-			"markdown",-- indentation at bullet points is worse
-		},
-	},
-})
+
 
 require("catppuccin").setup()
 vim.cmd.colorscheme "catppuccin"
@@ -93,3 +113,13 @@ local function open_nvim_tree()
 end
 
 vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
+
+-- Force spaces (no tabs) for MDX files
+vim.api.nvim_create_autocmd({ "FileType" }, {
+  pattern = { "mdx", "markdown.mdx" },
+  callback = function()
+    vim.opt_local.expandtab = true
+    vim.opt_local.tabstop = 2
+    vim.opt_local.shiftwidth = 2
+  end,
+})

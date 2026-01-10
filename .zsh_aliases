@@ -6,6 +6,8 @@ alias rr="rm -rf"
 alias zshrc="$EDITOR $HOME/.zshrc && reload"
 alias aliases="$EDITOR $HOME/.zsh_aliases && reload"
 
+alias k=kubectl
+
 # Directory traversal
 alias ..="cd .."
 alias ...="cd ../.."

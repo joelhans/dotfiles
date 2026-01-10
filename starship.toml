@@ -1,6 +1,9 @@
 [container]
 disabled = true
 
+[docker_context]
+disabled = true
+
 [custom.devcontainer]
 # command = " echo \"$CONTAINER_ID $(grep 'image=' /run/.containerenv 2> /dev/null)\" "
 command = " echo $CONTAINER_ID "

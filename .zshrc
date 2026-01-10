@@ -13,6 +13,11 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # History time stamps
 HIST_STAMPS="yyyy-mm-dd"
 
+# Ignore history by putting a space in front of a command
+setopt hist_ignore_all_dups
+setopt hist_ignore_space
+HISTORY_IGNORE="(clear|export *|* clear)"
+
 source $HOME/.zsh_exports
 source $HOME/.zsh_aliases
 source <(fzf --zsh)
@@ -38,13 +43,24 @@ if command -v ngrok &>/dev/null; then
   eval "$(ngrok completion)"
 fi
 
-# kubectl completions
+# k8s completions
 source <(kubectl completion zsh)
+source <(minikube completion zsh)
 
 eval "$(direnv hook zsh)"
 # eval "$(dircolors ~/.dircolors)"
+if [[ "${widgets[zle-keymap-select]#user:}" == "starship_zle-keymap-select" || \
+      "${widgets[zle-keymap-select]#user:}" == "starship_zle-keymap-select-wrapped" ]]; then
+    zle -N zle-keymap-select "";
+fi
+
 eval "$(starship init zsh)"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+# Added by LM Studio CLI (lms)
+export PATH="$PATH:/Users/joelhans/.lmstudio/bin"
+alias python=python3
+alias pip=pip3
