@@ -1,3 +1,0 @@
-Remove kitty-related configuration files
-
-These files related to the Kitty terminal emulator were removed as they are no longer needed in this repository.
