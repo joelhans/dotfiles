@@ -86,10 +86,24 @@ local plugins = {
       "nvim-tree/nvim-web-devicons",
     },
     config = function()
+      local function my_on_attach(bufnr)
+        local api = require("nvim-tree.api")
+        -- bring in default mappings first, then override with ours
+        api.config.mappings.default_on_attach(bufnr)
+        local opts = { buffer = bufnr, silent = true, nowait = true, desc = "Resize NvimTree window" }
+        vim.keymap.set("n", ">", function()
+          vim.cmd("vertical resize +" .. vim.v.count1)
+        end, opts)
+        vim.keymap.set("n", "<", function()
+          vim.cmd("vertical resize -" .. vim.v.count1)
+        end, opts)
+      end
+
       require("nvim-tree").setup {
         view = {
           width = 40,
         },
+        on_attach = my_on_attach,
       }
     end,
   }
@@ -123,5 +137,20 @@ vim.api.nvim_create_autocmd({ "FileType" }, {
     vim.opt_local.expandtab = true
     vim.opt_local.tabstop = 2
     vim.opt_local.shiftwidth = 2
+  end,
+})
+
+-- Buffer-local < and > to resize side/auxiliary panes (keeps indent in normal files)
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "query", "tsplayground", "help", "man" },
+  callback = function(ev)
+    local buf = ev.buf
+    local opts = { buffer = buf, silent = true, nowait = true }
+    vim.keymap.set("n", ">", function()
+      vim.cmd("vertical resize +" .. vim.v.count1)
+    end, vim.tbl_extend("force", opts, { desc = "Widen window by count" }))
+    vim.keymap.set("n", "<", function()
+      vim.cmd("vertical resize -" .. vim.v.count1)
+    end, vim.tbl_extend("force", opts, { desc = "Narrow window by count" }))
   end,
 })
