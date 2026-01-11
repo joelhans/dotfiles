@@ -1,1 +1,0 @@
-{"ts":"2026-01-11T23:34:02.384Z","action":"add_guidelines","reason":"Avoid ES module export errors for tools","prompt_summary":"User requested I improve myself to create tools correctly and keep repo clean","implementation_summary":"Added BMO_TOOL_GUIDELINES.md documenting CJS-compatible _add_tool rules"}
