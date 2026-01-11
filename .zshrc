@@ -44,8 +44,12 @@ if command -v ngrok &>/dev/null; then
 fi
 
 # k8s completions
-source <(kubectl completion zsh)
-source <(minikube completion zsh)
+if command -v kubectl &>/dev/null; then
+  source <(kubectl completion zsh)
+fi
+if command -v minikube &>/dev/null; then
+  source <(minikube completion zsh)
+fi
 
 eval "$(direnv hook zsh)"
 # eval "$(dircolors ~/.dircolors)"
