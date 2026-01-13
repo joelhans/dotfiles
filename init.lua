@@ -246,9 +246,11 @@ local function open_shortcuts_popup()
   if not buf or buf == 0 then return end
   vim.api.nvim_buf_set_option(buf, 'bufhidden', 'wipe')
   vim.api.nvim_buf_set_option(buf, 'buftype', 'nofile')
-  vim.api.nvim_buf_set_option(buf, 'modifiable', false)
   vim.api.nvim_buf_set_option(buf, 'filetype', 'help')
+
+  -- Write lines while buffer is modifiable, then lock it
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+  vim.api.nvim_buf_set_option(buf, 'modifiable', false)
 
   local maxw = 0
   for _, l in ipairs(lines) do
