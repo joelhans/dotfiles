@@ -66,6 +66,15 @@ local function calc_nvimtree_width()
   return w
 end
 
+-- Helper: safe NvimTree resize via ex-command to match your nvim-tree version
+local function nvimtree_safe_resize(w)
+  local ok, api = pcall(require, "nvim-tree.api")
+  if not ok or not api.tree.is_visible() then return end
+  w = tonumber(w)
+  if not w or w < 1 then return end
+  vim.cmd("NvimTreeResize " .. w)
+end
+
 -- NvimTree helpers and keymaps
 vim.keymap.set("n", "<leader>e", function()
   require("nvim-tree.api").tree.toggle()
@@ -118,17 +127,17 @@ local plugins = {
         vim.keymap.set("n", ">", function()
           local curw = vim.api.nvim_win_get_width(0)
           user_tree_width_override = curw + vim.v.count1
-          api.tree.resize(user_tree_width_override)
+          nvimtree_safe_resize(user_tree_width_override)
         end, vim.tbl_extend("force", opts, { desc = "NvimTree: widen by count" }))
         vim.keymap.set("n", "<", function()
           local curw = vim.api.nvim_win_get_width(0)
           user_tree_width_override = math.max(1, curw - vim.v.count1)
-          api.tree.resize(user_tree_width_override)
+          nvimtree_safe_resize(user_tree_width_override)
         end, vim.tbl_extend("force", opts, { desc = "NvimTree: narrow by count" }))
         vim.keymap.set("n", "=", function()
           -- Reset to dynamic width (clear override)
           user_tree_width_override = nil
-          api.tree.resize(calc_nvimtree_width())
+          nvimtree_safe_resize(calc_nvimtree_width())
         end, vim.tbl_extend("force", opts, { desc = "NvimTree: reset width" }))
       end
 
@@ -174,7 +183,7 @@ vim.api.nvim_create_autocmd("VimResized", {
       -- Clear manual override on UI resize so dynamic width reapplies
       user_tree_width_override = nil
       if api.tree.is_visible() then
-        api.tree.resize(calc_nvimtree_width())
+        nvimtree_safe_resize(calc_nvimtree_width())
       end
     end)
   end,
