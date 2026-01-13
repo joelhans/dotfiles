@@ -150,14 +150,17 @@ end
 
 vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
 
--- Auto-resize NvimTree when UI size or window layout changes
-vim.api.nvim_create_autocmd({ "VimResized", "WinResized" }, {
+-- Auto-resize NvimTree when the entire UI is resized.
+-- Wrap in vim.schedule to avoid window ops during the WinResized event itself.
+vim.api.nvim_create_autocmd("VimResized", {
   callback = function()
-    local ok, api = pcall(require, "nvim-tree.api")
-    if not ok then return end
-    if api.tree.is_visible() then
-      api.tree.resize(calc_nvimtree_width())
-    end
+    vim.schedule(function()
+      local ok, api = pcall(require, "nvim-tree.api")
+      if not ok then return end
+      if api.tree.is_visible() then
+        api.tree.resize(calc_nvimtree_width())
+      end
+    end)
   end,
 })
 
