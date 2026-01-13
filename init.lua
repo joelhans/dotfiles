@@ -213,3 +213,70 @@ vim.api.nvim_create_autocmd("FileType", {
     end, vim.tbl_extend("force", opts, { desc = "Narrow window by count" }))
   end,
 })
+
+-- Cheatsheet popup for custom shortcuts
+local function open_shortcuts_popup()
+  local lines = {
+    "Custom shortcuts (press q or <Esc> to close)",
+    "",
+    "General",
+    "  <leader>sv    Source init.lua (reload config)",
+    "  <leader>c     Copy to system clipboard (normal/visual)",
+    "  <C-a>         Select all",
+    "",
+    "Telescope",
+    "  <leader>ff    Find files",
+    "  <leader>fg    Live grep",
+    "",
+    "NvimTree",
+    "  <leader>e     Toggle tree",
+    "  <leader>ec    Collapse all",
+    "  In NvimTree buffer:",
+    "    >           Widen tree by [count] (default 1)",
+    "    <           Narrow tree by [count]",
+    "    =           Reset to dynamic width",
+    "",
+    "Aux panes (help/man/tsplayground/query)",
+    "  >           Widen window by [count]",
+    "  <           Narrow window by [count]",
+  }
+
+  local buf = vim.api.nvim_create_buf(false, true)
+  if not buf or buf == 0 then return end
+  vim.api.nvim_buf_set_option(buf, 'bufhidden', 'wipe')
+  vim.api.nvim_buf_set_option(buf, 'buftype', 'nofile')
+  vim.api.nvim_buf_set_option(buf, 'modifiable', false)
+  vim.api.nvim_buf_set_option(buf, 'filetype', 'help')
+  vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+
+  local maxw = 0
+  for _, l in ipairs(lines) do
+    if #l > maxw then maxw = #l end
+  end
+  local ui = vim.api.nvim_list_uis()[1]
+  local width = math.min(maxw + 4, ui.width - 4)
+  local height = math.min(#lines + 2, ui.height - 4)
+  local row = math.floor((ui.height - height) / 2)
+  local col = math.floor((ui.width - width) / 2)
+
+  local win = vim.api.nvim_open_win(buf, true, {
+    relative = 'editor',
+    style = 'minimal',
+    border = 'rounded',
+    width = width,
+    height = height,
+    row = row,
+    col = col,
+  })
+
+  -- Close helpers
+  local function close_popup()
+    if win and vim.api.nvim_win_is_valid(win) then
+      vim.api.nvim_win_close(win, true)
+    end
+  end
+  vim.keymap.set('n', 'q', close_popup, { buffer = buf, nowait = true, silent = true })
+  vim.keymap.set('n', '<Esc>', close_popup, { buffer = buf, nowait = true, silent = true })
+end
+
+vim.keymap.set('n', '<leader>?', open_shortcuts_popup, { desc = 'Show custom shortcuts' })
