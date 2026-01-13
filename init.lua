@@ -226,7 +226,7 @@ local function open_shortcuts_popup()
     "  <leader>c     Copy to system clipboard (normal/visual)",
     "  <leader>y     Copy entire buffer to system clipboard",
     "  <leader>a     Select entire buffer",
-    "  <leader>? or <leader>/  Show this shortcuts popup",
+    "  Alt-k / Cmd-k Show this shortcuts popup",
     "",
     "Telescope",
     "  <leader>ff    Find files",
@@ -285,6 +285,6 @@ local function open_shortcuts_popup()
   vim.keymap.set('n', '<Esc>', close_popup, { buffer = buf, nowait = true, silent = true })
 end
 
--- Map both <leader>? and <leader>/ to open the popup (some terminals send ?) 
-vim.keymap.set('n', '<leader>?', open_shortcuts_popup, { desc = 'Show custom shortcuts' })
-vim.keymap.set('n', '<leader>/', open_shortcuts_popup, { desc = 'Show custom shortcuts' })
+-- Keymaps to open the popup: Alt-k (terminal) and Cmd-k (GUI clients)
+vim.keymap.set('n', '<M-k>', open_shortcuts_popup, { desc = 'Show custom shortcuts (Alt-k)' })
+vim.keymap.set('n', '<D-k>', open_shortcuts_popup, { desc = 'Show custom shortcuts (Cmd-k, GUI only)' })
