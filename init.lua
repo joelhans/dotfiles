@@ -48,6 +48,23 @@ vim.keymap.set({ 'n', 'v' }, "<leader>c", [["+y]])
 -- Ctrl-A to copy all
 vim.keymap.set({ 'n', 'v' }, '<C-a>', '<esc>gg0VG<CR>')
 
+-- NvimTree helpers and keymaps
+vim.keymap.set("n", "<leader>e", function()
+  require("nvim-tree.api").tree.toggle()
+end, { desc = "Toggle NvimTree" })
+vim.keymap.set("n", "<leader>ec", function()
+  require("nvim-tree.api").tree.collapse_all()
+end, { desc = "Collapse NvimTree" })
+
+-- Dynamic width for NvimTree based on current UI width
+local function calc_nvimtree_width()
+  local cols = vim.o.columns
+  local w = math.floor(cols * 0.22)  -- 22% of UI width; tweak as needed
+  if w < 24 then w = 24 end          -- minimum width
+  if w > 48 then w = 48 end          -- maximum width
+  return w
+end
+
 local plugins = {
   { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
   {
@@ -101,7 +118,8 @@ local plugins = {
 
       require("nvim-tree").setup {
         view = {
-          width = 40,
+          -- width can be a function on recent nvim-tree versions
+          width = calc_nvimtree_width,
         },
         on_attach = my_on_attach,
       }
@@ -125,10 +143,23 @@ vim.cmd.colorscheme "catppuccin"
 -- Functions to always open nvim-tree on nvim open, and close when there are no
 -- more buffers.
 local function open_nvim_tree()
-  require("nvim-tree.api").tree.open()
+  local api = require("nvim-tree.api")
+  api.tree.open()
+  api.tree.resize(calc_nvimtree_width())
 end
 
 vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
+
+-- Auto-resize NvimTree when UI size or window layout changes
+vim.api.nvim_create_autocmd({ "VimResized", "WinResized" }, {
+  callback = function()
+    local ok, api = pcall(require, "nvim-tree.api")
+    if not ok then return end
+    if api.tree.is_visible() then
+      api.tree.resize(calc_nvimtree_width())
+    end
+  end,
+})
 
 -- Force spaces (no tabs) for MDX files
 vim.api.nvim_create_autocmd({ "FileType" }, {
