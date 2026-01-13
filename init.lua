@@ -6,6 +6,7 @@ vim.api.nvim_buf_set_extmark = function(...)
   return 0
 end
 
+-- Make common editing sensible
 vim.cmd("set expandtab")
 vim.cmd("set tabstop=2")
 vim.cmd("set softtabstop=0")
@@ -15,6 +16,10 @@ vim.cmd("set linebreak")
 vim.cmd("set formatoptions-=t")
 vim.cmd("set number")
 vim.cmd("set clipboard+=unnamedplus")
+
+-- Reduce mapping wait to avoid 1s delay on <leader> key sequences
+vim.o.timeout = true
+vim.o.timeoutlen = 300
 
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -33,9 +38,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
--- Make sure to setup `mapleader` and `maplocalleader` before
--- loading lazy.nvim so that mappings are correct.
--- This is also a good place to setup other settings (vim.opt)
+-- Make sure to setup `mapleader` and `maplocalleader` before loading lazy.nvim
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
@@ -48,6 +51,21 @@ vim.keymap.set({ 'n', 'v' }, "<leader>c", [["+y]])
 -- Ctrl-A to copy all
 vim.keymap.set({ 'n', 'v' }, '<C-a>', '<esc>gg0VG<CR>')
 
+-- Dynamic width state for NvimTree
+local user_tree_width_override = nil
+
+-- Dynamic width for NvimTree based on current UI width (or user override)
+local function calc_nvimtree_width()
+  if user_tree_width_override and user_tree_width_override > 0 then
+    return user_tree_width_override
+  end
+  local cols = vim.o.columns
+  local w = math.floor(cols * 0.22)  -- 22% of UI width; tweak as needed
+  if w < 24 then w = 24 end          -- minimum width
+  if w > 48 then w = 48 end          -- maximum width
+  return w
+end
+
 -- NvimTree helpers and keymaps
 vim.keymap.set("n", "<leader>e", function()
   require("nvim-tree.api").tree.toggle()
@@ -55,15 +73,6 @@ end, { desc = "Toggle NvimTree" })
 vim.keymap.set("n", "<leader>ec", function()
   require("nvim-tree.api").tree.collapse_all()
 end, { desc = "Collapse NvimTree" })
-
--- Dynamic width for NvimTree based on current UI width
-local function calc_nvimtree_width()
-  local cols = vim.o.columns
-  local w = math.floor(cols * 0.22)  -- 22% of UI width; tweak as needed
-  if w < 24 then w = 24 end          -- minimum width
-  if w > 48 then w = 48 end          -- maximum width
-  return w
-end
 
 local plugins = {
   { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
@@ -76,7 +85,6 @@ local plugins = {
     build = ":TSUpdate",
     config = function()
       local configs = require("nvim-treesitter.configs")
-
       configs.setup({
         ensure_installed = { "vim", "javascript", "html", "lua", "vimdoc", "query", "markdown", "markdown_inline" },
         sync_install = false,
@@ -84,9 +92,7 @@ local plugins = {
         highlight = { enable = true },
         indent = {
           enable = true,
-          disable = {
-            "markdown", -- indentation at bullet points is worse
-          },
+          disable = { "markdown" },
         },
       })
     end,
@@ -107,18 +113,28 @@ local plugins = {
         local api = require("nvim-tree.api")
         -- bring in default mappings first, then override with ours
         api.config.mappings.default_on_attach(bufnr)
-        local opts = { buffer = bufnr, silent = true, nowait = true, desc = "Resize NvimTree window" }
+        local opts = { buffer = bufnr, silent = true, nowait = true }
+        -- Resize NvimTree window and persist user override so it doesn't get reset
         vim.keymap.set("n", ">", function()
-          vim.cmd("vertical resize +" .. vim.v.count1)
-        end, opts)
+          local curw = vim.api.nvim_win_get_width(0)
+          user_tree_width_override = curw + vim.v.count1
+          api.tree.resize(user_tree_width_override)
+        end, vim.tbl_extend("force", opts, { desc = "NvimTree: widen by count" }))
         vim.keymap.set("n", "<", function()
-          vim.cmd("vertical resize -" .. vim.v.count1)
-        end, opts)
+          local curw = vim.api.nvim_win_get_width(0)
+          user_tree_width_override = math.max(1, curw - vim.v.count1)
+          api.tree.resize(user_tree_width_override)
+        end, vim.tbl_extend("force", opts, { desc = "NvimTree: narrow by count" }))
+        vim.keymap.set("n", "=", function()
+          -- Reset to dynamic width (clear override)
+          user_tree_width_override = nil
+          api.tree.resize(calc_nvimtree_width())
+        end, vim.tbl_extend("force", opts, { desc = "NvimTree: reset width" }))
       end
 
       require("nvim-tree").setup {
         view = {
-          -- width can be a function on recent nvim-tree versions
+          -- width can be a function; we respect user override when set
           width = calc_nvimtree_width,
         },
         on_attach = my_on_attach,
@@ -128,14 +144,11 @@ local plugins = {
 }
 
 local opts = {}
-
 require("lazy").setup(plugins, opts)
 
 local builtin = require("telescope.builtin")
 vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
-
-
 
 require("catppuccin").setup()
 vim.cmd.colorscheme "catppuccin"
@@ -158,6 +171,8 @@ vim.api.nvim_create_autocmd("VimResized", {
     vim.schedule(function()
       local ok, api = pcall(require, "nvim-tree.api")
       if not ok then return end
+      -- Clear manual override on UI resize so dynamic width reapplies
+      user_tree_width_override = nil
       if api.tree.is_visible() then
         api.tree.resize(calc_nvimtree_width())
       end
