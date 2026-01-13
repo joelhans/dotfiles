@@ -140,18 +140,19 @@ vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
 require("catppuccin").setup()
 vim.cmd.colorscheme "catppuccin"
 
--- Functions to always open nvim-tree on nvim open, and close when there are no
--- more buffers.
-local function open_nvim_tree()
-  local api = require("nvim-tree.api")
-  api.tree.open()
-  api.tree.resize(calc_nvimtree_width())
-end
-
-vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
+-- Open nvim-tree on startup (VimEnter). Defer with vim.schedule and avoid immediate resize.
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    vim.schedule(function()
+      local ok, api = pcall(require, "nvim-tree.api")
+      if not ok then return end
+      api.tree.open()
+    end)
+  end,
+})
 
 -- Auto-resize NvimTree when the entire UI is resized.
--- Wrap in vim.schedule to avoid window ops during the WinResized event itself.
+-- Wrap in vim.schedule to avoid window ops during the event callback.
 vim.api.nvim_create_autocmd("VimResized", {
   callback = function()
     vim.schedule(function()
