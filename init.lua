@@ -48,10 +48,10 @@ vim.keymap.set('n', '<Leader>sv', ':source $MYVIMRC<CR>')
 vim.keymap.set('v', ' ', '')
 -- Copy to system clipboard (works on a visual selection)
 vim.keymap.set({ 'n', 'v' }, "<leader>c", [["+y]])
--- Copy entire buffer to system clipboard
-vim.keymap.set('n', '<leader>Y', [[ggVG"+y<Esc>]], { desc = 'Copy entire buffer to system clipboard' })
--- Optional: Select entire buffer
-vim.keymap.set('n', '<leader>A', 'ggVG', { desc = 'Select entire buffer' })
+-- Copy entire buffer to system clipboard (lowercase)
+vim.keymap.set('n', '<leader>y', [[ggVG"+y<Esc>]], { desc = 'Copy entire buffer to system clipboard' })
+-- Optional: Select entire buffer (lowercase)
+vim.keymap.set('n', '<leader>a', 'ggVG', { desc = 'Select entire buffer' })
 
 -- Dynamic width state for NvimTree
 local user_tree_width_override = nil
@@ -224,8 +224,8 @@ local function open_shortcuts_popup()
     "General",
     "  <leader>sv    Source init.lua (reload config)",
     "  <leader>c     Copy to system clipboard (normal/visual)",
-    "  <leader>Y     Copy entire buffer to system clipboard",
-    "  <leader>A     Select entire buffer",
+    "  <leader>y     Copy entire buffer to system clipboard",
+    "  <leader>a     Select entire buffer",
     "  <leader>? or <leader>/  Show this shortcuts popup",
     "",
     "Telescope",
