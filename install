@@ -1,61 +1,97 @@
-#!/bin/bash
+#!/usr/bin/env sh
+set -eu
 
-# Determine if Linux or macOS
-case "$(uname -s)" in
-  Linux*)     MACHINE=Linux;;
-  Darwin*)    MACHINE=MacOS;;
-esac
+# Determine OS
+UNAME=$(uname -s 2>/dev/null || echo unknown)
+case "$UNAME" in
+  Linux*)  MACHINE=Linux ;;
+  Darwin*) MACHINE=MacOS ;;
+  *)       MACHINE=UNKNOWN ;;
+fi
 
 # Get dotfiles directory
-DOTFILES_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+DOTFILES_DIR=$(cd "$(dirname "$0")" && pwd)
+
+# Ensure base config dirs exist
+mkdir -p "$HOME/.config" "$HOME/.config/nvim" "$HOME/.config/ghostty"
 
 ####################
 # Git
 ####################
 
-ln -sfv $DOTFILES_DIR/.gitconfig $HOME/.gitconfig
-ln -sfv $DOTFILES_DIR/.gitignore_global $HOME/.gitignore_global
-[ -f $MACHINE = "Linux" ] && ln -sfv $DOTFILES_DIR/.gitconfig-linux $HOME/.gitconfig-linux
-[ -f $MACHINE = "MacOS" ] && ln -sfv $DOTFILES_DIR/.gitconfig-macos $HOME/.gitconfig-macos
+ln -sfv "$DOTFILES_DIR/.gitconfig" "$HOME/.gitconfig"
+if [ -f "$DOTFILES_DIR/.gitignore_global" ]; then
+  ln -sfv "$DOTFILES_DIR/.gitignore_global" "$HOME/.gitignore_global"
+fi
+if [ -f "$DOTFILES_DIR/.gitconfig-linux" ] && [ "$MACHINE" = "Linux" ]; then
+  ln -sfv "$DOTFILES_DIR/.gitconfig-linux" "$HOME/.gitconfig-linux"
+fi
+if [ -f "$DOTFILES_DIR/.gitconfig-macos" ] && [ "$MACHINE" = "MacOS" ]; then
+  ln -sfv "$DOTFILES_DIR/.gitconfig-macos" "$HOME/.gitconfig-macos"
+fi
 
 ####################
-# ZSH
+# ZSH / Shell
 ####################
 
-ln -sfv "$DOTFILES_DIR/.zshrc" $HOME/.zshrc
-ln -sfv "$DOTFILES_DIR/.zsh_exports" $HOME/.zsh_exports
-ln -sfv "$DOTFILES_DIR/.zsh_aliases" $HOME/.zsh_aliases
-ln -sfv "$DOTFILES_DIR/.dircolors" $HOME/.dircolors
-ln -sfv "$DOTFILES_DIR/starship.toml" $HOME/.config/starship.toml
-curl -fsSL https://starship.rs/install.sh | sh -s -- -y
-# git clone https://github.com/zsh-users/zsh-syntax-highlighting.git $HOME/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+ln -sfv "$DOTFILES_DIR/.zshrc" "$HOME/.zshrc"
+ln -sfv "$DOTFILES_DIR/.zsh_exports" "$HOME/.zsh_exports"
+ln -sfv "$DOTFILES_DIR/.zsh_aliases" "$HOME/.zsh_aliases"
+# Optional: only link if present in the repo
+if [ -f "$DOTFILES_DIR/.dircolors" ]; then
+  ln -sfv "$DOTFILES_DIR/.dircolors" "$HOME/.dircolors"
+fi
 
-# nvim
-
-ln -sfv "$DOTFILES_DIR/kitty.conf" $HOME/.config/kitty/kitty.conf
-ln -sfv "$DOTFILES_DIR/init.lua" $HOME/.config/nvim/init.lua
-
-####################
-# VS Code
-####################
-
-# if [[ ! -d ~/.config/Code/User ]]; then mkdir ~/.config/Code/User; fi
-# ln -sfv "$DOTFILES_DIR/vscode/settings.json" ~/.config/Code/User/settings.json
+# Starship
+ln -sfv "$DOTFILES_DIR/starship.toml" "$HOME/.config/starship.toml"
+if ! command -v starship >/dev/null 2>&1; then
+  curl -fsSL https://starship.rs/install.sh | sh -s -- -y
+fi
 
 ####################
-# Gnome
+# Editors / Neovim
 ####################
 
-if [ -f $MACHINE = "Linux" ]
-then
+ln -sfv "$DOTFILES_DIR/init.lua" "$HOME/.config/nvim/init.lua"
 
-  gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-5 '["<Alt>5"]'
-  gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-5 '["<Shift><Alt>5"]'
-  gsettings set org.gnome.shell.app-switcher current-workspace-only true
+####################
+# Terminal: Ghostty (kitty removed)
+####################
 
-  # Install Nordzy icon theme
-  git clone https://github.com/alvatip/Nordzy-icon $HOME/src/
-  cd $HOME/src/Nordzy-icon/
-  ./install.sh
+# If a Ghostty config exists in the repo, link it to standard locations
+if [ -f "$DOTFILES_DIR/ghostty" ]; then
+  # XDG location (Linux and generally supported)
+  ln -sfv "$DOTFILES_DIR/ghostty" "$HOME/.config/ghostty/config"
 
+  # macOS native location
+  if [ "$MACHINE" = "MacOS" ]; then
+    MAC_GHOSTTY_DIR="$HOME/Library/Application Support/com.mitchellh.ghostty"
+    mkdir -p "$MAC_GHOSTTY_DIR"
+    ln -sfv "$DOTFILES_DIR/ghostty" "$MAC_GHOSTTY_DIR/config"
+  fi
+fi
+
+####################
+# VS Code (optional)
+####################
+
+# if [ ! -d "$HOME/.config/Code/User" ]; then mkdir -p "$HOME/.config/Code/User"; fi
+# ln -sfv "$DOTFILES_DIR/vscode/settings.json" "$HOME/.config/Code/User/settings.json"
+
+####################
+# Gnome (Linux only)
+####################
+
+if [ "$MACHINE" = "Linux" ]; then
+  # These may fail on minimal systems without gsettings; don't abort the script
+  gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-5 '["<Alt>5"]' || true
+  gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-5 '["<Shift><Alt>5"]' || true
+  gsettings set org.gnome.shell.app-switcher current-workspace-only true || true
+
+  # Install Nordzy icon theme (idempotent)
+  mkdir -p "$HOME/src"
+  if [ ! -d "$HOME/src/Nordzy-icon" ]; then
+    git clone https://github.com/alvatip/Nordzy-icon "$HOME/src/Nordzy-icon"
+  fi
+  (cd "$HOME/src/Nordzy-icon" && ./install.sh) || true
 fi

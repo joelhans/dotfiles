@@ -44,14 +44,14 @@ alias gcm='git checkout main'
 alias gst='git status'
 alias gs='git switch $1'
 alias gsync='git pull upstream main && git push origin main'
-alias gpo='git push origin $(current_branch)'
+alias gpo='git push -u origin HEAD'
 alias gnew='git checkout -b $1'
 alias gca='git commit -a'
 alias ga='git add'
 alias gca!='git commit -a --amend'
 alias glr='git pull --rebase'
 alias gam='git add . && git commit -m $1'
-alias gampo='git add . && git commit -m $1 && git push origin $(current_branch)'
+alias gampo='git add . && git commit -m $1 && git push -u origin HEAD'
 
 # Distrobox
 function dbxc {
