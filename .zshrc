@@ -69,3 +69,10 @@ export NVM_DIR="$HOME/.nvm"
 export PATH="$PATH:/Users/joelhans/.lmstudio/bin"
 alias python=python3
 alias pip=pip3
+
+# bun completions
+[ -s "/var/home/joel/.bun/_bun" ] && source "/var/home/joel/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
