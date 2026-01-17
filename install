@@ -7,7 +7,7 @@ case "$UNAME" in
   Linux*)  MACHINE=Linux ;;
   Darwin*) MACHINE=MacOS ;;
   *)       MACHINE=UNKNOWN ;;
-fi
+esac
 
 # Get dotfiles directory
 DOTFILES_DIR=$(cd "$(dirname "$0")" && pwd)
