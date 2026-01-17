@@ -1,5 +1,6 @@
 # Setting $PATH
 export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin:$PATH
+export BMO_SOURCE=~/src/bmo-agent
 
 # Enable command auto-correction.
 ENABLE_CORRECTION="true"
