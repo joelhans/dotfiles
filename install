@@ -13,7 +13,7 @@ esac
 DOTFILES_DIR=$(cd "$(dirname "$0")" && pwd)
 
 # Ensure base config dirs exist
-mkdir -p "$HOME/.config" "$HOME/.config/nvim" "$HOME/.config/ghostty"
+mkdir -p "$HOME/.config" "$HOME/.config/nvim" "$HOME/.config/ghostty" "$HOME/.config/zellij"
 
 ####################
 # Git
@@ -72,6 +72,15 @@ if [ -f "$DOTFILES_DIR/ghostty" ]; then
 fi
 
 ####################
+# Zellij
+####################
+
+# Link Zellij config from ./zellij -> ~/.config/zellij/config.kdl
+if [ -f "$DOTFILES_DIR/zellij" ]; then
+  ln -sfv "$DOTFILES_DIR/zellij" "$HOME/.config/zellij/config.kdl"
+fi
+
+####################
 # VS Code (optional)
 ####################
 
@@ -79,19 +88,25 @@ fi
 # ln -sfv "$DOTFILES_DIR/vscode/settings.json" "$HOME/.config/Code/User/settings.json"
 
 ####################
-# Gnome (Linux only)
+# Desktop tweaks (Linux only)
 ####################
 
 if [ "$MACHINE" = "Linux" ]; then
-  # These may fail on minimal systems without gsettings; don't abort the script
-  gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-5 '["<Alt>5"]' || true
-  gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-5 '["<Shift><Alt>5"]' || true
-  gsettings set org.gnome.shell.app-switcher current-workspace-only true || true
+  # Detect a local desktop session (avoid remote/VPS)
+  # Prefer XDG_CURRENT_DESKTOP / DESKTOP_SESSION; fall back to DISPLAY / WAYLAND_DISPLAY
+  if [ -n "${XDG_CURRENT_DESKTOP:-}" ] || [ -n "${DESKTOP_SESSION:-}" ] || [ -n "${WAYLAND_DISPLAY:-}" ] || [ -n "${DISPLAY:-}" ]; then
+    # Run gsettings only when available
+    if command -v gsettings >/dev/null 2>&1; then
+      gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-5 '["<Alt>5"]' || true
+      gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-5 '["<Shift><Alt>5"]' || true
+      gsettings set org.gnome.shell.app-switcher current-workspace-only true || true
+    fi
 
-  # Install Nordzy icon theme (idempotent)
-  mkdir -p "$HOME/src"
-  if [ ! -d "$HOME/src/Nordzy-icon" ]; then
-    git clone https://github.com/alvatip/Nordzy-icon "$HOME/src/Nordzy-icon"
+    # Install Nordzy icon theme (idempotent)
+    mkdir -p "$HOME/src"
+    if [ ! -d "$HOME/src/Nordzy-icon" ]; then
+      git clone https://github.com/alvatip/Nordzy-icon "$HOME/src/Nordzy-icon"
+    fi
+    (cd "$HOME/src/Nordzy-icon" && ./install.sh) || true
   fi
-  (cd "$HOME/src/Nordzy-icon" && ./install.sh) || true
 fi

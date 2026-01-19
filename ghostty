@@ -2,5 +2,14 @@ theme = catppuccin-mocha
 window-padding-x = 10
 window-padding-y = 10
 copy-on-select = true
+
+# Keybindings
 keybind = shift+enter=text:\x1b\r
 keybind = ctrl+v=paste_from_clipboard
+
+# Disable Ghostty's use of Ctrl+Tab for its own tabs by overriding it.
+# Note: terminals generally don't deliver a native Ctrl+Tab sequence to apps.
+# To make Ctrl+Tab useful in Zellij, remap it to send an Alt+]/Alt+[ sequence,
+# which Zellij is configured to handle for tab navigation.
+keybind = ctrl+tab=text:\x1b]
+keybind = ctrl+shift+tab=text:\x1b[

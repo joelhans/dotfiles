@@ -1,0 +1,18 @@
+// Zellij configuration (KDL)
+// NOTE: Ctrl+Tab is not reliably delivered to terminal apps. Most terminals
+// either treat Tab as a control character (no Ctrl modifier) or intercept
+// Ctrl+Tab for their own tab switching. Use the bindings below instead.
+//
+// Place at: ~/.config/zellij/config.kdl (install script will symlink ./zellij)
+
+keybinds {
+  // Apply in all modes
+  shared {
+    // Robust tab navigation (works in most terminals)
+    bind "Ctrl PageDown" "Alt ]" { GoToNextTab; }
+    bind "Ctrl PageUp"   "Alt [" { GoToPreviousTab; }
+
+    // If your terminal delivers BackTab for Shift+Tab, these may work too
+    // bind "BackTab" { GoToPreviousTab; }
+  }
+}
