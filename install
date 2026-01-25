@@ -71,6 +71,33 @@ if [ -f "$DOTFILES_DIR/ghostty" ]; then
   fi
 fi
 
+# Ensure Catppuccin Mocha theme is installed for Ghostty
+GHOSTTY_THEME_DIR="$HOME/.config/ghostty/themes"
+GHOSTTY_THEME_FILE="$GHOSTTY_THEME_DIR/catppuccin-mocha.conf"
+CATPPUCCIN_MOCHA_URL="https://raw.githubusercontent.com/catppuccin/ghostty/refs/heads/main/themes/catppuccin-mocha.conf"
+mkdir -p "$GHOSTTY_THEME_DIR"
+if [ ! -f "$GHOSTTY_THEME_FILE" ]; then
+  echo "Installing Ghostty theme: catppuccin-mocha"
+  if command -v curl >/dev/null 2>&1; then
+    curl -fsSL "$CATPPUCCIN_MOCHA_URL" -o "$GHOSTTY_THEME_FILE"
+  elif command -v wget >/dev/null 2>&1; then
+    wget -q -O "$GHOSTTY_THEME_FILE" "$CATPPUCCIN_MOCHA_URL"
+  else
+    echo "Warning: neither curl nor wget found; cannot download Ghostty theme." >&2
+  fi
+fi
+
+# On macOS, also expose the theme under the native Ghostty config dir for completeness
+if [ "$MACHINE" = "MacOS" ]; then
+  MAC_GHOSTTY_DIR="$HOME/Library/Application Support/com.mitchellh.ghostty"
+  MAC_GHOSTTY_THEME_DIR="$MAC_GHOSTTY_DIR/themes"
+  mkdir -p "$MAC_GHOSTTY_THEME_DIR"
+  # Symlink to the XDG theme file so it's kept up-to-date
+  if [ -f "$GHOSTTY_THEME_FILE" ]; then
+    ln -sfv "$GHOSTTY_THEME_FILE" "$MAC_GHOSTTY_THEME_DIR/catppuccin-mocha.conf"
+  fi
+fi
+
 ####################
 # Zellij
 ####################
