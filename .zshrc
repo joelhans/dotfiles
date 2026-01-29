@@ -14,6 +14,15 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # History time stamps
 HIST_STAMPS="yyyy-mm-dd"
 
+# History settings: shared, immediate append, and larger size
+export HISTFILE="$HOME/.zsh_history"
+export HISTSIZE=100000
+export SAVEHIST=100000
+setopt append_history         # append rather than overwrite
+setopt inc_append_history     # write each command immediately
+setopt share_history          # share history across all sessions
+setopt extended_history       # timestamps in the history file
+
 # Ignore history by putting a space in front of a command
 setopt hist_ignore_all_dups
 setopt hist_ignore_space

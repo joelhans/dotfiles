@@ -86,6 +86,7 @@ vim.keymap.set("n", "<leader>ec", function()
 end, { desc = "Collapse NvimTree" })
 
 local plugins = {
+  { name = "nvim-d-splashzone", dir = "~/src/nvim-d-splashzone", lazy = false },
   { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
   {
     'nvim-telescope/telescope.nvim', tag = '0.1.8',

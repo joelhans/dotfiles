@@ -4,7 +4,6 @@ window-padding-y = 10
 copy-on-select = true
 
 # Keybindings
-keybind = shift+enter=text:\x1b\r
 keybind = ctrl+v=paste_from_clipboard
 
 # Disable Ghostty's use of Ctrl+Tab for its own tabs by overriding it.
