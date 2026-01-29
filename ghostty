@@ -1,4 +1,4 @@
-theme = catppuccin-mocha
+theme = catppuccin-mocha.conf
 window-padding-x = 10
 window-padding-y = 10
 copy-on-select = true

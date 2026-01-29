@@ -85,3 +85,32 @@ alias pip=pip3
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# BEGIN BMO: zl helper for zellij
+# Ensure any prior alias doesn't shadow the function
+unalias zl 2>/dev/null
+zl() {
+  if [ $# -eq 0 ]; then
+    command zellij list-sessions
+  else
+    command zellij attach "$@"
+  fi
+}
+# END BMO: zl helper for zellij
+
+# BEGIN BMO: zc — cleanup exited zellij sessions
+# Ensure any prior alias doesn't shadow the function
+unalias zc 2>/dev/null
+zc() {
+  # Collect exited session names
+  local exited
+  exited=$(command zellij list-sessions --no-formatting | awk '/EXITED/ {print $1}')
+
+  if [ -z "$exited" ]; then
+    echo "No exited zellij sessions to delete."
+    return 0
+  fi
+
+  printf "%s\n" "$exited" | xargs -n 1 command zellij delete-session
+}
+# END BMO: zc — cleanup exited zellij sessions
