@@ -108,6 +108,24 @@ if [ -f "$DOTFILES_DIR/zellij" ]; then
 fi
 
 ####################
+# lazygit
+####################
+
+# Link lazygit config:
+# - macOS: ~/Library/Application Support/lazygit/config.yml
+# - Linux: ~/.config/lazygit/config.yml (existing logic)
+if [ -f "$DOTFILES_DIR/lazygit.yml" ]; then
+  if [ "$MACHINE" = "MacOS" ]; then
+    MAC_LG_DIR="$HOME/Library/Application Support/lazygit"
+    mkdir -p "$MAC_LG_DIR"
+    ln -sfv "$DOTFILES_DIR/lazygit.yml" "$MAC_LG_DIR/config.yml"
+  else
+    mkdir -p "$HOME/.config/lazygit"
+    ln -sfv "$DOTFILES_DIR/lazygit.yml" "$HOME/.config/lazygit/config.yml"
+  fi
+fi
+
+####################
 # VS Code (optional)
 ####################
 
