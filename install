@@ -124,9 +124,16 @@ if [ "$MACHINE" = "Linux" ]; then
   if [ -n "${XDG_CURRENT_DESKTOP:-}" ] || [ -n "${DESKTOP_SESSION:-}" ] || [ -n "${WAYLAND_DISPLAY:-}" ] || [ -n "${DISPLAY:-}" ]; then
     # Run gsettings only when available
     if command -v gsettings >/dev/null 2>&1; then
+      # Workspace keybindings
       gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-5 '["<Alt>5"]' || true
       gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-5 '["<Shift><Alt>5"]' || true
       gsettings set org.gnome.shell.app-switcher current-workspace-only true || true
+
+      # Keyboard: Caps Lock as Backspace, Right Alt as Compose key
+      gsettings set org.gnome.desktop.input-sources xkb-options "['caps:backspace', 'compose:ralt']" || true
+
+      # IBus: prevent Right Alt from triggering input method switch
+      gsettings set org.freedesktop.ibus.general.hotkey trigger "['Control+space']" || true
     fi
 
     # Install Nordzy icon theme (idempotent)
