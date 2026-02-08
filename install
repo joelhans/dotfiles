@@ -147,11 +147,38 @@ if [ "$MACHINE" = "Linux" ]; then
       gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-5 '["<Shift><Alt>5"]' || true
       gsettings set org.gnome.shell.app-switcher current-workspace-only true || true
 
-      # Keyboard: Caps Lock as Backspace, Right Alt as Compose key
-      gsettings set org.gnome.desktop.input-sources xkb-options "['caps:backspace', 'compose:ralt']" || true
+      # Keyboard: Caps Lock as Backspace
+      gsettings set org.gnome.desktop.input-sources xkb-options "['caps:backspace']" || true
 
-      # IBus: prevent Right Alt from triggering input method switch
+      # IBus: use system keyboard layout, prevent input method hijacking keys
+      gsettings set org.freedesktop.ibus.general use-system-keyboard-layout true || true
       gsettings set org.freedesktop.ibus.general.hotkey trigger "['Control+space']" || true
+
+      # Custom keybinding: Shift+Alt+minus types em dash (requires wtype)
+      # Only set up if wtype is available
+      if command -v wtype >/dev/null 2>&1; then
+        # Get existing custom keybindings
+        EXISTING=$(gsettings get org.gnome.settings-daemon.plugins.media-keys custom-keybindings 2>/dev/null || echo "@as []")
+        
+        # Add our keybinding path if not already present
+        EMDASH_PATH="/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/emdash/"
+        if ! echo "$EXISTING" | grep -q "emdash"; then
+          if [ "$EXISTING" = "@as []" ]; then
+            NEW_LIST="['$EMDASH_PATH']"
+          else
+            # Remove trailing ] and append our path
+            NEW_LIST=$(echo "$EXISTING" | sed "s/]$/, '$EMDASH_PATH']/")
+          fi
+          gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "$NEW_LIST" || true
+        fi
+        
+        # Configure the em dash keybinding
+        gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:$EMDASH_PATH name "Em Dash" || true
+        gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:$EMDASH_PATH command "wtype —" || true
+        gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:$EMDASH_PATH binding "<Shift><Alt>minus" || true
+      else
+        echo "Note: Install wtype for Shift+Alt+minus em dash shortcut (rpm-ostree install wtype)"
+      fi
     fi
 
     # Install Nordzy icon theme (idempotent)
