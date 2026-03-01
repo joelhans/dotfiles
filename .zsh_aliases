@@ -53,6 +53,12 @@ alias glr='git pull --rebase'
 alias gam='git add . && git commit -m $1'
 alias gampo='git add . && git commit -m $1 && git push -u origin HEAD'
 
+# Zellij (zl and zc are functions in .zshrc)
+alias zj='zellij'
+alias za='zellij attach'
+alias zk='zellij kill-session'
+alias zkall='zellij kill-all-sessions'
+
 # Distrobox
 function dbxc {
   distrobox create \
