@@ -12,3 +12,7 @@ keybind = ctrl+v=paste_from_clipboard
 # which Zellij is configured to handle for tab navigation.
 keybind = ctrl+tab=text:\x1b]
 keybind = ctrl+shift+tab=text:\x1b[
+
+macos-option-as-alt = left
+
+shell-integration-features = ssh-terminfo,ssh-env

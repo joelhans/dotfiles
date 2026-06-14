@@ -86,3 +86,6 @@ function drun {
     $1 \
     $2
 }
+
+# GitHub CLI
+alias ghghost="gh api /notifications -X GET | jq -r '.[].id' | xargs -I {} gh api /notifications/threads/{} -X PATCH"
