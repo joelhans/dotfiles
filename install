@@ -174,23 +174,47 @@ fi
 
 if [ "$MACHINE" = "Linux" ]; then
   # Detect a local desktop session (avoid remote/VPS)
-  # Prefer XDG_CURRENT_DESKTOP / DESKTOP_SESSION; fall back to DISPLAY / WAYLAND_DISPLAY
   if [ -n "${XDG_CURRENT_DESKTOP:-}" ] || [ -n "${DESKTOP_SESSION:-}" ] || [ -n "${WAYLAND_DISPLAY:-}" ] || [ -n "${DISPLAY:-}" ]; then
-    # Run gsettings only when available
-    if command -v gsettings >/dev/null 2>&1; then
-      # Workspace keybindings
-      gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-5 '["<Alt>5"]' || true
-      gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-5 '["<Shift><Alt>5"]' || true
-      gsettings set org.gnome.shell.app-switcher current-workspace-only true || true
+    DE=$(echo "${XDG_CURRENT_DESKTOP:-${DESKTOP_SESSION:-}}" | tr '[:upper:]' '[:lower:]')
 
-      # Caps Lock remapping handled by xremap; clear the xkb override so they don't conflict
-      gsettings set org.gnome.desktop.input-sources xkb-options "[]" || true
+    case "$DE" in
+      *gnome*)
+        if command -v gsettings >/dev/null 2>&1; then
+          # Workspace switching: Alt+1-5, move with Shift+Alt
+          for i in 1 2 3 4 5; do
+            gsettings set org.gnome.desktop.wm.keybindings switch-to-workspace-$i "[\"<Alt>$i\"]" || true
+            gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-$i "[\"<Shift><Alt>$i\"]" || true
+          done
+          gsettings set org.gnome.shell.app-switcher current-workspace-only true || true
+          # xremap handles Caps Lock; clear xkb override to avoid conflict
+          gsettings set org.gnome.desktop.input-sources xkb-options "[]" || true
+          # IBus: use system keyboard layout, prevent input method hijacking keys
+          gsettings set org.freedesktop.ibus.general use-system-keyboard-layout true || true
+          gsettings set org.freedesktop.ibus.general.hotkey trigger "['Control+space']" || true
+        fi
+        ;;
 
-      # IBus: use system keyboard layout, prevent input method hijacking keys
-      gsettings set org.freedesktop.ibus.general use-system-keyboard-layout true || true
-      gsettings set org.freedesktop.ibus.general.hotkey trigger "['Control+space']" || true
-
-    fi
+      *kde*|*plasma*)
+        # Try Plasma 6 first, fall back to Plasma 5
+        kwriteconfig=""
+        if command -v kwriteconfig6 >/dev/null 2>&1; then
+          kwriteconfig=kwriteconfig6
+        elif command -v kwriteconfig5 >/dev/null 2>&1; then
+          kwriteconfig=kwriteconfig5
+        fi
+        if [ -n "$kwriteconfig" ]; then
+          # Workspace switching: Alt+1-5, move with Shift+Alt
+          for i in 1 2 3 4 5; do
+            $kwriteconfig --file kglobalshortcutsrc --group kwin \
+              --key "Switch to Desktop $i" "Alt+$i,Ctrl+F$i,Switch to Desktop $i" || true
+            $kwriteconfig --file kglobalshortcutsrc --group kwin \
+              --key "Window to Desktop $i" "Shift+Alt+$i,,Move Window to Desktop $i" || true
+          done
+          # Reload KWin to apply shortcut changes immediately
+          qdbus org.kde.KWin /KWin reconfigure 2>/dev/null || true
+        fi
+        ;;
+    esac
 
     # Install Nordzy icon theme (idempotent)
     mkdir -p "$HOME/src"
