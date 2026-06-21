@@ -61,7 +61,6 @@ if command -v minikube &>/dev/null; then
   source <(minikube completion zsh)
 fi
 
-eval "$(direnv hook zsh)"
 # eval "$(dircolors ~/.dircolors)"
 if [[ "${widgets[zle-keymap-select]#user:}" == "starship_zle-keymap-select" || \
       "${widgets[zle-keymap-select]#user:}" == "starship_zle-keymap-select-wrapped" ]]; then

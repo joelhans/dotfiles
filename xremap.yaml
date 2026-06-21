@@ -1,0 +1,9 @@
+modmap:
+  - name: CapsLock to Backspace
+    remap:
+      CapsLock: Backspace
+
+keymap:
+  - name: Em Dash
+    remap:
+      Alt-Shift-Minus: Shift-Rightalt-Minus

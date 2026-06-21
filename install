@@ -37,9 +37,15 @@ fi
 ln -sfv "$DOTFILES_DIR/.zshrc" "$HOME/.zshrc"
 ln -sfv "$DOTFILES_DIR/.zsh_exports" "$HOME/.zsh_exports"
 ln -sfv "$DOTFILES_DIR/.zsh_aliases" "$HOME/.zsh_aliases"
-# Optional: only link if present in the repo
-if [ -f "$DOTFILES_DIR/.dircolors" ]; then
+ln -sfv "$DOTFILES_DIR/.zsh_plugins.txt" "$HOME/.zsh_plugins.txt"
+# Optional: only link if present in the repo (GNU ls only, Linux)
+if [ "$MACHINE" = "Linux" ] && [ -f "$DOTFILES_DIR/.dircolors" ]; then
   ln -sfv "$DOTFILES_DIR/.dircolors" "$HOME/.dircolors"
+fi
+
+# antidote (zsh plugin manager)
+if [ ! -f "${ZDOTDIR:-$HOME}/.antidote/antidote.zsh" ]; then
+  git clone --depth=1 https://github.com/mattmc3/antidote.git "${ZDOTDIR:-$HOME}/.antidote"
 fi
 
 # Starship
@@ -133,6 +139,36 @@ fi
 # ln -sfv "$DOTFILES_DIR/vscode/settings.json" "$HOME/.config/Code/User/settings.json"
 
 ####################
+# KDE keyboard config (Linux only)
+####################
+
+if [ "$MACHINE" = "Linux" ]; then
+  if [ -f "$DOTFILES_DIR/kxkbrc" ]; then
+    ln -sfv "$DOTFILES_DIR/kxkbrc" "$HOME/.config/kxkbrc"
+  fi
+fi
+
+####################
+# xremap (Linux only)
+####################
+
+if [ "$MACHINE" = "Linux" ]; then
+  mkdir -p "$HOME/.config/xremap"
+  ln -sfv "$DOTFILES_DIR/xremap.yaml" "$HOME/.config/xremap/config.yaml"
+  mkdir -p "$HOME/.config/systemd/user"
+  ln -sfv "$DOTFILES_DIR/xremap.service" "$HOME/.config/systemd/user/xremap.service"
+  if command -v xremap >/dev/null 2>&1; then
+    # xremap needs input group access
+    if ! groups | grep -q input; then
+      echo "Note: Run 'sudo usermod -aG input $USER' and re-login for xremap to read input devices"
+    fi
+    systemctl --user enable --now xremap || true
+  else
+    echo "Note: Install xremap-kde-bin from AUR to enable key remapping"
+  fi
+fi
+
+####################
 # Desktop tweaks (Linux only)
 ####################
 
@@ -147,38 +183,13 @@ if [ "$MACHINE" = "Linux" ]; then
       gsettings set org.gnome.desktop.wm.keybindings move-to-workspace-5 '["<Shift><Alt>5"]' || true
       gsettings set org.gnome.shell.app-switcher current-workspace-only true || true
 
-      # Keyboard: Caps Lock as Backspace
-      gsettings set org.gnome.desktop.input-sources xkb-options "['caps:backspace']" || true
+      # Caps Lock remapping handled by xremap; clear the xkb override so they don't conflict
+      gsettings set org.gnome.desktop.input-sources xkb-options "[]" || true
 
       # IBus: use system keyboard layout, prevent input method hijacking keys
       gsettings set org.freedesktop.ibus.general use-system-keyboard-layout true || true
       gsettings set org.freedesktop.ibus.general.hotkey trigger "['Control+space']" || true
 
-      # Custom keybinding: Shift+Alt+minus types em dash (requires wtype)
-      # Only set up if wtype is available
-      if command -v wtype >/dev/null 2>&1; then
-        # Get existing custom keybindings
-        EXISTING=$(gsettings get org.gnome.settings-daemon.plugins.media-keys custom-keybindings 2>/dev/null || echo "@as []")
-        
-        # Add our keybinding path if not already present
-        EMDASH_PATH="/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/emdash/"
-        if ! echo "$EXISTING" | grep -q "emdash"; then
-          if [ "$EXISTING" = "@as []" ]; then
-            NEW_LIST="['$EMDASH_PATH']"
-          else
-            # Remove trailing ] and append our path
-            NEW_LIST=$(echo "$EXISTING" | sed "s/]$/, '$EMDASH_PATH']/")
-          fi
-          gsettings set org.gnome.settings-daemon.plugins.media-keys custom-keybindings "$NEW_LIST" || true
-        fi
-        
-        # Configure the em dash keybinding
-        gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:$EMDASH_PATH name "Em Dash" || true
-        gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:$EMDASH_PATH command "wtype —" || true
-        gsettings set org.gnome.settings-daemon.plugins.media-keys.custom-keybinding:$EMDASH_PATH binding "<Shift><Alt>minus" || true
-      else
-        echo "Note: Install wtype for Shift+Alt+minus em dash shortcut (rpm-ostree install wtype)"
-      fi
     fi
 
     # Install Nordzy icon theme (idempotent)
