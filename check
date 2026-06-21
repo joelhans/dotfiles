@@ -1,0 +1,118 @@
+#!/usr/bin/env sh
+set -eu
+
+# ── colors ───────────────────────────────────────────────────────────────────
+if [ -t 1 ]; then
+  GREEN='\033[0;32m'; RED='\033[0;31m'; DIM='\033[2m'; RESET='\033[0m'
+else
+  GREEN=''; RED=''; DIM=''; RESET=''
+fi
+
+# ── OS detection ──────────────────────────────────────────────────────────────
+UNAME=$(uname -s 2>/dev/null || echo unknown)
+case "$UNAME" in
+  Linux*)  MACHINE=Linux ;;
+  Darwin*) MACHINE=MacOS ;;
+  *)       MACHINE=UNKNOWN ;;
+esac
+
+ok=0; missing=0
+
+# ── helpers ───────────────────────────────────────────────────────────────────
+
+# Build a platform-appropriate install hint.
+# Usage: _hint <pacman_pkg> <aur_pkg> <brew_pkg> [<fallback_cmd>]
+_hint() {
+  pacman_pkg="$1"; aur_pkg="$2"; brew_pkg="$3"; fallback="${4:-}"
+  if [ "$MACHINE" = "MacOS" ]; then
+    if [ -n "$brew_pkg" ]; then printf "brew install %s" "$brew_pkg"; return; fi
+  else
+    if [ -n "$pacman_pkg" ]; then printf "pacman -S %s" "$pacman_pkg"; return; fi
+    if [ -n "$aur_pkg" ];    then printf "yay -S %s" "$aur_pkg";       return; fi
+  fi
+  if [ -n "$fallback" ]; then printf "%s" "$fallback"; return; fi
+  printf "(see upstream docs)"
+}
+
+# check <label> <cmd> <pacman> <aur> <brew> [<fallback>]
+# Checks whether <cmd> is on PATH and prints pass/fail with install hint.
+check() {
+  label="$1"; cmd="$2"; shift 2
+  hint=$(_hint "$@")
+  if command -v "$cmd" >/dev/null 2>&1; then
+    printf "%b[✓]%b %s\n" "$GREEN" "$RESET" "$label"
+    ok=$((ok + 1))
+  else
+    printf "%b[✗]%b %-20s %b— %s%b\n" "$RED" "$RESET" "$label" "$DIM" "$hint" "$RESET"
+    missing=$((missing + 1))
+  fi
+}
+
+# check_path <label> <path> <hint_string>
+# Checks whether a file/directory exists (for tools that aren't on PATH).
+check_path() {
+  label="$1"; path="$2"; hint="$3"
+  if [ -e "$path" ]; then
+    printf "%b[✓]%b %s\n" "$GREEN" "$RESET" "$label"
+    ok=$((ok + 1))
+  else
+    printf "%b[✗]%b %-20s %b— %s%b\n" "$RED" "$RESET" "$label" "$DIM" "$hint" "$RESET"
+    missing=$((missing + 1))
+  fi
+}
+
+section() { printf "\n%b%s%b\n" "$DIM" "$1" "$RESET"; }
+
+# ── checks ────────────────────────────────────────────────────────────────────
+
+section "── Core ──────────────────────────────────────────────────────"
+check "git"   git   git  "" git  ""
+check "zsh"   zsh   zsh  "" zsh  ""
+check "curl"  curl  curl "" curl ""
+
+section "── Shell ─────────────────────────────────────────────────────"
+check_path "antidote" "${ZDOTDIR:-$HOME}/.antidote/antidote.zsh" \
+  "git clone --depth=1 https://github.com/mattmc3/antidote.git ~/.antidote"
+check "starship" starship "" "" starship \
+  "curl -fsSL https://starship.rs/install.sh | sh -s -- -y"
+check "fzf" fzf fzf "" fzf ""
+
+section "── Editor ────────────────────────────────────────────────────"
+check "neovim" nvim neovim "" neovim ""
+
+section "── Terminal ──────────────────────────────────────────────────"
+check "ghostty" ghostty ghostty ghostty-git "" ""
+check "zellij"  zellij  zellij  ""           zellij ""
+
+section "── Git tools ─────────────────────────────────────────────────"
+check "lazygit"  lazygit  lazygit  "" lazygit ""
+check "gh"       gh       gh       "" gh      ""
+
+section "── Runtimes ──────────────────────────────────────────────────"
+check_path "nvm" "${NVM_DIR:-$HOME/.nvm}/nvm.sh" \
+  "curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/HEAD/install.sh | bash"
+check "bun" bun "" "" bun \
+  "curl -fsSL https://bun.sh/install | bash"
+
+if [ "$MACHINE" = "Linux" ]; then
+  section "── Linux ─────────────────────────────────────────────────────"
+  check "xremap" xremap "" "xremap-kde-bin" "" \
+    "yay -S xremap-kde-bin  (or xremap-wlroots-bin / xremap-x11-bin)"
+  # 1Password provides op-ssh-sign, used by git for commit signing (.gitconfig)
+  check_path "1password (SSH signing)" "/opt/1Password/op-ssh-sign" \
+    "install 1Password from https://1password.com/downloads/linux/"
+fi
+
+section "── Optional ──────────────────────────────────────────────────"
+check "kubectl"  kubectl  kubectl  "" "kubectl"  ""
+check "minikube" minikube minikube "" "minikube" ""
+check "ngrok"    ngrok    ""       "" ""         "https://ngrok.com/download"
+
+# ── summary ───────────────────────────────────────────────────────────────────
+total=$((ok + missing))
+printf "\n%b────────────────────────────────────────────────────────────%b\n" "$DIM" "$RESET"
+if [ "$missing" -eq 0 ]; then
+  printf "%b[✓] All %d packages present%b\n" "$GREEN" "$total" "$RESET"
+else
+  printf "%b[✗] %d/%d missing%b\n" "$RED" "$missing" "$total" "$RESET"
+fi
