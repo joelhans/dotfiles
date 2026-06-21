@@ -1,5 +1,5 @@
 # Set the shell
-export SHELL=/bin/zsh
+export SHELL=$(command -v zsh)
 
 # Default editor
 if [[ -x "$(command -v nvim)" ]]; then
@@ -12,9 +12,9 @@ fi
 
 # 1Password
 if [[ "$OSTYPE" == "darwin"* ]]; then
-  export SSH_AUTH_SOCK="$HOME/.1password/agent.sock"
+  export SSH_AUTH_SOCK="$HOME/Library/Group Containers/2BUA8C4S2C.com.1password/t/agent.sock"
 else
-  export SSH_AUTH_SOCK=/var/home/joel/.1password/agent.sock
+  export SSH_AUTH_SOCK="$HOME/.1password/agent.sock"
 fi
 
 # Prefer US English and use UTF-8

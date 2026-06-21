@@ -1,7 +1,10 @@
 [includeIf "gitdir:/Users/"]
   path = ~/.gitconfig-macos
 
-[includeIf "gitdir:/var/home/joel"]
+[includeIf "gitdir:/home/"]
+  path = ~/.gitconfig-linux
+
+[includeIf "gitdir:/var/home/"]
   path = ~/.gitconfig-linux
 
 [user]
@@ -37,5 +40,3 @@
 	required = true
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
-[gpg "ssh"]
-	program = /opt/1Password/op-ssh-sign

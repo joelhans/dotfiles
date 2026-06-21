@@ -3,7 +3,8 @@ Description=xremap key remapper
 After=graphical-session.target
 
 [Service]
-ExecStart=/usr/bin/xremap %h/.config/xremap/config.yaml
+Environment="PATH=/usr/local/bin:/usr/bin:/bin:%h/.cargo/bin:%h/.local/bin"
+ExecStart=/usr/bin/env xremap %h/.config/xremap/config.yaml
 Restart=always
 RestartSec=3
 
