@@ -2,18 +2,6 @@
 export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin:$PATH
 export BMO_SOURCE=~/src/bmo-agent
 
-# Enable command auto-correction.
-ENABLE_CORRECTION="true"
-
-# Display red dots whilst waiting for completion.
-COMPLETION_WAITING_DOTS="true"
-
-# Disable marking untracked files as dirty.
-DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# History time stamps
-HIST_STAMPS="yyyy-mm-dd"
-
 # History settings: shared, immediate append, and larger size
 export HISTFILE="$HOME/.zsh_history"
 export HISTSIZE=100000
@@ -35,17 +23,8 @@ source <(fzf --zsh)
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
 autoload -Uz compinit && compinit
 
-# Source zplug, then some plugins, then plugin configuration
-#source ~/.zplug/init.zsh
-#zplug "zsh-users/zsh-history-substring-search", as:plugin
-#zplug load --verbose
-#bindkey '^[[A' history-substring-search-up
-#bindkey '^[[B' history-substring-search-down
-
-# source antidote
+# antidote
 source $HOME/.antidote/antidote.zsh
-
-# initialize plugins statically with ${ZDOTDIR:-~}/.zsh_plugins.txt
 antidote load
 
 # ngrok completions
@@ -61,7 +40,6 @@ if command -v minikube &>/dev/null; then
   source <(minikube completion zsh)
 fi
 
-# eval "$(dircolors ~/.dircolors)"
 if [[ "${widgets[zle-keymap-select]#user:}" == "starship_zle-keymap-select" || \
       "${widgets[zle-keymap-select]#user:}" == "starship_zle-keymap-select-wrapped" ]]; then
     zle -N zle-keymap-select "";
@@ -70,23 +48,15 @@ fi
 eval "$(starship init zsh)"
 
 export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# Added by LM Studio CLI (lms)
-export PATH="$PATH:/Users/joelhans/.lmstudio/bin"
-alias python=python3
-alias pip=pip3
-
-# bun completions
-[ -s "/var/home/joel/.bun/_bun" ] && source "/var/home/joel/.bun/_bun"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
 # bun
+[ -s "/var/home/joel/.bun/_bun" ] && source "/var/home/joel/.bun/_bun"
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
-# BEGIN BMO: zl helper for zellij
-# Ensure any prior alias doesn't shadow the function
+# Zellij helpers
 unalias zl 2>/dev/null
 zl() {
   if [ $# -eq 0 ]; then
@@ -95,13 +65,9 @@ zl() {
     command zellij attach "$@"
   fi
 }
-# END BMO: zl helper for zellij
 
-# BEGIN BMO: zc — cleanup exited zellij sessions
-# Ensure any prior alias doesn't shadow the function
 unalias zc 2>/dev/null
 zc() {
-  # Collect exited session names
   local exited
   exited=$(command zellij list-sessions --no-formatting | awk '/EXITED/ {print $1}')
 
@@ -112,4 +78,3 @@ zc() {
 
   printf "%s\n" "$exited" | xargs -n 1 command zellij delete-session
 }
-# END BMO: zc — cleanup exited zellij sessions

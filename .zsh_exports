@@ -6,15 +6,16 @@ if [[ -x "$(command -v nvim)" ]]; then
   export EDITOR='nvim'
 elif [[ -x "$(command -v vim)" ]]; then
   export EDITOR='vim'
-else;
+else
   export EDITOR='nano'
 fi
 
 # 1Password
-export SSH_AUTH_SOCK=/var/home/joel/.1password/agent.sock # This needs(?) to be hardcoded to work around issues in Distrobox containers.
-
-# Distrobox
-export DBX_CONTAINER_IMAGE=fedora:latest
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  export SSH_AUTH_SOCK="$HOME/.1password/agent.sock"
+else
+  export SSH_AUTH_SOCK=/var/home/joel/.1password/agent.sock
+fi
 
 # Prefer US English and use UTF-8
 export LC_ALL="en_US.UTF-8"

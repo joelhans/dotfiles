@@ -1,33 +1,29 @@
 # Common shortcuts
-alias reload="source ~/.zshrc"
-alias _="sudo -E"
-alias dnf="sudo dnf"
-alias rr="rm -rf"
+alias reload='source ~/.zshrc'
+alias _='sudo -E'
+alias dnf='sudo dnf'
+alias rr='rm -rf'
 alias zshrc="$EDITOR $HOME/.zshrc && reload"
 alias aliases="$EDITOR $HOME/.zsh_aliases && reload"
 
 alias k=kubectl
 
 # Directory traversal
-alias ..="cd .."
-alias ...="cd ../.."
-alias ....="cd ../../.."
-alias ~="cd ~"
-alias -- -="cd -"
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias ~='cd ~'
+alias -- -='cd -'
 
 alias dot='cd ~/dotfiles'
-alias dl="cd ~/Downloads"
-alias db="cd ~/Dropbox"
-
-alias as='cd $HOME/web/astrolabe'
-alias asl='cd $HOME/web/astrolabe-live'
+alias dl='cd ~/Downloads'
 
 # Directory listing
 if ls --color > /dev/null 2>&1; then # GNU `ls`
   colorflag="--color"
 else # macOS `ls`
-	colorflag="-G"
-	export LSCOLORS='BxBxhxDxfxhxhxhxhxcxcx'
+  colorflag="-G"
+  export LSCOLORS='BxBxhxDxfxhxhxhxhxcxcx'
 fi
 alias l="ls -lF ${colorflag}"
 alias la="ls -laF ${colorflag}"
@@ -35,23 +31,23 @@ alias lsd="ls -lF ${colorflag} | grep --color=never '^d'"
 alias ls="command ls ${colorflag}"
 
 # IP addresses
-alias ip="dig +short myip.opendns.com @resolver1.opendns.com"
-alias ipl="hostname -I"
+alias ip='dig +short myip.opendns.com @resolver1.opendns.com'
+alias ipl='hostname -I'
 alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[0-9]\+\)\|[a-fA-F0-9:]\+\)' | awk '{ sub(/inet6? (addr:)? ?/, \"\"); print }'"
 
 # Git
 alias gcm='git checkout main'
 alias gst='git status'
-alias gs='git switch $1'
+alias gs='git switch'
 alias gsync='git pull upstream main && git push origin main'
 alias gpo='git push -u origin HEAD'
-alias gnew='git checkout -b $1'
+alias gnew='git checkout -b'
 alias gca='git commit -a'
 alias ga='git add'
-alias gca!='git commit -a --amend'
+alias 'gca!'='git commit -a --amend'
 alias glr='git pull --rebase'
-alias gam='git add . && git commit -m $1'
-alias gampo='git add . && git commit -m $1 && git push -u origin HEAD'
+alias gam='git add . && git commit -m'
+function gampo { git add . && git commit -m "$1" && git push -u origin HEAD }
 
 # Zellij (zl and zc are functions in .zshrc)
 alias zj='zellij'
@@ -59,36 +55,12 @@ alias za='zellij attach'
 alias zk='zellij kill-session'
 alias zkall='zellij kill-all-sessions'
 
-# Distrobox
-function dbxc {
-  distrobox create \
-    -n $1 \
-		-H $HOME/.distrobox/$1 \
-		--init \
-		--additional-packages "systemd" \
-		--init-hooks $HOME/src/dotfiles/dev-init.sh
-}
-alias dbxe='distrobox enter $1'
-alias dbxl='distrobox list'
-alias dbxs='distrobox stop $1'
-alias dbxd='distrobox rm $1'
-alias dbxclean='distrobox stop -a && distrobox rm -a && sudo rm -rf $HOME/.distrobox/{*,.*}'
-
-function drun {
-  docker run \
-    --read-only \
-    --security-opt=no-new-privileges \
-    --network your-isolated-network \
-    --cap-drop ALL --cap-add CHOWN \
-    --pids-limit 99 \
-    --memory="1g" --cpus="2" \
-    --user=your-user \
-    $1 \
-    $2
-}
-
 # GitHub CLI
 alias ghghost="gh api /notifications -X GET | jq -r '.[].id' | xargs -I {} gh api /notifications/threads/{} -X PATCH"
+
+# Python
+alias python=python3
+alias pip=pip3
 
 # YOLO mode
 alias yolo='claude --dangerously-skip-permissions'

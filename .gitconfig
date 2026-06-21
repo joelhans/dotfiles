@@ -7,7 +7,7 @@
 [user]
   name = Joel Hans
   email = j@joelhans.com
-  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKcQXUtQ77vym/RAApVHswSqvjPZDjvU63TpBokSTUwd
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKcQXUtQ77vym/RAApVHswSqvjPZDjvU63TpBokSTUwd
 
 [github]
   user = joelhans
@@ -18,15 +18,6 @@
   filemode = false
   trustctime = false
   autocrlf = input
-
-[diff]
-  tool = meld
-
-[difftool]
-  prompt = false
-
-[difftool "meld"]
-  cmd = meld "$LOCAL" "$REMOTE"
 
 [init]
 	defaultBranch = main
@@ -46,3 +37,5 @@
 	required = true
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
+[gpg "ssh"]
+	program = /opt/1Password/op-ssh-sign
