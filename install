@@ -169,6 +169,62 @@ if [ "$MACHINE" = "Linux" ]; then
 fi
 
 ####################
+# Fonts (desktop/GUI sessions only — skip on SSH/VPS)
+####################
+
+if [ -n "${XDG_CURRENT_DESKTOP:-}" ] || [ -n "${DESKTOP_SESSION:-}" ] || \
+   [ -n "${WAYLAND_DISPLAY:-}" ] || [ -n "${DISPLAY:-}" ]; then
+  if [ "$MACHINE" = "Linux" ]; then
+    FONT_DIR="$HOME/.local/share/fonts"
+  elif [ "$MACHINE" = "MacOS" ]; then
+    FONT_DIR="$HOME/Library/Fonts"
+  else
+    FONT_DIR=""
+  fi
+
+  if [ -n "$FONT_DIR" ]; then
+    mkdir -p "$FONT_DIR"
+
+    _install_font() {
+      _name="$1"; _url="$2"; _subdir="$3"
+      _dest="$FONT_DIR/$_subdir"
+      # Idempotent: skip if destination already has font files
+      if ls "$_dest"/*.ttf "$_dest"/*.otf >/dev/null 2>&1; then
+        return 0
+      fi
+      echo "Installing font: $_name"
+      _tmp=$(mktemp -d)
+      if command -v curl >/dev/null 2>&1; then
+        curl -fsSL "$_url" -o "$_tmp/font.zip" || { rm -rf "$_tmp"; echo "Warning: download failed for $_name" >&2; return 1; }
+      elif command -v wget >/dev/null 2>&1; then
+        wget -q -O "$_tmp/font.zip" "$_url" || { rm -rf "$_tmp"; echo "Warning: download failed for $_name" >&2; return 1; }
+      else
+        echo "Warning: curl/wget not found; skipping $_name" >&2; rm -rf "$_tmp"; return 1
+      fi
+      mkdir -p "$_dest"
+      unzip -q "$_tmp/font.zip" -d "$_tmp/extracted" 2>/dev/null || true
+      find "$_tmp/extracted" \( -name "*.ttf" -o -name "*.otf" \) | \
+        grep -v '__MACOSX' | while IFS= read -r _f; do cp "$_f" "$_dest/"; done
+      rm -rf "$_tmp"
+    }
+
+    _install_font "JetBrains Mono" \
+      "https://github.com/JetBrains/JetBrainsMono/releases/latest/download/JetBrainsMono.zip" \
+      "JetBrainsMono"
+    _install_font "Alegreya" \
+      "https://fonts.google.com/download?family=Alegreya" \
+      "Alegreya"
+    _install_font "Alegreya Sans" \
+      "https://fonts.google.com/download?family=Alegreya+Sans" \
+      "AlegreyaSans"
+
+    if [ "$MACHINE" = "Linux" ] && command -v fc-cache >/dev/null 2>&1; then
+      fc-cache -f "$FONT_DIR"
+    fi
+  fi
+fi
+
+####################
 # Desktop tweaks (Linux only)
 ####################
 
