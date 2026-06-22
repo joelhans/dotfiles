@@ -78,3 +78,7 @@ zc() {
 
   printf "%s\n" "$exited" | xargs -n 1 command zellij delete-session
 }
+
+if command -v mise &>/dev/null; then
+  eval "$(mise activate zsh)"
+fi
