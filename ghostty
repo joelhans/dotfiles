@@ -1,4 +1,6 @@
 theme = catppuccin-mocha.conf
+window-width = 100
+window-height = 30
 background-opacity = 0.90
 window-padding-x = 10
 window-padding-y = 10
