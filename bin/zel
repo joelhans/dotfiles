@@ -112,86 +112,23 @@ ensure_tab() {
     || zellij --session "$sess" action new-tab --name "$name" --cwd "$cwd"
 }
 
-navigate() {
-  local sess=$1
-  if [[ -n "${ZELLIJ:-}" ]]; then
-    [[ "${ZELLIJ_SESSION_NAME:-}" != "$sess" ]] \
-      && zellij action switch-session "$sess"
-  else
-    exec zellij attach "$sess"
-  fi
-}
-
-# Generates a KDL layout string for new sessions.
-# Uses default_tab_template so every tab (including ones added later) gets
-# the zjstatus bar — matches the catppuccin-mocha palette in your config.
-_make_layout() {
-  local tab_name=$1 cwd=$2
-  cat <<KDL
-layout {
-  default_tab_template {
-    pane size=1 borderless=true {
-      plugin location="https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm" {
-        format_left   "{mode}#[bg=#1e1e2e,fg=#45475a] {tabs}"
-        format_right  "#[bg=#1e1e2e]{command_git_branch}  {session}  {datetime} "
-        format_space  "#[bg=#1e1e2e]"
-        format_hide_on_overlength "true"
-        format_precedence         "lrc"
-        tab_normal      "#[bg=#1e1e2e,fg=#45475a] {index} {name} "
-        tab_active      "#[bg=#313244,fg=#cdd6f4,bold] {index} {name} "
-        tab_fullscreen  "#[bg=#313244,fg=#a6e3a1,bold] {index} {name} [] "
-        tab_sync        "#[bg=#313244,fg=#f9e2af,bold] {index} {name} <> "
-        mode_normal        "#[bg=#a6e3a1,fg=#1e1e2e,bold] NORMAL "
-        mode_locked        "#[bg=#f38ba8,fg=#1e1e2e,bold] LOCKED "
-        mode_resize        "#[bg=#fab387,fg=#1e1e2e,bold] RESIZE "
-        mode_pane          "#[bg=#89b4fa,fg=#1e1e2e,bold] PANE "
-        mode_tab           "#[bg=#89dceb,fg=#1e1e2e,bold] TAB "
-        mode_scroll        "#[bg=#f9e2af,fg=#1e1e2e,bold] SCROLL "
-        mode_enter_search  "#[bg=#cba6f7,fg=#1e1e2e,bold] SEARCH "
-        mode_search        "#[bg=#cba6f7,fg=#1e1e2e,bold] SEARCH "
-        mode_rename_tab    "#[bg=#f9e2af,fg=#1e1e2e,bold] RENAME "
-        mode_rename_pane   "#[bg=#fab387,fg=#1e1e2e,bold] RENAME "
-        mode_session       "#[bg=#89b4fa,fg=#1e1e2e,bold] SESSION "
-        mode_move          "#[bg=#cba6f7,fg=#1e1e2e,bold] MOVE "
-        mode_prompt        "#[bg=#cba6f7,fg=#1e1e2e,bold] PROMPT "
-        mode_tmux          "#[bg=#f38ba8,fg=#1e1e2e,bold] TMUX "
-        command_git_branch_command  "git branch --show-current 2>/dev/null"
-        command_git_branch_format   "#[fg=#a6e3a1] {stdout}"
-        command_git_branch_interval "10"
-        session        "#[fg=#cba6f7]{name}"
-        datetime       "#[fg=#89b4fa]{format}"
-        datetime_format   "%H:%M"
-        datetime_interval "60"
-      }
-    }
-    children
-  }
-  tab name="$tab_name" cwd="$cwd" {
-    pane
-  }
-}
-KDL
-}
-
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
 if session_exists "$repo"; then
   ensure_tab "$repo" "$tab" "$wt_path"
-  navigate "$repo"
 else
-  layout=$(_make_layout "$tab" "$wt_path")
-
-  if [[ -n "${ZELLIJ:-}" ]]; then
-    # Inside Zellij: start the new session in the background, then switch to it.
-    # The backgrounded attach will fail to control the terminal but the session
-    # server still initializes — we poll for it before switching.
-    zellij --session "$repo" --layout-string "$layout" attach --create &>/dev/null &
-    disown
-    _wait_for_session "$repo" || die "timed out waiting for session '$repo'"
-    zellij action switch-session "$repo"
-  else
-    exec zellij --session "$repo" --layout-string "$layout" attach --create
-  fi
+  # --create-background (-b): creates the session detached without needing
+  # terminal control, so this works correctly from inside or outside Zellij.
+  # The default layout (~/.config/zellij/layouts/default.kdl) is used.
+  zellij attach -b "$repo"
+  _wait_for_session "$repo" || die "timed out waiting for session '$repo'"
+  zellij --session "$repo" action rename-tab "$tab"
+  zellij --session "$repo" action write-chars "cd $(printf '%q' "$wt_path") && clear"$'\n'
 fi
+
+# exec zellij attach replaces the current process with a Zellij client.
+# From outside Zellij this attaches normally; from inside, Zellij 0.38+
+# switches the terminal to the target session rather than nesting.
+exec zellij attach "$repo"
