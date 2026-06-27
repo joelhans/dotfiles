@@ -1,0 +1,197 @@
+#!/usr/bin/env zsh
+# zel — fuzzy-jump to any repo worktree in a named Zellij session
+#
+# Config: $XDG_CONFIG_HOME/zel/roots (default: ~/.config/zel/roots)
+# One root directory per line; lines starting with # are ignored.
+
+CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/zel"
+ROOTS_FILE="$CONFIG_DIR/roots"
+
+die() { print -u2 -- "zel: $*"; exit 1 }
+need() { command -v "$1" &>/dev/null || die "required tool not found: $1" }
+
+need fzf
+need git
+need zellij
+
+[[ -f "$ROOTS_FILE" ]] || die "no roots config found at $ROOTS_FILE
+Create it with one root directory per line, e.g.:
+  ~/code
+  ~/work"
+
+# ---------------------------------------------------------------------------
+# Discovery: scan roots for git repos and their worktrees
+# Output format: repo_name TAB branch TAB abs_path
+# ---------------------------------------------------------------------------
+
+gather() {
+  local root repo_dir repo_name wt_path wt_branch wt_bare
+
+  while IFS= read -r root || [[ -n "$root" ]]; do
+    [[ -z "$root" || "$root" == \#* ]] && continue
+    root="${root/#\~/$HOME}"
+    [[ -d "$root" ]] || continue
+
+    while IFS= read -r repo_dir; do
+      repo_name=$(basename "$repo_dir")
+      wt_path='' wt_branch='' wt_bare=0
+
+      # Extra echo flushes the final block from porcelain output
+      while IFS= read -r line; do
+        case "$line" in
+          'worktree '*)  wt_path="${line#worktree }" ;;
+          'branch '*)    wt_branch="${line#branch refs/heads/}" ;;
+          bare)          wt_bare=1 ;;
+          '')
+            if [[ -n "$wt_path" && $wt_bare -eq 0 ]]; then
+              printf '%s\t%s\t%s\n' \
+                "$repo_name" \
+                "${wt_branch:-$(basename "$wt_path")}" \
+                "$wt_path"
+            fi
+            wt_path='' wt_branch='' wt_bare=0
+            ;;
+        esac
+      done < <({ git -C "$repo_dir" worktree list --porcelain 2>/dev/null; echo; })
+
+    done < <(
+      find "$root" -maxdepth 2 -name '.git' \( -type d -o -type f \) -print 2>/dev/null \
+        | sed 's|/\.git$||' | sort -u
+    )
+  done < "$ROOTS_FILE"
+}
+
+entries=$(gather)
+[[ -z "$entries" ]] && die "no repos found under configured roots"
+
+# ---------------------------------------------------------------------------
+# Pick: fzf with tab-delimited fields; {3} in preview refers to the path
+# ---------------------------------------------------------------------------
+
+IFS=$'\t' read -r repo tab wt_path < <(
+  printf '%s\n' "$entries" \
+    | fzf \
+        --delimiter $'\t' \
+        --with-nth 1,2 \
+        --tabstop 28 \
+        --prompt '  ' \
+        --height 40% \
+        --layout reverse \
+        --border rounded \
+        --preview 'git -C {3} log --oneline --color=always -15 2>/dev/null' \
+        --preview-window 'right:45%:wrap' \
+    || true
+)
+
+[[ -z "$repo" ]] && exit 0
+
+# ---------------------------------------------------------------------------
+# Zellij helpers
+# ---------------------------------------------------------------------------
+
+_active_sessions() {
+  zellij list-sessions --no-formatting 2>/dev/null \
+    | awk '$0 !~ /EXITED/ {print $1}'
+}
+
+session_exists() { _active_sessions | grep -qx "$1" }
+
+_wait_for_session() {
+  local sess=$1 i
+  for i in {1..20}; do
+    session_exists "$sess" && return 0
+    sleep 0.1
+  done
+  return 1
+}
+
+ensure_tab() {
+  local sess=$1 name=$2 cwd=$3
+  # go-to-tab-name exits non-zero if the tab doesn't exist
+  zellij --session "$sess" action go-to-tab-name "$name" 2>/dev/null \
+    || zellij --session "$sess" action new-tab --name "$name" --cwd "$cwd"
+}
+
+navigate() {
+  local sess=$1
+  if [[ -n "${ZELLIJ:-}" ]]; then
+    [[ "${ZELLIJ_SESSION_NAME:-}" != "$sess" ]] \
+      && zellij action switch-session "$sess"
+  else
+    exec zellij attach "$sess"
+  fi
+}
+
+# Generates a KDL layout string for new sessions.
+# Uses default_tab_template so every tab (including ones added later) gets
+# the zjstatus bar — matches the catppuccin-mocha palette in your config.
+_make_layout() {
+  local tab_name=$1 cwd=$2
+  cat <<KDL
+layout {
+  default_tab_template {
+    pane size=1 borderless=true {
+      plugin location="https://github.com/dj95/zjstatus/releases/latest/download/zjstatus.wasm" {
+        format_left   "{mode}#[bg=#1e1e2e,fg=#45475a] {tabs}"
+        format_right  "#[bg=#1e1e2e]{command_git_branch}  {session}  {datetime} "
+        format_space  "#[bg=#1e1e2e]"
+        format_hide_on_overlength "true"
+        format_precedence         "lrc"
+        tab_normal      "#[bg=#1e1e2e,fg=#45475a] {index} {name} "
+        tab_active      "#[bg=#313244,fg=#cdd6f4,bold] {index} {name} "
+        tab_fullscreen  "#[bg=#313244,fg=#a6e3a1,bold] {index} {name} [] "
+        tab_sync        "#[bg=#313244,fg=#f9e2af,bold] {index} {name} <> "
+        mode_normal        "#[bg=#a6e3a1,fg=#1e1e2e,bold] NORMAL "
+        mode_locked        "#[bg=#f38ba8,fg=#1e1e2e,bold] LOCKED "
+        mode_resize        "#[bg=#fab387,fg=#1e1e2e,bold] RESIZE "
+        mode_pane          "#[bg=#89b4fa,fg=#1e1e2e,bold] PANE "
+        mode_tab           "#[bg=#89dceb,fg=#1e1e2e,bold] TAB "
+        mode_scroll        "#[bg=#f9e2af,fg=#1e1e2e,bold] SCROLL "
+        mode_enter_search  "#[bg=#cba6f7,fg=#1e1e2e,bold] SEARCH "
+        mode_search        "#[bg=#cba6f7,fg=#1e1e2e,bold] SEARCH "
+        mode_rename_tab    "#[bg=#f9e2af,fg=#1e1e2e,bold] RENAME "
+        mode_rename_pane   "#[bg=#fab387,fg=#1e1e2e,bold] RENAME "
+        mode_session       "#[bg=#89b4fa,fg=#1e1e2e,bold] SESSION "
+        mode_move          "#[bg=#cba6f7,fg=#1e1e2e,bold] MOVE "
+        mode_prompt        "#[bg=#cba6f7,fg=#1e1e2e,bold] PROMPT "
+        mode_tmux          "#[bg=#f38ba8,fg=#1e1e2e,bold] TMUX "
+        command_git_branch_command  "git branch --show-current 2>/dev/null"
+        command_git_branch_format   "#[fg=#a6e3a1] {stdout}"
+        command_git_branch_interval "10"
+        session        "#[fg=#cba6f7]{name}"
+        datetime       "#[fg=#89b4fa]{format}"
+        datetime_format   "%H:%M"
+        datetime_interval "60"
+      }
+    }
+    children
+  }
+  tab name="$tab_name" cwd="$cwd" {
+    pane
+  }
+}
+KDL
+}
+
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
+
+if session_exists "$repo"; then
+  ensure_tab "$repo" "$tab" "$wt_path"
+  navigate "$repo"
+else
+  layout=$(_make_layout "$tab" "$wt_path")
+
+  if [[ -n "${ZELLIJ:-}" ]]; then
+    # Inside Zellij: start the new session in the background, then switch to it.
+    # The backgrounded attach will fail to control the terminal but the session
+    # server still initializes — we poll for it before switching.
+    zellij --session "$repo" --layout-string "$layout" attach --create &>/dev/null &
+    disown
+    _wait_for_session "$repo" || die "timed out waiting for session '$repo'"
+    zellij action switch-session "$repo"
+  else
+    exec zellij --session "$repo" --layout-string "$layout" attach --create
+  fi
+fi
