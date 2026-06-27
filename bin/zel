@@ -94,7 +94,10 @@ IFS=$'\t' read -r repo tab wt_path < <(
 tab_name="$repo/$tab"
 
 if zellij action query-tab-names 2>/dev/null | grep -qxF "$tab_name"; then
+  # Tab already exists: jump to it
   zellij action go-to-tab-name "$tab_name"
 else
-  zellij action new-tab --name "$tab_name" --cwd "$wt_path"
+  # Tab doesn't exist: transform the current tab into it
+  zellij action rename-tab "$tab_name"
+  zellij action write-chars "cd $(printf '%q' "$wt_path") && clear"$'\n'
 fi
