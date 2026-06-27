@@ -93,5 +93,8 @@ IFS=$'\t' read -r repo tab wt_path < <(
 
 tab_name="$repo/$tab"
 
-zellij action go-to-tab-name "$tab_name" 2>/dev/null \
-  || zellij action new-tab --name "$tab_name" --cwd "$wt_path"
+if zellij action query-tab-names 2>/dev/null | grep -qxF "$tab_name"; then
+  zellij action go-to-tab-name "$tab_name"
+else
+  zellij action new-tab --name "$tab_name" --cwd "$wt_path"
+fi
