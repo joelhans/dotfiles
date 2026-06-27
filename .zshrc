@@ -23,6 +23,13 @@ fi
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|=*' 'l:|=* r:|=*'
 autoload -Uz compinit && compinit
 
+_gs() {
+  local -a branches
+  branches=(${(f)"$(git branch --format='%(refname:short)' 2>/dev/null)"})
+  _describe 'local branch' branches
+}
+compdef _gs gs
+
 # antidote
 source $HOME/.antidote/antidote.zsh
 antidote load
