@@ -38,6 +38,16 @@ ln -sfv "$DOTFILES_DIR/.zshrc" "$HOME/.zshrc"
 ln -sfv "$DOTFILES_DIR/.zsh_exports" "$HOME/.zsh_exports"
 ln -sfv "$DOTFILES_DIR/.zsh_aliases" "$HOME/.zsh_aliases"
 ln -sfv "$DOTFILES_DIR/.zsh_plugins.txt" "$HOME/.zsh_plugins.txt"
+
+####################
+# Local bin scripts
+####################
+
+mkdir -p "$HOME/.local/bin"
+for _script in "$DOTFILES_DIR/bin"/*; do
+  [ -f "$_script" ] || continue
+  ln -sfv "$_script" "$HOME/.local/bin/$(basename "$_script")"
+done
 # Optional: only link if present in the repo (GNU ls only, Linux)
 if [ "$MACHINE" = "Linux" ] && [ -f "$DOTFILES_DIR/.dircolors" ]; then
   ln -sfv "$DOTFILES_DIR/.dircolors" "$HOME/.dircolors"
@@ -83,31 +93,33 @@ if [ -f "$DOTFILES_DIR/ghostty" ]; then
   fi
 fi
 
-# Ensure Catppuccin Mocha theme is installed for Ghostty
+# Ghostty themes
 GHOSTTY_THEME_DIR="$HOME/.config/ghostty/themes"
-GHOSTTY_THEME_FILE="$GHOSTTY_THEME_DIR/catppuccin-mocha.conf"
-CATPPUCCIN_MOCHA_URL="https://raw.githubusercontent.com/catppuccin/ghostty/refs/heads/main/themes/catppuccin-mocha.conf"
 mkdir -p "$GHOSTTY_THEME_DIR"
-if [ ! -f "$GHOSTTY_THEME_FILE" ]; then
-  echo "Installing Ghostty theme: catppuccin-mocha"
-  if command -v curl >/dev/null 2>&1; then
-    curl -fsSL "$CATPPUCCIN_MOCHA_URL" -o "$GHOSTTY_THEME_FILE"
-  elif command -v wget >/dev/null 2>&1; then
-    wget -q -O "$GHOSTTY_THEME_FILE" "$CATPPUCCIN_MOCHA_URL"
-  else
-    echo "Warning: neither curl nor wget found; cannot download Ghostty theme." >&2
-  fi
+for _theme in "$DOTFILES_DIR/ghostty-themes"/*.conf; do
+  [ -f "$_theme" ] || continue
+  ln -sfv "$_theme" "$GHOSTTY_THEME_DIR/$(basename "$_theme")"
+done
+
+if [ "$MACHINE" = "MacOS" ]; then
+  MAC_GHOSTTY_THEME_DIR="$HOME/Library/Application Support/com.mitchellh.ghostty/themes"
+  mkdir -p "$MAC_GHOSTTY_THEME_DIR"
+  for _theme in "$DOTFILES_DIR/ghostty-themes"/*.conf; do
+    [ -f "$_theme" ] || continue
+    ln -sfv "$_theme" "$MAC_GHOSTTY_THEME_DIR/$(basename "$_theme")"
+  done
 fi
 
-# On macOS, also expose the theme under the native Ghostty config dir for completeness
-if [ "$MACHINE" = "MacOS" ]; then
-  MAC_GHOSTTY_DIR="$HOME/Library/Application Support/com.mitchellh.ghostty"
-  MAC_GHOSTTY_THEME_DIR="$MAC_GHOSTTY_DIR/themes"
-  mkdir -p "$MAC_GHOSTTY_THEME_DIR"
-  # Symlink to the XDG theme file so it's kept up-to-date
-  if [ -f "$GHOSTTY_THEME_FILE" ]; then
-    ln -sfv "$GHOSTTY_THEME_FILE" "$MAC_GHOSTTY_THEME_DIR/catppuccin-mocha.conf"
-  fi
+####################
+# AI agents (Claude Code, Codex, etc.)
+####################
+
+if [ -f "$DOTFILES_DIR/agent-instructions.md" ]; then
+  # Claude Code global instructions
+  mkdir -p "$HOME/.claude"
+  ln -sfv "$DOTFILES_DIR/agent-instructions.md" "$HOME/.claude/CLAUDE.md"
+  # ~/AGENTS.md is picked up by Codex and Claude Code from any project directory
+  ln -sfv "$DOTFILES_DIR/agent-instructions.md" "$HOME/AGENTS.md"
 fi
 
 ####################
@@ -117,6 +129,15 @@ fi
 # Link Zellij config from ./zellij -> ~/.config/zellij/config.kdl
 if [ -f "$DOTFILES_DIR/zellij" ]; then
   ln -sfv "$DOTFILES_DIR/zellij" "$HOME/.config/zellij/config.kdl"
+fi
+
+# Link Zellij layouts
+if [ -d "$DOTFILES_DIR/zellij-layouts" ]; then
+  mkdir -p "$HOME/.config/zellij/layouts"
+  for _layout in "$DOTFILES_DIR/zellij-layouts"/*.kdl; do
+    [ -f "$_layout" ] || continue
+    ln -sfv "$_layout" "$HOME/.config/zellij/layouts/$(basename "$_layout")"
+  done
 fi
 
 ####################
@@ -194,7 +215,10 @@ if [ -n "${XDG_CURRENT_DESKTOP:-}" ] || [ -n "${DESKTOP_SESSION:-}" ] || \
     _install_font() {
       _name="$1"; _url="$2"; _subdir="$3"
       _dest="$FONT_DIR/$_subdir"
-      # Idempotent: skip if destination already has font files
+      # Idempotent: skip if already registered with fontconfig or dest has font files
+      if fc-list | grep -qi "$_name" 2>/dev/null; then
+        return 0
+      fi
       if ls "$_dest"/*.ttf "$_dest"/*.otf >/dev/null 2>&1; then
         return 0
       fi

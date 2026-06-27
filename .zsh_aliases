@@ -38,6 +38,7 @@ alias locip="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\
 alias gcm='git checkout main'
 alias gst='git status'
 alias gs='git switch'
+alias gsm='git switch main'
 alias gsync='git pull upstream main && git push origin main'
 alias gpo='git push -u origin HEAD'
 alias gnew='git checkout -b'
@@ -63,3 +64,8 @@ alias pip=pip3
 
 # YOLO mode
 alias yolo='claude --dangerously-skip-permissions'
+
+# Claude shortcuts
+alias cy='claude --dangerously-skip-permissions'
+alias cr='claude --resume'
+crl() { claude --resume "$(ls -t ~/.claude/sessions/*.json 2>/dev/null | head -1 | xargs python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["sessionId"])')"; }

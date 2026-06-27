@@ -1,0 +1,43 @@
+layout {
+    pane size=1 borderless=true {
+        plugin location="file:/home/joel/dotfiles/zellij-plugins/zjstatus.wasm" {
+            format_left   "{mode}#[bg=#1e1e2e,fg=#45475a] {tabs}"
+            format_right  "#[bg=#1e1e2e]{command_git_branch}  {session}  {datetime} "
+            format_space  "#[bg=#1e1e2e]"
+
+            format_hide_on_overlength "true"
+            format_precedence         "lrc"
+
+            tab_normal      "#[bg=#1e1e2e,fg=#45475a] {index} {name} "
+            tab_active      "#[bg=#313244,fg=#cdd6f4,bold] {index} {name} "
+            tab_fullscreen  "#[bg=#313244,fg=#a6e3a1,bold] {index} {name} [] "
+            tab_sync        "#[bg=#313244,fg=#f9e2af,bold] {index} {name} <> "
+
+            mode_normal        "#[bg=#a6e3a1,fg=#1e1e2e,bold] NORMAL "
+            mode_locked        "#[bg=#f38ba8,fg=#1e1e2e,bold] LOCKED "
+            mode_resize        "#[bg=#fab387,fg=#1e1e2e,bold] RESIZE "
+            mode_pane          "#[bg=#89b4fa,fg=#1e1e2e,bold] PANE "
+            mode_tab           "#[bg=#89dceb,fg=#1e1e2e,bold] TAB "
+            mode_scroll        "#[bg=#f9e2af,fg=#1e1e2e,bold] SCROLL "
+            mode_enter_search  "#[bg=#cba6f7,fg=#1e1e2e,bold] SEARCH "
+            mode_search        "#[bg=#cba6f7,fg=#1e1e2e,bold] SEARCH "
+            mode_rename_tab    "#[bg=#f9e2af,fg=#1e1e2e,bold] RENAME "
+            mode_rename_pane   "#[bg=#fab387,fg=#1e1e2e,bold] RENAME "
+            mode_session       "#[bg=#89b4fa,fg=#1e1e2e,bold] SESSION "
+            mode_move          "#[bg=#cba6f7,fg=#1e1e2e,bold] MOVE "
+            mode_prompt        "#[bg=#cba6f7,fg=#1e1e2e,bold] PROMPT "
+            mode_tmux          "#[bg=#f38ba8,fg=#1e1e2e,bold] TMUX "
+
+            command_git_branch_command  "git branch --show-current 2>/dev/null || echo ''"
+            command_git_branch_format   "#[fg=#a6e3a1] {stdout}"
+            command_git_branch_interval "2"
+
+            session           "#[fg=#cba6f7]{name}"
+            datetime          "#[fg=#89b4fa]{format}"
+            datetime_format   "%H:%M"
+            datetime_interval "60"
+            datetime_timezone "America/Phoenix"
+        }
+    }
+    pane
+}
