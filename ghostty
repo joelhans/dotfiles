@@ -14,5 +14,10 @@ keybind = ctrl+tab=text:\x1b]
 keybind = ctrl+shift+tab=text:\x1b[
 
 macos-option-as-alt = left
+macos-titlebar-style = hidden
+gtk-titlebar = false
+# To go fully borderless on KDE: System Settings → Window Rules → add rule for
+# Ghostty → set "No titlebar and frame" to Force/Yes. Could potentially be
+# codified as a kwinrulesrc entry in dotfiles (alongside kxkbrc).
 
 shell-integration-features = ssh-terminfo,ssh-env

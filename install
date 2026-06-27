@@ -113,6 +113,15 @@ if [ -f "$DOTFILES_DIR/zellij" ]; then
   ln -sfv "$DOTFILES_DIR/zellij" "$HOME/.config/zellij/config.kdl"
 fi
 
+# Link Zellij layouts
+if [ -d "$DOTFILES_DIR/zellij-layouts" ]; then
+  mkdir -p "$HOME/.config/zellij/layouts"
+  for _layout in "$DOTFILES_DIR/zellij-layouts"/*.kdl; do
+    [ -f "$_layout" ] || continue
+    ln -sfv "$_layout" "$HOME/.config/zellij/layouts/$(basename "$_layout")"
+  done
+fi
+
 ####################
 # lazygit
 ####################
