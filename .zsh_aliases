@@ -64,3 +64,8 @@ alias pip=pip3
 
 # YOLO mode
 alias yolo='claude --dangerously-skip-permissions'
+
+# Claude shortcuts
+alias cy='claude --dangerously-skip-permissions'
+alias cr='claude --resume'
+crl() { claude --resume "$(ls -t ~/.claude/sessions/*.json 2>/dev/null | head -1 | xargs python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["sessionId"])')"; }
