@@ -68,15 +68,21 @@ zl() {
 
 unalias zc 2>/dev/null
 zc() {
-  local exited
-  exited=$(command zellij list-sessions --no-formatting | awk '/EXITED/ {print $1}')
+  local exited autogen
 
-  if [ -z "$exited" ]; then
+  exited=$(command zellij list-sessions --no-formatting | awk '/EXITED/ {print $1}')
+  if [[ -n "$exited" ]]; then
+    printf "%s\n" "$exited" | xargs -n 1 command zellij delete-session
+  else
     echo "No exited zellij sessions to delete."
-    return 0
   fi
 
-  printf "%s\n" "$exited" | xargs -n 1 command zellij delete-session
+  autogen=$(command zellij list-sessions --no-formatting | awk '!/EXITED/ {print $1}' | grep -E '^[a-z]+-[a-z]+$' | grep -vxF "${ZELLIJ_SESSION_NAME:-}")
+  if [[ -n "$autogen" ]]; then
+    printf "%s\n" "$autogen" | xargs -n 1 command zellij delete-session --force
+  else
+    echo "No auto-named zellij sessions to delete."
+  fi
 }
 
 if command -v mise &>/dev/null; then
