@@ -5,6 +5,24 @@
 //
 // Place at: ~/.config/zellij/config.kdl (install script will symlink ./zellij)
 
+theme "catppuccin-mocha"
+
+themes {
+    catppuccin-mocha {
+        fg "#cdd6f4"
+        bg "#1e1e2e"
+        black "#45475a"
+        red "#f38ba8"
+        green "#a6e3a1"
+        yellow "#f9e2af"
+        blue "#89b4fa"
+        magenta "#cba6f7"
+        cyan "#89dceb"
+        white "#bac2de"
+        orange "#fab387"
+    }
+}
+
 keybinds {
   // Apply in all modes
   shared {
