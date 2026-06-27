@@ -85,50 +85,13 @@ IFS=$'\t' read -r repo tab wt_path < <(
 
 [[ -z "$repo" ]] && exit 0
 
-# ---------------------------------------------------------------------------
-# Zellij helpers
-# ---------------------------------------------------------------------------
-
-_active_sessions() {
-  zellij list-sessions --no-formatting 2>/dev/null \
-    | awk '$0 !~ /EXITED/ {print $1}'
-}
-
-session_exists() { _active_sessions | grep -qx "$1" }
-
-_wait_for_session() {
-  local sess=$1 i
-  for i in {1..20}; do
-    session_exists "$sess" && return 0
-    sleep 0.1
-  done
-  return 1
-}
-
-ensure_tab() {
-  local sess=$1 name=$2 cwd=$3
-  # go-to-tab-name exits non-zero if the tab doesn't exist
-  zellij --session "$sess" action go-to-tab-name "$name" 2>/dev/null \
-    || zellij --session "$sess" action new-tab --name "$name" --cwd "$cwd"
-}
+[[ -z "${ZELLIJ:-}" ]] && die "not inside a Zellij session"
 
 # ---------------------------------------------------------------------------
-# Main
+# Main: single-session, tabs named repo/branch
 # ---------------------------------------------------------------------------
 
-if session_exists "$repo"; then
-  ensure_tab "$repo" "$tab" "$wt_path"
-else
-  # --create-background (-b): creates the session detached without needing
-  # terminal control, so this works correctly from inside or outside Zellij.
-  # The default layout (~/.config/zellij/layouts/default.kdl) is used.
-  zellij attach -b "$repo"
-  _wait_for_session "$repo" || die "timed out waiting for session '$repo'"
-  zellij --session "$repo" action rename-tab "$tab"
-  zellij --session "$repo" action write-chars "cd $(printf '%q' "$wt_path") && clear"$'\n'
-fi
+tab_name="$repo/$tab"
 
-# exec zellij attach replaces the current process with a Zellij client.
-# From outside Zellij this attaches normally; from inside, Zellij 0.38+
-# switches the terminal to the target session rather than nesting.
-exec zellij attach "$repo"
+zellij action go-to-tab-name "$tab_name" 2>/dev/null \
+  || zellij action new-tab --name "$tab_name" --cwd "$wt_path"
