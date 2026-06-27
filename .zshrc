@@ -1,5 +1,7 @@
 # Setting $PATH
 export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin:$PATH
+
+[[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
 export BMO_SOURCE=~/src/bmo-agent
 
 # History settings: shared, immediate append, and larger size
