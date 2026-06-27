@@ -1,0 +1,103 @@
+#!/usr/bin/env zsh
+# zel — fuzzy-jump to any repo worktree in a named Zellij session
+#
+# Config: $XDG_CONFIG_HOME/zel/roots (default: ~/.config/zel/roots)
+# One root directory per line; lines starting with # are ignored.
+
+CONFIG_DIR="${XDG_CONFIG_HOME:-$HOME/.config}/zel"
+ROOTS_FILE="$CONFIG_DIR/roots"
+
+die() { print -u2 -- "zel: $*"; exit 1 }
+need() { command -v "$1" &>/dev/null || die "required tool not found: $1" }
+
+need fzf
+need git
+need zellij
+
+[[ -f "$ROOTS_FILE" ]] || die "no roots config found at $ROOTS_FILE
+Create it with one root directory per line, e.g.:
+  ~/code
+  ~/work"
+
+# ---------------------------------------------------------------------------
+# Discovery: scan roots for git repos and their worktrees
+# Output format: repo_name TAB branch TAB abs_path
+# ---------------------------------------------------------------------------
+
+gather() {
+  local root repo_dir repo_name wt_path wt_branch wt_bare
+
+  while IFS= read -r root || [[ -n "$root" ]]; do
+    [[ -z "$root" || "$root" == \#* ]] && continue
+    root="${root/#\~/$HOME}"
+    [[ -d "$root" ]] || continue
+
+    while IFS= read -r repo_dir; do
+      repo_name=$(basename "$repo_dir")
+      wt_path='' wt_branch='' wt_bare=0
+
+      # Extra echo flushes the final block from porcelain output
+      while IFS= read -r line; do
+        case "$line" in
+          'worktree '*)  wt_path="${line#worktree }" ;;
+          'branch '*)    wt_branch="${line#branch refs/heads/}" ;;
+          bare)          wt_bare=1 ;;
+          '')
+            if [[ -n "$wt_path" && $wt_bare -eq 0 ]]; then
+              printf '%s\t%s\t%s\n' \
+                "$repo_name" \
+                "${wt_branch:-$(basename "$wt_path")}" \
+                "$wt_path"
+            fi
+            wt_path='' wt_branch='' wt_bare=0
+            ;;
+        esac
+      done < <({ git -C "$repo_dir" worktree list --porcelain 2>/dev/null; echo; })
+
+    done < <(
+      find "$root" -maxdepth 2 -name '.git' \( -type d -o -type f \) -print 2>/dev/null \
+        | sed 's|/\.git$||' | sort -u
+    )
+  done < "$ROOTS_FILE"
+}
+
+entries=$(gather)
+[[ -z "$entries" ]] && die "no repos found under configured roots"
+
+# ---------------------------------------------------------------------------
+# Pick: fzf with tab-delimited fields; {3} in preview refers to the path
+# ---------------------------------------------------------------------------
+
+IFS=$'\t' read -r repo tab wt_path < <(
+  printf '%s\n' "$entries" \
+    | fzf \
+        --delimiter $'\t' \
+        --with-nth 1,2 \
+        --tabstop 28 \
+        --prompt '  ' \
+        --height 40% \
+        --layout reverse \
+        --border rounded \
+        --preview 'git -C {3} log --oneline --color=always -15 2>/dev/null' \
+        --preview-window 'right:45%:wrap' \
+    || true
+)
+
+[[ -z "$repo" ]] && exit 0
+
+[[ -z "${ZELLIJ:-}" ]] && die "not inside a Zellij session"
+
+# ---------------------------------------------------------------------------
+# Main: single-session, tabs named repo/branch
+# ---------------------------------------------------------------------------
+
+tab_name="$repo/$tab"
+
+if zellij action query-tab-names 2>/dev/null | grep -qxF "$tab_name"; then
+  # Tab already exists: jump to it
+  zellij action go-to-tab-name "$tab_name"
+else
+  # Tab doesn't exist: transform the current tab into it
+  zellij action rename-tab "$tab_name"
+  zellij action write-chars "cd $(printf '%q' "$wt_path") && clear"$'\n'
+fi
