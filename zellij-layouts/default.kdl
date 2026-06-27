@@ -30,12 +30,13 @@ layout {
 
             command_git_branch_command  "git branch --show-current 2>/dev/null || echo ''"
             command_git_branch_format   "#[fg=#a6e3a1] {stdout}"
-            command_git_branch_interval "10"
+            command_git_branch_interval "2"
 
-            session        "#[fg=#cba6f7]{name}"
-            datetime       "#[fg=#89b4fa]{format}"
+            session           "#[fg=#cba6f7]{name}"
+            datetime          "#[fg=#89b4fa]{format}"
             datetime_format   "%H:%M"
             datetime_interval "60"
+            datetime_timezone "America/Phoenix"
         }
     }
     pane
