@@ -209,7 +209,10 @@ if [ -n "${XDG_CURRENT_DESKTOP:-}" ] || [ -n "${DESKTOP_SESSION:-}" ] || \
     _install_font() {
       _name="$1"; _url="$2"; _subdir="$3"
       _dest="$FONT_DIR/$_subdir"
-      # Idempotent: skip if destination already has font files
+      # Idempotent: skip if already registered with fontconfig or dest has font files
+      if fc-list | grep -qi "$_name" 2>/dev/null; then
+        return 0
+      fi
       if ls "$_dest"/*.ttf "$_dest"/*.otf >/dev/null 2>&1; then
         return 0
       fi
