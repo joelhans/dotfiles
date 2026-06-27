@@ -38,6 +38,16 @@ ln -sfv "$DOTFILES_DIR/.zshrc" "$HOME/.zshrc"
 ln -sfv "$DOTFILES_DIR/.zsh_exports" "$HOME/.zsh_exports"
 ln -sfv "$DOTFILES_DIR/.zsh_aliases" "$HOME/.zsh_aliases"
 ln -sfv "$DOTFILES_DIR/.zsh_plugins.txt" "$HOME/.zsh_plugins.txt"
+
+####################
+# Local bin scripts
+####################
+
+mkdir -p "$HOME/.local/bin"
+for _script in "$DOTFILES_DIR/bin"/*; do
+  [ -f "$_script" ] || continue
+  ln -sfv "$_script" "$HOME/.local/bin/$(basename "$_script")"
+done
 # Optional: only link if present in the repo (GNU ls only, Linux)
 if [ "$MACHINE" = "Linux" ] && [ -f "$DOTFILES_DIR/.dircolors" ]; then
   ln -sfv "$DOTFILES_DIR/.dircolors" "$HOME/.dircolors"
@@ -102,6 +112,18 @@ if [ "$MACHINE" = "MacOS" ]; then
   if [ -f "$GHOSTTY_THEME_FILE" ]; then
     ln -sfv "$GHOSTTY_THEME_FILE" "$MAC_GHOSTTY_THEME_DIR/catppuccin-mocha.conf"
   fi
+fi
+
+####################
+# AI agents (Claude Code, Codex, etc.)
+####################
+
+if [ -f "$DOTFILES_DIR/agent-instructions.md" ]; then
+  # Claude Code global instructions
+  mkdir -p "$HOME/.claude"
+  ln -sfv "$DOTFILES_DIR/agent-instructions.md" "$HOME/.claude/CLAUDE.md"
+  # ~/AGENTS.md is picked up by Codex and Claude Code from any project directory
+  ln -sfv "$DOTFILES_DIR/agent-instructions.md" "$HOME/AGENTS.md"
 fi
 
 ####################
