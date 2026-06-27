@@ -1,5 +1,5 @@
 # Setting $PATH
-export PATH=$HOME/bin:/usr/local/bin:$HOME/.local/bin:$PATH
+export PATH=$HOME/.fzf/bin:$HOME/bin:/usr/local/bin:$HOME/.local/bin:$PATH
 export BMO_SOURCE=~/src/bmo-agent
 
 # History settings: shared, immediate append, and larger size

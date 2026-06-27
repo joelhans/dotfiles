@@ -48,6 +48,12 @@ if [ ! -f "${ZDOTDIR:-$HOME}/.antidote/antidote.zsh" ]; then
   git clone --depth=1 https://github.com/mattmc3/antidote.git "${ZDOTDIR:-$HOME}/.antidote"
 fi
 
+# fzf (install from source to get a recent version; package managers ship stale versions)
+if [ ! -d "$HOME/.fzf" ]; then
+  git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME/.fzf"
+fi
+"$HOME/.fzf/install" --all --no-update-rc
+
 # Starship
 ln -sfv "$DOTFILES_DIR/starship.toml" "$HOME/.config/starship.toml"
 if ! command -v starship >/dev/null 2>&1; then
