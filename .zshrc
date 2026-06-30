@@ -77,20 +77,17 @@ zl() {
 
 unalias zc 2>/dev/null
 zc() {
-  local exited autogen
+  local exited
 
+  # Only garbage-collect EXITED (dead) sessions. Live/detached sessions are left
+  # alone: zellij can't tell an attached session from a detached one, so force-
+  # deleting them would kill terminals open elsewhere. Sessions self-clean on
+  # terminal close via the SIGHUP trap below.
   exited=$(command zellij list-sessions --no-formatting | awk '/EXITED/ {print $1}')
   if [[ -n "$exited" ]]; then
     printf "%s\n" "$exited" | xargs -n 1 command zellij delete-session
   else
     echo "No exited zellij sessions to delete."
-  fi
-
-  autogen=$(command zellij list-sessions --no-formatting | awk '!/EXITED/ {print $1}' | grep -E '^[a-z]+-[a-z]+$' | grep -vxF "${ZELLIJ_SESSION_NAME:-}")
-  if [[ -n "$autogen" ]]; then
-    printf "%s\n" "$autogen" | xargs -n 1 command zellij delete-session --force
-  else
-    echo "No auto-named zellij sessions to delete."
   fi
 }
 
@@ -98,6 +95,9 @@ if command -v mise &>/dev/null; then
   eval "$(mise activate zsh)"
 fi
 
+# Closing the terminal without detaching first kills the session instead of
+# leaving it running detached (see `on_force_close "quit"` in the zellij config),
+# so sessions no longer pile up.
 if [[ -z "$ZELLIJ" ]]; then
   zellij
 fi
